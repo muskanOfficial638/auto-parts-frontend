@@ -1,12 +1,13 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Header() {
   return (
     <header className="absolute top-0 left-0 w-full flex items-center justify-between px-12 py-5 z-20 bg-black bg-opacity-80 backdrop-blur-sm sticky">
       {/* Logo */}
-      <div className="relative w-48 h-12">
+      <Link href="/" scroll={true} className="relative w-48 h-12">
         <Image
           src="/autoPartLogo.png"
           alt="Auto Parts XChange Logo"
@@ -14,7 +15,7 @@ export default function Header() {
           className="object-contain"
           priority
         />
-      </div>
+      </Link>
 
       {/* Nav Links */}
       <nav className="hidden md:flex items-center space-x-8 text-white text-sm font-medium">
@@ -23,7 +24,7 @@ export default function Header() {
             Find Auto Parts ▾
           </button>
           {/* Dropdown */}
-          <div className="absolute hidden group-hover:block bg-gray-900 rounded-md mt-2 py-2 shadow-lg w-40">
+          <div className="absolute hidden group-hover:block bg-gray-900 rounded-md mt-1 py-2 shadow-lg w-40">
             <a href="#" className="block px-4 py-2 hover:bg-gray-800">
               Engine
             </a>
@@ -45,10 +46,10 @@ export default function Header() {
 
       {/* Buttons */}
       <div className="flex items-center space-x-5 text-sm font-medium text-white">
-        <a href="#" className="hover:text-cyan-400">
+        <a href="/login" className="hover:text-cyan-400">
           Login
         </a>
-        <a href="#" className="hover:text-cyan-400">
+        <a href="/login" className="hover:text-cyan-400">
           Sign Up
         </a>
         <a

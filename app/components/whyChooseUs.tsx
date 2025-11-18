@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Image from "next/image";
 
 export default function WhyChooseUs() {
@@ -5,7 +8,13 @@ export default function WhyChooseUs() {
     <section className="bg-black text-white py-20 px-6 md:px-16 relative overflow-hidden">
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
         {/* Left Content */}
-        <div className="z-10">
+        <motion.div
+          className="z-10"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          viewport={{ once: true }}
+        >
           <h2 className="text-4xl md:text-5xl font-bold mb-10">
             <span className="text-cyan-500">Why</span> Choose Us
           </h2>
@@ -60,10 +69,16 @@ export default function WhyChooseUs() {
           >
             Read More →
           </a>
-        </div>
+        </motion.div>
 
         {/* Right Image */}
-        <div className="relative w-full h-[400px] md:h-[500px] flex justify-center md:justify-end">
+        <motion.div
+          className="relative w-full h-[400px] md:h-[500px] flex justify-center md:justify-end"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, ease: "easeOut" }}
+          viewport={{ once: true }}
+        >
           <Image
             src="/whyChooseRight.png"
             alt="Auto Parts Filters"
@@ -71,11 +86,17 @@ export default function WhyChooseUs() {
             className="object-contain"
             priority
           />
-        </div>
+        </motion.div>
       </div>
 
       {/* Top Brands Row */}
-      <div className="absolute top-8 left-1/2 -translate-x-1/2 flex flex-row justify-center items-center gap-12">
+      <motion.div
+        className="absolute top-8 left-1/2 -translate-x-1/2 flex flex-row justify-center items-center gap-12"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        viewport={{ once: true }}
+      >
         {[
           "/isuzu-logo.png",
           "/porsche-logo.png",
@@ -93,7 +114,7 @@ export default function WhyChooseUs() {
             className="object-contain"
           />
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }

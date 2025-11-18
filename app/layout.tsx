@@ -27,6 +27,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
+    `,
+          }}
+        />
         {children}
       </body>
     </html>

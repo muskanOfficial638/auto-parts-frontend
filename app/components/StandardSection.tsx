@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Image from "next/image";
 
 export default function StandardSection() {
@@ -5,7 +8,13 @@ export default function StandardSection() {
     <section className="bg-black text-white py-20 px-6 md:px-16">
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
         {/* Left Image */}
-        <div className="relative w-full h-[450px] md:h-[550px]">
+        <motion.div
+          className="relative w-full h-[450px] md:h-[550px]"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, ease: "easeOut" }}
+          viewport={{ once: true }}
+        >
           <Image
             src="/standard-section.png"
             alt="Auto Parts Kit"
@@ -13,10 +22,15 @@ export default function StandardSection() {
             className="object-contain"
             priority
           />
-        </div>
+        </motion.div>
 
         {/* Right Content */}
-        <div>
+       <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          viewport={{ once: true }}
+        >
           <h2 className="text-4xl md:text-5xl font-bold leading-tight mb-10">
             <span className="text-cyan-500">The Standard</span>{" "}
             Lorem Ipsum Passage, Used Since
@@ -75,7 +89,7 @@ export default function StandardSection() {
               View More →
             </a>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

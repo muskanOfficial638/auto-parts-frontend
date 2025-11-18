@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Image from "next/image";
 
 export default function PartsGallery() {
@@ -5,7 +8,13 @@ export default function PartsGallery() {
     <section className="bg-black py-20 px-6 md:px-16 text-white">
       <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-6">
         {/* Left Large Image */}
-        <div className="md:col-span-2 relative rounded-2xl overflow-hidden">
+        <motion.div
+          className="md:col-span-2 relative rounded-2xl overflow-hidden"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, ease: "easeOut" }}
+          viewport={{ once: true }}
+        >
           <Image
             src="/spare-part-1.png"
             alt="Spare Parts"
@@ -26,7 +35,7 @@ export default function PartsGallery() {
               Learn More
             </a>
           </div>
-        </div>
+        </motion.div>
 
         {/* Right Grid of 4 Small Images */}
         <div className="grid grid-cols-2 grid-rows-2 gap-6">

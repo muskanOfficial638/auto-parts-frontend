@@ -72,13 +72,13 @@ export default function HeroSection() {
               <div className="flex space-x-4 pt-4">
                 <a
                   href="#"
-                  className="bg-cyan-500 hover:bg-cyan-600 text-white px-5 py-2 rounded-md font-medium transition"
+                  className="bg-autoblue hover:bg-cyan-600 text-white px-5 py-2 rounded-md font-medium transition"
                 >
                   View All Products
                 </a>
                 <a
                   href="#"
-                  className="border border-gray-400 hover:border-cyan-500 px-5 py-2 rounded-md font-medium transition"
+                  className="border border-gray-400 hover:border-autoblue px-5 py-2 rounded-md font-medium transition"
                 >
                   Contact Us
                 </a>

@@ -43,7 +43,7 @@ export default function LoginPage() {
               onClick={() => setIsLogin(true)}
               className={`text-3xl font-light border-b-2 pb-1 ${
                 isLogin
-                  ? "text-[#00A8FF] border-[#00A8FF]"
+                  ? "text-autoblue border-autoblue"
                   : "text-gray-400 border-transparent"
               }`}
             >
@@ -53,7 +53,7 @@ export default function LoginPage() {
               onClick={() => setIsLogin(false)}
               className={`text-3xl font-light border-b-2 pb-1 ${
                 !isLogin
-                  ? "text-[#00A8FF] border-[#00A8FF]"
+                  ? "text-autoblue border-autoblue"
                   : "text-gray-400 border-transparent"
               }`}
             >
@@ -80,7 +80,7 @@ export default function LoginPage() {
                 </span>
               </div>
 
-              <div className="text-left text-sm text-[#00A8FF] hover:underline cursor-pointer">
+              <div className="text-left text-sm text-autoblue hover:underline cursor-pointer">
                 Forgot Password ?
               </div>
 

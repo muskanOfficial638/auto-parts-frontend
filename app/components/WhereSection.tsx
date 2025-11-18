@@ -47,7 +47,7 @@ export default function WhereSection() {
         {/* Left Text Section */}
         <div>
           <h2 className="text-4xl md:text-5xl font-bold mb-12 leading-tight">
-            <span className="text-cyan-500">Where</span> Does It Come From
+            <span className="text-autoblue">Where</span> Does It Come From
           </h2>
 
           {/* 2x2 grid */}
@@ -88,7 +88,7 @@ export default function WhereSection() {
 
           <a
             href="#"
-            className="text-cyan-500 text-sm font-medium hover:underline inline-flex items-center"
+            className="text-autoblue text-sm font-medium hover:underline inline-flex items-center"
           >
             Read More →
           </a>

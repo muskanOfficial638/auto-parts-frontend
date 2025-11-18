@@ -16,7 +16,7 @@ export default function WhyChooseUs() {
           viewport={{ once: true }}
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-10">
-            <span className="text-cyan-500">Why</span> Choose Us
+            <span className="text-autoblue">Why</span> Choose Us
           </h2>
 
           {/* Features Grid */}
@@ -65,7 +65,7 @@ export default function WhyChooseUs() {
           {/* Read More Link */}
           <a
             href="#"
-            className="inline-block mt-10 text-cyan-500 font-medium text-sm hover:underline"
+            className="inline-block mt-10 text-autoblue font-medium text-sm hover:underline"
           >
             Read More →
           </a>

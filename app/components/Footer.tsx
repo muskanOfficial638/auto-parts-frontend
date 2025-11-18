@@ -6,8 +6,8 @@ import {
   FaYoutube,
   FaXTwitter,
   FaLinkedinIn,
+  FaQuestion,
 } from "react-icons/fa6";
-import { FiHelpCircle } from "react-icons/fi";
 import { MdAccessibility, MdLocationOn, MdEmail, MdCall } from "react-icons/md";
 import Image from "next/image";
 
@@ -30,7 +30,9 @@ export default function Footer() {
 
           <div className="space-y-2">
             <p className="flex items-center gap-2 hover:text-white cursor-pointer">
-              <FiHelpCircle /> Help & Support
+              <a href="#" className="hover:text-white p-1 rounded-full bg-white">
+              <FaQuestion className="text-black text-sm"/>
+              </a> Help & Support
             </p>
             <p className="flex items-center gap-2 hover:text-white cursor-pointer">
               <MdAccessibility /> Accessibility
@@ -38,20 +40,20 @@ export default function Footer() {
           </div>
 
           <div className="flex items-center gap-3 pt-3">
-            <a href="#" className="hover:text-white">
-              <FaFacebookF />
+            <a href="#" className="hover:text-white p-1 rounded-full bg-white">
+              <FaFacebookF className="text-black text-sm"/>
             </a>
-            <a href="#" className="hover:text-white">
-              <FaXTwitter />
+            <a href="#" className="hover:text-white p-1 rounded-full bg-white">
+              <FaXTwitter className="text-black text-sm"/>
             </a>
-            <a href="#" className="hover:text-white">
-              <FaYoutube />
+            <a href="#" className="hover:text-white p-1 rounded-full bg-white">
+              <FaYoutube className="text-black text-sm"/>
             </a>
-            <a href="#" className="hover:text-white">
-              <FaPinterestP />
+            <a href="#" className="hover:text-white p-1 rounded-full bg-white">
+              <FaPinterestP className="text-black text-sm"/>
             </a>
-            <a href="#" className="hover:text-white">
-              <FaLinkedinIn />
+            <a href="#" className="hover:text-white p-1 rounded-full bg-white">
+              <FaLinkedinIn className="text-black text-sm"/>
             </a>
           </div>
         </div>
@@ -106,12 +108,12 @@ export default function Footer() {
         <div>
           <h3 className="font-semibold text-white mb-3">Contact Us</h3>
           <ul className="space-y-3 text-sm">
-            <li className="flex items-center gap-2">
+            <a href="tel:+91 1414523119" className="flex items-center gap-2">
               <MdCall className="text-lg" /> +91 1414523119
-            </li>
-            <li className="flex items-center gap-2">
+            </a>
+            <a href="mailto:autoparts@gmail.com" className="flex items-center gap-2">
               <MdEmail className="text-lg" /> autoparts@gmail.com
-            </li>
+            </a>
             <li className="flex items-start gap-2">
               <MdLocationOn className="text-lg mt-1" />
               <span>

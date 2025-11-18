@@ -32,7 +32,7 @@ export default function StandardSection() {
           viewport={{ once: true }}
         >
           <h2 className="text-4xl md:text-5xl font-bold leading-tight mb-10">
-            <span className="text-cyan-500">The Standard</span>{" "}
+            <span className="text-autoblue">The Standard</span>{" "}
             Lorem Ipsum Passage, Used Since
           </h2>
 
@@ -48,7 +48,7 @@ export default function StandardSection() {
             </p>
             <a
               href="#"
-              className="text-cyan-500 text-sm font-medium hover:underline"
+              className="text-autoblue text-sm font-medium hover:underline"
             >
               View More →
             </a>
@@ -66,7 +66,7 @@ export default function StandardSection() {
             </p>
             <a
               href="#"
-              className="text-cyan-500 text-sm font-medium hover:underline"
+              className="text-autoblue text-sm font-medium hover:underline"
             >
               View More →
             </a>
@@ -84,7 +84,7 @@ export default function StandardSection() {
             </p>
             <a
               href="#"
-              className="text-cyan-500 text-sm font-medium hover:underline"
+              className="text-autoblue text-sm font-medium hover:underline"
             >
               View More →
             </a>

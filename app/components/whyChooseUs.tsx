@@ -74,8 +74,8 @@ export default function WhyChooseUs() {
         {/* Right Image */}
         <motion.div
           className="relative w-full h-[400px] md:h-[500px] flex justify-center md:justify-end"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, x: 50 }}
+          whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.9, ease: "easeOut" }}
           viewport={{ once: true }}
         >
@@ -92,9 +92,9 @@ export default function WhyChooseUs() {
       {/* Top Brands Row */}
       <motion.div
         className="absolute top-8 left-1/2 -translate-x-1/2 flex flex-row justify-center items-center gap-12"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        initial={{ opacity: 0, x: -50 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
         viewport={{ once: true }}
       >
         {[

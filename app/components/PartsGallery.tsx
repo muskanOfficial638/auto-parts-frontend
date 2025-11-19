@@ -30,7 +30,7 @@ export default function PartsGallery() {
             </span>
             <a
               href="#"
-              className="bg-autoblue hover:bg-cyan-600 text-white px-4 py-2 rounded-md text-sm font-medium transition"
+              className="bg-autoblue hover:bg-hoverblue text-white px-4 py-2 rounded-md text-sm font-medium transition"
             >
               Learn More
             </a>
@@ -39,7 +39,13 @@ export default function PartsGallery() {
 
         {/* Right Grid of 4 Small Images */}
         <div className="grid grid-cols-2 grid-rows-2 gap-6">
-          <div className="relative rounded-2xl overflow-hidden">
+          <motion.div
+            className="relative rounded-2xl overflow-hidden"
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.0, ease: "easeOut" }}
+            viewport={{ once: true }}
+          >
             <Image
               src="/spare-part-2.png"
               alt="Part 1"
@@ -47,9 +53,15 @@ export default function PartsGallery() {
               height={250}
               className="object-cover w-full h-full"
             />
-          </div>
+          </motion.div>
 
-          <div className="relative rounded-2xl overflow-hidden">
+          <motion.div
+            className="relative rounded-2xl overflow-hidden"
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            viewport={{ once: true }}
+          >
             <Image
               src="/spare-part-3.png"
               alt="Part 2"
@@ -57,9 +69,15 @@ export default function PartsGallery() {
               height={250}
               className="object-cover w-full h-full"
             />
-          </div>
+          </motion.div>
 
-          <div className="relative rounded-2xl overflow-hidden">
+          <motion.div
+            className="relative rounded-2xl overflow-hidden"
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.0, ease: "easeOut" }}
+            viewport={{ once: true }}
+          >
             <Image
               src="/spare-part-4.png"
               alt="Part 3"
@@ -67,9 +85,15 @@ export default function PartsGallery() {
               height={250}
               className="object-cover w-full h-full"
             />
-          </div>
+          </motion.div>
 
-          <div className="relative rounded-2xl overflow-hidden">
+          <motion.div
+            className="relative rounded-2xl overflow-hidden"
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            viewport={{ once: true }}
+          >
             <Image
               src="/spare-part-5.png"
               alt="Part 4"
@@ -77,7 +101,7 @@ export default function PartsGallery() {
               height={250}
               className="object-cover w-full h-full"
             />
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

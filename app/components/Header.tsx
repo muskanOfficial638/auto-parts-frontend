@@ -26,7 +26,7 @@ export default function Header() {
         {/* Nav Links */}
         <nav className="hidden md:flex items-center space-x-10 text-white text-sm font-medium">
           <div className="relative group">
-            <button className="hover:text-cyan-400 flex items-center">
+            <button className="hover:text-hoverblue flex items-center">
               Find Auto Parts <span className="ml-1">▾</span>
             </button>
 
@@ -44,25 +44,25 @@ export default function Header() {
             </div>
           </div>
 
-          <a href="#" className="hover:text-cyan-400">
+          <a href="#" className="hover:text-hoverblue">
             About Us
           </a>
-          <a href="#" className="hover:text-cyan-400">
+          <a href="#" className="hover:text-hoverblue">
             Contact
           </a>
         </nav>
       </div>
       {/* Buttons */}
       <div className="flex items-center space-x-6 text-sm font-medium text-white">
-        <a href="/login" className="hover:text-cyan-400">
+        <a href="/login" className="hover:text-hoverblue">
           Login
         </a>
-        <a href="/login" className="hover:text-cyan-400">
+        <a href="/login" className="hover:text-hoverblue">
           Sign Up
         </a>
         <a
           href="#"
-          className="bg-autoblue hover:bg-blue-700 text-white px-5 py-2 rounded-md transition"
+          className="bg-autoblue hover:bg-hoverblue text-white px-5 py-2 rounded-md transition"
         >
           Request Auto Parts
         </a>

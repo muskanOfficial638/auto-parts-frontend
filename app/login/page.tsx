@@ -1,13 +1,143 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
 import Header from "../components/Header";
 import { AiFillEye } from "react-icons/ai";
 import { motion } from "framer-motion";
+import { toast, ToastContainer } from "react-toastify";
+import axios from "axios";
+import { authApiPath } from "@/app/utils/api";
+import { FaEyeSlash } from "react-icons/fa6";
 
 export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [role, setRole] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [name, setName] = useState("");
+  const [vat_number, setVATNumber] = useState("");
+  const [company_name, setCompanyName] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Email Validation
+  const validateEmail = (value: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!value) {
+      setEmailError("Email is required");
+    } else if (!emailRegex.test(value)) {
+      setEmailError("Please enter a valid email address");
+    } else {
+      setEmailError("");
+    }
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setEmail(value);
+    setError("");
+    validateEmail(value);
+  };
+
+  //Password
+  const validatePassword = (value: string) => {
+    const errors: string[] = [];
+
+    if (value.length < 6) errors.push("Minimum length 6 characters");
+    if (!/[A-Z]/.test(value))
+      errors.push("Must contain at least one uppercase letter");
+    if (!/[a-z]/.test(value))
+      errors.push("Must contain at least one lowercase letter");
+    if (!/[0-9]/.test(value)) errors.push("Must contain at least one number");
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(value))
+      errors.push("Must contain at least one special character");
+    setPasswordErrors(errors);
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setPassword(value);
+    setError("");
+    validatePassword(value);
+  };
+
+  const handleSelectChange = (value: string) => {
+    // console.log("value",value)
+    setRole(value);
+    setError("");
+  };
+
+  async function handleRegister(e: React.FormEvent) {
+    e.preventDefault();
+
+    try {
+      if (!name || !role || !email || !password) {
+        if (!name) {
+          setError("Name is required");
+          toast.error("Name is required");
+        }
+        if (!role) {
+          setError("Role is required");
+          toast.error("Role is required");
+        }
+        if (!password) {
+          setError("Password is required");
+          toast.error("Password is required");
+        }
+        if (name?.length > 25) {
+          setError("Name cannot be more than 25 character long");
+        }
+        if (name?.length < 2) {
+          setError("Name cannot be less than 2 character short");
+        }
+        return;
+      }
+      // 🔒 Validate fields before submit
+      validateEmail(email);
+      validatePassword(password);
+
+      if (!email || emailError || passwordErrors.length > 0) {
+        setError("Please fix the errors before submitting");
+        return;
+      }
+      console.log(email, password, name, vat_number, company_name, role);
+      const response = await axios.post(`${authApiPath}/auth/register`, {
+        email,
+        password,
+        name,
+        vat_number: role === "buyer" ? vat_number : "",
+        company_name,
+        role,
+        is_active: true,
+        kyc_status: role === "supplier" ? "pending" : "",
+      });
+
+      // console.log("RegisterData:", response.data);
+      if (response?.data) {
+      }
+    } catch (err: any) {
+      // Handle errors more gracefully
+      if (err.response) {
+        // Server responded with a status other than 2xx
+        console.error("Server error:", err.response.data);
+        toast.error(err.response.data?.detail[0]?.msg || "Signup failed");
+        setError(err.response.data?.detail[0]?.msg || "Signup failed");
+      } else if (err.request) {
+        // Request was made but no response received
+        console.error("No response:", err.request);
+        toast.error("No response from server");
+        setError("No response from server");
+      } else {
+        // Something else happened
+        console.error("Error:", err.message);
+        toast.error("No response from server");
+        setError("Unexpected error occurred");
+      }
+    }
+  }
 
   return (
     <motion.div
@@ -19,7 +149,7 @@ export default function LoginPage() {
     >
       {/* Header */}
       <Header />
-
+      <ToastContainer />
       {/* Login Section */}
       <div
         className="flex-1 flex items-center justify-center bg-cover bg-center bg-black bg-blend-hard-light"
@@ -44,7 +174,7 @@ export default function LoginPage() {
               className={`text-3xl font-light border-b-2 pb-1 ${
                 isLogin
                   ? "text-autoblue border-autoblue"
-                  : "text-gray-400 border-transparent"
+                  : "text-white border-transparent"
               }`}
             >
               Login
@@ -54,7 +184,7 @@ export default function LoginPage() {
               className={`text-3xl font-light border-b-2 pb-1 ${
                 !isLogin
                   ? "text-autoblue border-autoblue"
-                  : "text-gray-400 border-transparent"
+                  : "text-white border-transparent"
               }`}
             >
               Sign up
@@ -66,9 +196,14 @@ export default function LoginPage() {
             <form className="flex flex-col space-y-4">
               <input
                 type="email"
+                name="email"
+                onChange={handleEmailChange}
                 placeholder="Enter email"
                 className="px-4 py-3 rounded-full bg-white text-black focus:outline-none"
               />
+              {emailError && (
+                <p className="text-red-500 text-sm mt-1">{emailError}</p>
+              )}
               <div className="relative">
                 <input
                   type="password"
@@ -84,7 +219,7 @@ export default function LoginPage() {
                 Forgot Password ?
               </div>
 
-              <button className="mt-2 bg-[#006BCE] py-3 rounded-full font-semibold hover:bg-[#005bb5] transition">
+              <button className="mt-2 bg-autoblue py-3 rounded-full font-semibold hover:bg-hoverblue transition">
                 Login
               </button>
             </form>
@@ -92,22 +227,30 @@ export default function LoginPage() {
 
           {/* Sign-up form */}
           {!isLogin && (
-            <form className="grid grid-cols-2 gap-4">
+            <form className="grid grid-cols-2 gap-4" onSubmit={handleRegister}>
               {/* Left Column */}
               <input
                 type="text"
+                name="name"
+                onChange={(e) => {
+                  setName(e.target.value);
+                  setError("");
+                }}
                 placeholder="Name"
                 className="col-span-1 bg-white text-gray-800 rounded-full px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
               />
               <input
                 type="text"
+                name="company"
                 placeholder="Company"
+                onChange={(e) => setCompanyName(e.target.value)}
                 className="col-span-1 bg-white text-gray-800 rounded-full px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
               />
 
               <select
                 value={role}
-                onChange={(e) => setRole(e.target.value)}
+                name="role"
+                onChange={(e) => handleSelectChange(e.target.value)}
                 className="col-span-1 bg-white text-gray-800 rounded-full px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Select role</option>
@@ -117,26 +260,87 @@ export default function LoginPage() {
 
               <input
                 type="text"
+                name="vat_number"
+                onChange={(e) => {
+                  setVATNumber(e.target.value);
+                  setError("");
+                }}
                 placeholder="VAT Number"
                 className="col-span-1 bg-white text-gray-800 rounded-full px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
               />
 
               <input
                 type="email"
+                name="email"
+                onChange={handleEmailChange}
                 placeholder="Enter email"
                 className="col-span-2 bg-white text-gray-800 rounded-full px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
               />
-
+              {emailError && (
+                <p className="text-red-500 text-sm mt-1">{emailError}</p>
+              )}
               <div className="relative col-span-2">
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  onChange={handlePasswordChange}
                   placeholder="Enter password"
                   className="w-full bg-white text-gray-800 rounded-full px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                <span className="absolute right-5 top-3 text-gray-400 cursor-pointer">
-                  <AiFillEye />
+                <span
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-5 top-3 text-gray-400 cursor-pointer"
+                >
+                  {showPassword ? (
+                    <AiFillEye />
+                  ) : (
+                    <FaEyeSlash className="fill-gray-500 dark:fill-gray-400" />
+                  )}
                 </span>
               </div>
+
+              {/* ✅ Live password validation feedback */}
+              {password && (
+                <ul className="mt-2 text-sm">
+                  <li
+                    className={
+                      password.length >= 6 ? "text-green-600" : "text-red-500"
+                    }
+                  >
+                    Minimum length 6 characters
+                  </li>
+                  <li
+                    className={
+                      /[A-Z]/.test(password) ? "text-green-600" : "text-red-500"
+                    }
+                  >
+                    At least one uppercase letter
+                  </li>
+                  <li
+                    className={
+                      /[a-z]/.test(password) ? "text-green-600" : "text-red-500"
+                    }
+                  >
+                    At least one lowercase letter
+                  </li>
+                  <li
+                    className={
+                      /[0-9]/.test(password) ? "text-green-600" : "text-red-500"
+                    }
+                  >
+                    At least one number
+                  </li>
+                  <li
+                    className={
+                      /[!@#$%^&*(),.?":{}|<>]/.test(password)
+                        ? "text-green-600"
+                        : "text-red-500"
+                    }
+                  >
+                    At least one special character
+                  </li>
+                </ul>
+              )}
 
               <div className="col-span-2 flex justify-center space-x-2 mt-2">
                 <input
@@ -151,10 +355,10 @@ export default function LoginPage() {
                   </a>
                 </label>
               </div>
-
+              {error && <span className="text-red-500">{error}</span>}
               <button
                 type="submit"
-                className="col-span-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full py-3 mt-4 font-semibold"
+                className="col-span-2 bg-autoblue hover:bg-hoverblue text-white rounded-full py-3 mt-4 font-semibold"
               >
                 Create Account
               </button>

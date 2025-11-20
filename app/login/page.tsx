@@ -204,7 +204,7 @@ export default function LoginPage() {
         }}
       >
         <div
-          className={`rounded-xl shadow-lg w-full ${
+          className={`rounded-xl shadow-lg w-full pt-8 ${
             isLogin ? "max-w-md" : "max-w-3xl"
           }`}
         >
@@ -269,6 +269,48 @@ export default function LoginPage() {
                   )}
                 </span>
               </div>
+              {/* ✅ Live password validation feedback */}
+              {password && (
+                <ul className="mt-2 text-sm">
+                  <li
+                    className={
+                      password.length >= 6 ? "text-green-600" : "text-red-500"
+                    }
+                  >
+                    Minimum length 6 characters
+                  </li>
+                  <li
+                    className={
+                      /[A-Z]/.test(password) ? "text-green-600" : "text-red-500"
+                    }
+                  >
+                    At least one uppercase letter
+                  </li>
+                  <li
+                    className={
+                      /[a-z]/.test(password) ? "text-green-600" : "text-red-500"
+                    }
+                  >
+                    At least one lowercase letter
+                  </li>
+                  <li
+                    className={
+                      /[0-9]/.test(password) ? "text-green-600" : "text-red-500"
+                    }
+                  >
+                    At least one number
+                  </li>
+                  <li
+                    className={
+                      /[!@#$%^&*(),.?":{}|<>]/.test(password)
+                        ? "text-green-600"
+                        : "text-red-500"
+                    }
+                  >
+                    At least one special character
+                  </li>
+                </ul>
+              )}
 
               <div className="text-left text-sm text-autoblue hover:underline cursor-pointer">
                 Forgot Password ?

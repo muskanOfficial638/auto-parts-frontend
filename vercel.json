@@ -1,0 +1,13 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/auth/:path*",
+      "destination": "http://54.80.119.79:8001/v1/:path*"
+    },
+
+    {
+      "source": "/api/parts/:path*",
+      "destination": "http://54.80.119.79:8005/v1/supplier/:path*/"
+    }
+  ]
+}

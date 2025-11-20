@@ -9,8 +9,10 @@ import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { authApiPath } from "@/app/utils/api";
 import { FaEyeSlash } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [isLogin, setIsLogin] = useState(true);
   const [role, setRole] = useState("");
   const [email, setEmail] = useState("");
@@ -103,7 +105,6 @@ export default function LoginPage() {
         setError("Please fix the errors before submitting");
         return;
       }
-      console.log(email, password, name, vat_number, company_name, role);
       const response = await axios.post(`${authApiPath}/auth/register`, {
         email,
         password,
@@ -117,6 +118,8 @@ export default function LoginPage() {
 
       // console.log("RegisterData:", response.data);
       if (response?.data) {
+        toast.success("Signed-up Successfully");
+        setIsLogin(true);
       }
     } catch (err: any) {
       // Handle errors more gracefully
@@ -139,6 +142,49 @@ export default function LoginPage() {
     }
   }
 
+  async function handleLogin(e: React.FormEvent) {
+    e.preventDefault();
+    // 🔒 Validate fields before submit
+    validateEmail(email);
+    validatePassword(password);
+
+    if (!email || emailError || passwordErrors.length > 0 || !password) {
+      toast.error("Please fix the errors before submitting");
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${authApiPath}/auth/login`, {
+        email,
+        password,
+      });
+
+      if (response?.data && response.data.access_token) {
+        localStorage.setItem(
+          "autoPartsUserData",
+          JSON.stringify(response.data)
+        );
+        toast.success("Logged-in Successfully");
+        router.push("/");
+      }
+    } catch (err: any) {
+      // Handle errors more gracefully
+      if (err.response) {
+        // Server responded with a status other than 2xx
+        console.error("Server error:", err.response.data);
+        toast.error(err.response.data.message || "Login failed");
+      } else if (err.request) {
+        // Request was made but no response received
+        console.error("No response:", err.request);
+        toast.error("No response from server");
+      } else {
+        // Something else happened
+        console.error("Error:", err.message);
+        toast.error("Unexpected error occurred");
+      }
+    }
+  }
+
   return (
     <motion.div
       className="min-h-screen bg-black text-white flex flex-col"
@@ -149,7 +195,7 @@ export default function LoginPage() {
     >
       {/* Header */}
       <Header />
-      <ToastContainer />
+
       {/* Login Section */}
       <div
         className="flex-1 flex items-center justify-center bg-cover bg-center bg-black bg-blend-hard-light"
@@ -190,10 +236,10 @@ export default function LoginPage() {
               Sign up
             </button>
           </motion.div>
-
+          <ToastContainer />
           {/* Login form */}
           {isLogin && (
-            <form className="flex flex-col space-y-4">
+            <form className="flex flex-col space-y-4" onSubmit={handleLogin}>
               <input
                 type="email"
                 name="email"
@@ -206,12 +252,21 @@ export default function LoginPage() {
               )}
               <div className="relative">
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  onChange={handlePasswordChange}
                   placeholder="Enter password"
                   className="px-4 py-3 rounded-full bg-white text-black w-full focus:outline-none"
                 />
-                <span className="absolute right-4 top-3 text-gray-600 cursor-pointer">
-                  <AiFillEye />
+                <span
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-3 text-gray-600 cursor-pointer"
+                >
+                  {showPassword ? (
+                    <AiFillEye />
+                  ) : (
+                    <FaEyeSlash className="fill-gray-500 dark:fill-gray-400" />
+                  )}
                 </span>
               </div>
 

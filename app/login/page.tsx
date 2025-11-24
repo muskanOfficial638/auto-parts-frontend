@@ -18,18 +18,25 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [vatError, setVatError] = useState("");
   const [name, setName] = useState("");
   const [vat_number, setVATNumber] = useState("");
   const [company_name, setCompanyName] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
   const [showPassword, setShowPassword] = useState(false);
+  const [isTermsChecked, setIsTermsChecked] = useState(false);
 
   // Email Validation
   const validateEmail = (value: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!value) {
       setEmailError("Email is required");
+    } else if (/^\s|\s$/.test(value)) {
+      setEmailError("Leading or trailing spaces are not allowed");
+    } else if (/\s/.test(value)) {
+      setEmailError("Spaces are not allowed");
     } else if (!emailRegex.test(value)) {
       setEmailError("Please enter a valid email address");
     } else {
@@ -48,6 +55,7 @@ export default function LoginPage() {
   const validatePassword = (value: string) => {
     const errors: string[] = [];
 
+    if (/\s/.test(value)) errors.push("Spaces are not allowed");
     if (value.length < 6) errors.push("Minimum length 6 characters");
     if (!/[A-Z]/.test(value))
       errors.push("Must contain at least one uppercase letter");
@@ -61,6 +69,7 @@ export default function LoginPage() {
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    value.replace(/\s/g, "");
     setPassword(value);
     setError("");
     validatePassword(value);
@@ -72,39 +81,57 @@ export default function LoginPage() {
     setError("");
   };
 
+  const validateVAT = (value: string) => {
+    const vatRegex = /^[A-Za-z0-9]{8,15}$/;
+
+    if (!vatRegex.test(value)) {
+      setVatError(
+        "VAT number must be 8–15 characters and contain only letters or numbers"
+      );
+      return ;
+    } else {
+      setVatError("");
+    }
+  };
+
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
 
     try {
       if (!name || !role || !email || !password) {
-        if (!name) {
-          setError("Name is required");
-          toast.error("Name is required");
-        }
-        if (!role) {
-          setError("Role is required");
-          toast.error("Role is required");
-        }
-        if (!password) {
-          setError("Password is required");
-          toast.error("Password is required");
-        }
-        if (name?.length > 25) {
-          setError("Name cannot be more than 25 character long");
-        }
-        if (name?.length < 2) {
-          setError("Name cannot be less than 2 character short");
-        }
+        setError("Please fill in all required fields.");
         return;
       }
       // 🔒 Validate fields before submit
       validateEmail(email);
       validatePassword(password);
+      if (vat_number) validateVAT(vat_number);
+      const nameRegex = /^[a-zA-Z]+(?:[\s-'][a-zA-Z]+)*$/;
+
+      if (name && !nameRegex.test(name)) {
+        setNameError("Invalid Name Characters");
+        return;
+      }
+
+      if (name?.length > 25) {
+        setNameError("Name cannot be more than 25 character long");
+        return;
+      }
+      if (name?.length < 2) {
+        setNameError("Name cannot be less than 2 character short");
+        return;
+      }
 
       if (!email || emailError || passwordErrors.length > 0) {
         setError("Please fix the errors before submitting");
         return;
       }
+
+      if (!isTermsChecked) {
+        toast.error("You must accept the Terms of Service.");
+        return;
+      }
+
       const response = await axios.post(`${authApiPath}/auth/register`, {
         email,
         password,
@@ -127,7 +154,6 @@ export default function LoginPage() {
         // Server responded with a status other than 2xx
         console.error("Server error:", err.response.data);
         toast.error(err.response.data?.detail[0]?.msg || "Signup failed");
-        setError(err.response.data?.detail[0]?.msg || "Signup failed");
       } else if (err.request) {
         // Request was made but no response received
         console.error("No response:", err.request);
@@ -172,7 +198,7 @@ export default function LoginPage() {
       if (err.response) {
         // Server responded with a status other than 2xx
         console.error("Server error:", err.response.data);
-        toast.error(err.response.data.message || "Login failed");
+        toast.error(err.response.data.detail || "Login failed");
       } else if (err.request) {
         // Request was made but no response received
         console.error("No response:", err.request);
@@ -198,7 +224,7 @@ export default function LoginPage() {
 
       {/* Login Section */}
       <div
-        className="flex-1 flex items-center justify-center bg-cover bg-center bg-black bg-blend-hard-light"
+        className="flex-1 flex justify-center bg-cover bg-center bg-black bg-blend-hard-light pt-[200px]"
         style={{
           backgroundImage: "url('/login-signup-bg.jpg')",
         }}
@@ -217,7 +243,7 @@ export default function LoginPage() {
           >
             <button
               onClick={() => setIsLogin(true)}
-              className={`text-3xl font-light border-b-2 pb-1 ${
+              className={`text-3xl font-light border-b-2 pb-1 cursor-pointer ${
                 isLogin
                   ? "text-autoblue border-autoblue"
                   : "text-white border-transparent"
@@ -227,7 +253,7 @@ export default function LoginPage() {
             </button>
             <button
               onClick={() => setIsLogin(false)}
-              className={`text-3xl font-light border-b-2 pb-1 ${
+              className={`text-3xl font-light border-b-2 pb-1 cursor-pointer ${
                 !isLogin
                   ? "text-autoblue border-autoblue"
                   : "text-white border-transparent"
@@ -269,54 +295,12 @@ export default function LoginPage() {
                   )}
                 </span>
               </div>
-              {/* ✅ Live password validation feedback */}
-              {password && (
-                <ul className="mt-2 text-sm">
-                  <li
-                    className={
-                      password.length >= 6 ? "text-green-600" : "text-red-500"
-                    }
-                  >
-                    Minimum length 6 characters
-                  </li>
-                  <li
-                    className={
-                      /[A-Z]/.test(password) ? "text-green-600" : "text-red-500"
-                    }
-                  >
-                    At least one uppercase letter
-                  </li>
-                  <li
-                    className={
-                      /[a-z]/.test(password) ? "text-green-600" : "text-red-500"
-                    }
-                  >
-                    At least one lowercase letter
-                  </li>
-                  <li
-                    className={
-                      /[0-9]/.test(password) ? "text-green-600" : "text-red-500"
-                    }
-                  >
-                    At least one number
-                  </li>
-                  <li
-                    className={
-                      /[!@#$%^&*(),.?":{}|<>]/.test(password)
-                        ? "text-green-600"
-                        : "text-red-500"
-                    }
-                  >
-                    At least one special character
-                  </li>
-                </ul>
-              )}
 
               <div className="text-left text-sm text-autoblue hover:underline cursor-pointer">
                 Forgot Password ?
               </div>
 
-              <button className="mt-2 bg-autoblue py-3 rounded-full font-semibold hover:bg-hoverblue transition">
+              <button className="mt-2 bg-autoblue py-3 rounded-full font-semibold hover:bg-hoverblue transition cursor-pointer">
                 Login
               </button>
             </form>
@@ -326,16 +310,23 @@ export default function LoginPage() {
           {!isLogin && (
             <form className="grid grid-cols-2 gap-4" onSubmit={handleRegister}>
               {/* Left Column */}
-              <input
-                type="text"
-                name="name"
-                onChange={(e) => {
-                  setName(e.target.value);
-                  setError("");
-                }}
-                placeholder="Name"
-                className="col-span-1 bg-white text-gray-800 rounded-full px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              <div className="flex flex-col">
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    setNameError("");
+                  }}
+                  placeholder="Name*"
+                  className="col-span-1 bg-white text-gray-800 rounded-full px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                {nameError && (
+                  <p className="text-red-500 text-sm mt-1">{nameError}</p>
+                )}
+              </div>
+
               <input
                 type="text"
                 name="company"
@@ -347,30 +338,39 @@ export default function LoginPage() {
               <select
                 value={role}
                 name="role"
+                required
                 onChange={(e) => handleSelectChange(e.target.value)}
                 className="col-span-1 bg-white text-gray-800 rounded-full px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="">Select role</option>
+                <option value="">Select role*</option>
                 <option value="buyer">Buyer</option>
                 <option value="supplier">Supplier</option>
               </select>
 
+              <div className="flex flex-col">
+                <input
+                  type="text"
+                  name="vat_number"
+                  disabled={role == "supplier"}
+                  onChange={(e) => {
+                    setVATNumber(e.target.value);
+                    setError("");
+                    setVatError("");
+                  }}
+                  placeholder="VAT Number"
+                  className="col-span-1 bg-white text-gray-800 rounded-full px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
+                />
+
+                {vatError && (
+                  <p className="text-red-500 text-sm mt-1">{vatError}</p>
+                )}
+              </div>
               <input
                 type="text"
-                name="vat_number"
-                onChange={(e) => {
-                  setVATNumber(e.target.value);
-                  setError("");
-                }}
-                placeholder="VAT Number"
-                className="col-span-1 bg-white text-gray-800 rounded-full px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
-              />
-
-              <input
-                type="email"
                 name="email"
+                required
                 onChange={handleEmailChange}
-                placeholder="Enter email"
+                placeholder="Enter email*"
                 className="col-span-2 bg-white text-gray-800 rounded-full px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
               />
               {emailError && (
@@ -380,8 +380,9 @@ export default function LoginPage() {
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
+                  required
                   onChange={handlePasswordChange}
-                  placeholder="Enter password"
+                  placeholder="Enter password*"
                   className="w-full bg-white text-gray-800 rounded-full px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <span
@@ -399,6 +400,13 @@ export default function LoginPage() {
               {/* ✅ Live password validation feedback */}
               {password && (
                 <ul className="mt-2 text-sm">
+                  <li
+                    className={
+                      /\s/.test(password) ? "text-red-500" : "text-green-600"
+                    }
+                  >
+                    Spaces are not allowed
+                  </li>
                   <li
                     className={
                       password.length >= 6 ? "text-green-600" : "text-red-500"
@@ -443,6 +451,9 @@ export default function LoginPage() {
                 <input
                   type="checkbox"
                   id="terms"
+                  name="terms"
+                  checked={isTermsChecked}
+                  onChange={() => setIsTermsChecked(!isTermsChecked)}
                   className="accent-blue-600 w-4 h-4"
                 />
                 <label htmlFor="terms" className="text-sm text-gray-400">
@@ -455,7 +466,7 @@ export default function LoginPage() {
               {error && <span className="text-red-500">{error}</span>}
               <button
                 type="submit"
-                className="col-span-2 bg-autoblue hover:bg-hoverblue text-white rounded-full py-3 mt-4 font-semibold"
+                className="col-span-2 bg-autoblue hover:bg-hoverblue text-white rounded-full py-3 mt-4 font-semibold cursor-pointer"
               >
                 Create Account
               </button>

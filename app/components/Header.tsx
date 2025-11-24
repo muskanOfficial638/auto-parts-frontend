@@ -7,9 +7,9 @@ import { useRouter } from "next/navigation";
 
 export default function Header() {
   const router = useRouter();
-  const [autoPartsUserData, setAutoPartsUserData] = useState<string | null | any>(
-    null
-  );
+  const [autoPartsUserData, setAutoPartsUserData] = useState<
+    string | null | any
+  >(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -120,14 +120,15 @@ export default function Header() {
                 height={32}
                 className="w-8 h-8 rounded-full mr-2"
               />
-              {autoPartsUserData?.user?.role}<span className="ml-1">▾</span>
+              {autoPartsUserData?.user?.role}
+              <span className="ml-1">▾</span>
             </button>
 
             {/* Dropdown */}
             <div className="absolute right-[-5rem] hidden group-hover:block bg-black/90 rounded-base shadow-lg w-44 m-0">
               <div className="px-4 py-3 text-sm border-b border-default">
                 <span className="block text-heading font-medium">
-                 {autoPartsUserData?.user?.name}
+                  {autoPartsUserData?.user?.name}
                 </span>
                 <span className="block text-body break-all">
                   {autoPartsUserData?.user?.email}

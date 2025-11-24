@@ -14,7 +14,7 @@ export default function HeroSection() {
     offset: ["start start", "end start"],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ["0vh", "150vh"]);
+  const y = useTransform(scrollYProgress, [0, 1.5], ["0vh", "150vh"]);
 
   return (
     <motion.section
@@ -39,7 +39,7 @@ export default function HeroSection() {
       <ParallaxProvider>
         {" "}
         {/* Create scrollable content */}
-        <div className="relative z-10 max-w-2xl space-y-6">
+        <div className="relative z-10 max-w-2xl space-y-6 mt-[50px]">
           <Parallax speed={10}>
             <motion.div
               initial={{ opacity: 0, y: 50 }}

@@ -13,7 +13,7 @@ export default function WhereSection() {
     offset: ["start start", "end start"],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ["0vh", "150vh"]);
+  const y = useTransform(scrollYProgress, [0, 1.5], ["0vh", "150vh"]);
 
   return (
     <motion.section

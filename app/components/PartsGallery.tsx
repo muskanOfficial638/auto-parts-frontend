@@ -9,7 +9,7 @@ export default function PartsGallery() {
       <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-6">
         {/* Left Large Image */}
         <motion.div
-          className="md:col-span-2 relative rounded-2xl overflow-hidden"
+          className="md:col-span-2 relative rounded-2xl overflow-hidden group"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: "easeOut" }}
@@ -20,17 +20,22 @@ export default function PartsGallery() {
             alt="Spare Parts"
             width={800}
             height={500}
-            className="object-cover w-full h-full"
+            className="object-cover w-full h-full transition duration-300 ease-in-out group-hover:scale-110"
             priority
           />
-          {/* Overlay bottom text and button */}
-          <div className="absolute bottom-0 left-0 w-full bg-white/90 text-black flex items-center justify-between px-6 py-4 rounded-b-2xl">
+          {/* Overlay bottom text and button (visible on hover only) */}
+          <div
+            className="absolute bottom-0 left-0 w-full bg-white/90 text-black flex 
+               items-center justify-between px-6 py-4 rounded-b-2xl
+               opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          >
             <span className="font-medium text-sm md:text-base">
               Spare Parts for Industry
             </span>
             <a
               href="#"
-              className="bg-autoblue hover:bg-hoverblue text-white px-4 py-2 rounded-md text-sm font-medium transition"
+              className="bg-autoblue hover:bg-hoverblue text-white px-4 py-2 rounded-md 
+                 text-sm font-medium transition"
             >
               Learn More
             </a>
@@ -40,7 +45,7 @@ export default function PartsGallery() {
         {/* Right Grid of 4 Small Images */}
         <div className="grid grid-cols-2 grid-rows-2 gap-6">
           <motion.div
-            className="relative rounded-2xl overflow-hidden"
+            className="relative rounded-2xl overflow-hidden group"
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.0, ease: "easeOut" }}
@@ -51,12 +56,29 @@ export default function PartsGallery() {
               alt="Part 1"
               width={400}
               height={250}
-              className="object-cover w-full h-full"
+              className="object-cover w-full h-full transition duration-300 ease-in-out group-hover:scale-110"
             />
+            {/* Overlay bottom text and button (visible on hover only) */}
+          <div
+            className="absolute bottom-0 left-0 w-full bg-white/90 text-black flex 
+               items-center justify-between px-6 py-4 rounded-b-2xl
+               opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          >
+            <span className="font-medium text-sm md:text-base">
+              Spare Parts for Industry
+            </span>
+            <a
+              href="#"
+              className="bg-autoblue hover:bg-hoverblue text-white px-4 py-2 rounded-md 
+                 text-sm font-medium transition"
+            >
+              Learn More
+            </a>
+          </div>
           </motion.div>
 
           <motion.div
-            className="relative rounded-2xl overflow-hidden"
+            className="relative rounded-2xl overflow-hidden group"
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
@@ -67,12 +89,29 @@ export default function PartsGallery() {
               alt="Part 2"
               width={400}
               height={250}
-              className="object-cover w-full h-full"
+              className="object-cover w-full h-full transition duration-300 ease-in-out group-hover:scale-110"
             />
+            {/* Overlay bottom text and button (visible on hover only) */}
+          <div
+            className="absolute bottom-0 left-0 w-full bg-white/90 text-black flex 
+               items-center justify-between px-6 py-4 rounded-b-2xl
+               opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          >
+            <span className="font-medium text-sm md:text-base">
+              Spare Parts for Industry
+            </span>
+            <a
+              href="#"
+              className="bg-autoblue hover:bg-hoverblue text-white px-4 py-2 rounded-md 
+                 text-sm font-medium transition"
+            >
+              Learn More
+            </a>
+          </div>
           </motion.div>
 
           <motion.div
-            className="relative rounded-2xl overflow-hidden"
+            className="relative rounded-2xl overflow-hidden group"
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.0, ease: "easeOut" }}
@@ -83,12 +122,29 @@ export default function PartsGallery() {
               alt="Part 3"
               width={400}
               height={250}
-              className="object-cover w-full h-full"
+              className="object-cover w-full h-full transition duration-300 ease-in-out group-hover:scale-110"
             />
+            {/* Overlay bottom text and button (visible on hover only) */}
+          <div
+            className="absolute bottom-0 left-0 w-full bg-white/90 text-black flex 
+               items-center justify-between px-6 py-4 rounded-b-2xl
+               opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          >
+            <span className="font-medium text-sm md:text-base">
+              Spare Parts for Industry
+            </span>
+            <a
+              href="#"
+              className="bg-autoblue hover:bg-hoverblue text-white px-4 py-2 rounded-md 
+                 text-sm font-medium transition"
+            >
+              Learn More
+            </a>
+          </div>
           </motion.div>
 
           <motion.div
-            className="relative rounded-2xl overflow-hidden"
+            className="relative rounded-2xl overflow-hidden group"
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
@@ -99,8 +155,25 @@ export default function PartsGallery() {
               alt="Part 4"
               width={400}
               height={250}
-              className="object-cover w-full h-full"
+              className="object-cover w-full h-full transition duration-300 ease-in-out group-hover:scale-110"
             />
+            {/* Overlay bottom text and button (visible on hover only) */}
+          <div
+            className="absolute bottom-0 left-0 w-full bg-white/90 text-black flex 
+               items-center justify-between px-6 py-4 rounded-b-2xl
+               opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          >
+            <span className="font-medium text-sm md:text-base">
+              Spare Parts for Industry
+            </span>
+            <a
+              href="#"
+              className="bg-autoblue hover:bg-hoverblue text-white px-4 py-2 rounded-md 
+                 text-sm font-medium transition"
+            >
+              Learn More
+            </a>
+          </div>
           </motion.div>
         </div>
       </div>

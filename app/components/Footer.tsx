@@ -13,7 +13,7 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="bg-black text-white px-6 py-10 md:px-16 lg:px-24">
+    <footer className="bg-[#12151B] text-white px-6 py-10 md:px-16 lg:px-24">
       {/* Top Section */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-10 border-b border-gray-700 pb-10">
         {/* Logo + Socials */}

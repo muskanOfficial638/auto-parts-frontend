@@ -90,7 +90,7 @@ export default function LoginPage() {
         localStorage.setItem("loginTime", Date.now().toString());
         localStorage.setItem("lastActivity", Date.now().toString());
         toast.success("Logged-in Successfully");
-        router.push("/dashboard");
+        router.push("/buyer-dashboard");
       }
     } catch (err: any) {
       // Handle errors more gracefully
@@ -125,7 +125,7 @@ export default function LoginPage() {
       <div
         className="flex-1 flex justify-center bg-cover bg-center bg-black pt-[150px] pl-[12rem]"
         style={{
-          backgroundImage: "url('/signInNewbg.jpg')",
+          backgroundImage: "url('/signInNewBg.jpg')",
         }}
       >
         <div className="rounded-xl shadow-lg w-full pt-8 max-w-3xl">

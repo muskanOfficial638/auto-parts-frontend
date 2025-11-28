@@ -9,7 +9,6 @@ export default function CheckSession() {
   useEffect(() => {
     const MAX_SESSION_MS = 12 * 60 * 60 * 1000; // 12 hours
     const INACTIVITY_MS = 10 * 60 * 1000; // FOR TESTING: 10 minutes
-
     const logout = () => {
       localStorage.removeItem("autoPartsUserData");
       localStorage.removeItem("loginTime");
@@ -22,20 +21,21 @@ export default function CheckSession() {
     const checkSession = () => {
       const loginTime = localStorage.getItem("loginTime");
       const lastActivity = localStorage.getItem("lastActivity");
+      const autoPartsUserData = localStorage.getItem("autoPartsUserData");
 
       const now = Date.now();
 
-      if (!loginTime) {
+      // if (!loginTime) {
+      //   logout();
+      //   return;
+      // }
+
+      if (autoPartsUserData && now - Number(loginTime) > MAX_SESSION_MS) {
         logout();
         return;
       }
 
-      if (now - Number(loginTime) > MAX_SESSION_MS) {
-        logout();
-        return;
-      }
-
-      if (lastActivity && now - Number(lastActivity) > INACTIVITY_MS) {
+      if (autoPartsUserData && lastActivity && now - Number(lastActivity) > INACTIVITY_MS) {
         logout();
         return;
       }

@@ -1,6 +1,6 @@
-import RequestPartForm from "../components/buyer/RequestPartForm";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
+import RequestPartForm from "../../components/buyer/RequestPartForm";
+import Footer from "../../components/Footer";
+import Header from "../../components/Header";
 
 export default function RequestPartPage() {
   return (

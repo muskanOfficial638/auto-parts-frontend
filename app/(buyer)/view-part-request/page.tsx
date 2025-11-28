@@ -1,6 +1,6 @@
-import ViewPartRequest from "../components/buyer/ViewPartRequest";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
+import ViewPartRequest from "../../components/buyer/ViewPartRequest";
+import Footer from "../../components/Footer";
+import Header from "../../components/Header";
 
 export default function ViewPartRequestPage() {
   return (

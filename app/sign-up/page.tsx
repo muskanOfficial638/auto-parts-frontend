@@ -183,7 +183,7 @@ export default function SignUpPage() {
       <div
         className="flex-1 flex justify-center bg-cover bg-center bg-black pt-[100px] pr-[8rem]"
         style={{
-          backgroundImage: "url('/signUpNewbg.jpg')",
+          backgroundImage: "url('/signUpNewBg.jpg')",
         }}
       >
         <div className="rounded-xl shadow-lg w-full pt-8 max-w-3xl">

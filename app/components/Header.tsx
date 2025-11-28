@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function Header() {
   const router = useRouter();
@@ -46,6 +47,7 @@ export default function Header() {
             priority
           />
         </Link>
+       <ToastContainer />
 
         {/* Nav Links */}
         {!autoPartsUserData && (
@@ -98,12 +100,12 @@ export default function Header() {
           <a href="/sign-up" className="hover:text-hoverblue">
             Sign Up
           </a>
-          <a
-            href="#"
+          <button
+            onClick={()=>toast.error("Please login to your account!")}
             className="bg-autoblue hover:bg-hoverblue text-white px-5 py-2 rounded-md transition"
           >
             Request Auto Parts
-          </a>
+          </button>
         </div>
       ) : (
         <div className="flex items-center space-x-2">
@@ -172,7 +174,7 @@ export default function Header() {
               <ul className="p-2 text-sm text-body font-medium">
                 <li>
                   <a
-                    href="/dashboard"
+                    href="/buyer-dashboard"
                     className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue rounded"
                   >
                     Dashboard

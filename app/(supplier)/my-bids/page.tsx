@@ -2,8 +2,15 @@
 
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import { useState } from "react";
 
 export default function BidListPage() {
+  const [activeTab, setActiveTab] = useState("Active");
+
+  function onTabClick(tabName: string) {
+    setActiveTab(tabName);
+  }
+
   const parts = [
     {
       id: 1,
@@ -47,18 +54,58 @@ export default function BidListPage() {
 
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/90 to-[#003253]/90" />
-        
+
         {/* Main Content */}
         <div className="relative z-10 flex justify-center pt-36 pb-20 px-4">
           {/* List Items */}
           <div className="space-y-6 w-full max-w-5xl rounded-lg shadow-lg ">
-          <h2 className="text-xl font-bold pt-2 text-center">My bids</h2>
-           <div className="text-xl pt-2 items-center flex space-x-6">
-            <span className="font-bold cursor-pointer">Active</span>
-            <span className="text-gray-400 cursor-pointer">Accepted</span>
-            <span className="text-gray-400 cursor-pointer">Canceled</span>
-            <span className="text-gray-400 cursor-pointer">Completed</span>
-           </div>
+            <h2 className="text-xl font-bold pt-2 text-center">My bids</h2>
+            <div className="text-xl pt-2 items-center flex space-x-6">
+              <span
+                className={`cursor-pointer ${
+                  activeTab === "Active"
+                    ? "font-bold text-white"
+                    : "text-gray-400"
+                }`}
+                onClick={() => onTabClick("Active")}
+              >
+                Active
+              </span>
+
+              <span
+                className={`cursor-pointer ${
+                  activeTab === "Accepted"
+                    ? "font-bold text-white"
+                    : "text-gray-400"
+                }`}
+                onClick={() => onTabClick("Accepted")}
+              >
+                Accepted
+              </span>
+
+              <span
+                className={`cursor-pointer ${
+                  activeTab === "Canceled"
+                    ? "font-bold text-white"
+                    : "text-gray-400"
+                }`}
+                onClick={() => onTabClick("Canceled")}
+              >
+                Canceled
+              </span>
+
+              <span
+                className={`cursor-pointer ${
+                  activeTab === "Completed"
+                    ? "font-bold text-white"
+                    : "text-gray-400"
+                }`}
+                onClick={() => onTabClick("Completed")}
+              >
+                Completed
+              </span>
+            </div>
+
             {parts.map((p) => (
               <div
                 key={p.id}

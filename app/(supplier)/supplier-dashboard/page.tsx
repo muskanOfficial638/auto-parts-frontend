@@ -5,8 +5,54 @@ import { useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import BidModal from "@/app/components/supplier/Modal/BidModal";
+
+function OTPModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center z-50">
+      {/* Dark Overlay */}
+      <div
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        onClick={onClose}
+      />
+
+      {/* OTP Box */}
+      <div className="relative bg-[#0A1A2F] text-white w-[480px] p-10 rounded-xl shadow-xl border border-white/10">
+        {/* Close Button */}
+        <button onClick={onClose} className="absolute top-4 right-4">
+          <span className="bg-white rounded-full p-2 text-black cursor-pointer">✕</span>
+        </button>
+
+        {/* Title */}
+        <h2 className="text-center text-2xl font-bold mb-6">Enter OTP</h2>
+
+        {/* OTP Inputs */}
+        <div className="flex justify-center gap-4 mb-6">
+          {[0, 1, 2, 3].map((i) => (
+            <input
+              key={i}
+              maxLength={1}
+              type="text"
+              className="w-14 h-14 bg-white text-black text-center text-2xl font-bold rounded-md border focus:outline-none"
+            />
+          ))}
+        </div>
+
+        {/* Submit */}
+        <button className="w-full bg-autoblue py-3 rounded-lg text-lg hover:bg-hoverblue cursor-pointer">
+          Submit
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default function SupplierDashboard() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [otpModalOpen, setOtpModalOpen] = useState(false);
+
   const [filtersOpen, setFiltersOpen] = useState({
     make: true,
     bmw: true,
@@ -113,7 +159,7 @@ export default function SupplierDashboard() {
                           <p>Trim1a</p>
                         </div>
                       )}
-                    </div> 
+                    </div>
                   )}
                 </div>
               )}
@@ -170,7 +216,10 @@ export default function SupplierDashboard() {
                   </div>
                 </div>
 
-                <button className="bg-autoblue hover:hoverblue px-6 py-2 rounded-lg">
+                <button
+                  className="bg-autoblue hover:hoverblue px-6 py-2 rounded-lg cursor-pointer"
+                  onClick={() => setModalOpen(true)}
+                >
                   Bid Now
                 </button>
               </div>
@@ -178,6 +227,15 @@ export default function SupplierDashboard() {
           </div>
         </div>
       </div>
+
+      <BidModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        openOTP={() => setOtpModalOpen(true)}
+      />
+
+      <OTPModal open={otpModalOpen} onClose={() => setOtpModalOpen(false)} />
+
       <Footer></Footer>
     </>
   );

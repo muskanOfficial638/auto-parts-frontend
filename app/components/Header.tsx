@@ -47,7 +47,7 @@ export default function Header() {
             priority
           />
         </Link>
-       <ToastContainer />
+        <ToastContainer />
 
         {/* Nav Links */}
         {!autoPartsUserData && (
@@ -101,7 +101,7 @@ export default function Header() {
             Sign Up
           </a>
           <button
-            onClick={()=>toast.error("Please login to your account!")}
+            onClick={() => toast.error("Please login to your account!")}
             className="bg-autoblue hover:bg-hoverblue text-white px-5 py-2 rounded-md transition"
           >
             Request Auto Parts
@@ -109,13 +109,14 @@ export default function Header() {
         </div>
       ) : (
         <div className="flex items-center space-x-2">
-          <a
-            href="/request-part"
-            className="bg-autoblue hover:bg-hoverblue text-white px-5 py-2 rounded-md transition"
-          >
-            Request Auto Parts
-          </a>
-
+          {autoPartsUserData?.user?.role === "buyer" && (
+            <a
+              href="/request-part"
+              className="bg-autoblue hover:bg-hoverblue text-white px-5 py-2 rounded-md transition"
+            >
+              Request Auto Parts
+            </a>
+          )}
           <svg
             width="20"
             height="20"
@@ -156,37 +157,54 @@ export default function Header() {
                 height={32}
                 className="w-8 h-8 rounded-full mr-2"
               />
-              {autoPartsUserData?.user?.role}
+              {autoPartsUserData?.user?.user_name}
               <span className="ml-1">▾</span>
             </button>
 
             {/* Dropdown */}
             <div className="absolute right-[-5rem] hidden group-hover:block bg-black/90 rounded-base shadow-lg w-44 m-0">
-              <div className="px-4 py-3 text-sm border-b border-default">
-                <span className="block text-heading font-medium">
-                  {autoPartsUserData?.user?.name}
-                </span>
-                <span className="block text-body break-all">
-                  {autoPartsUserData?.user?.email}
-                </span>
-              </div>
+              {autoPartsUserData?.user?.role === "buyer" && (
+                <div className="px-4 py-3 text-sm border-b border-default">
+                  <span className="block text-heading font-medium">
+                    {autoPartsUserData?.user?.name}
+                  </span>
+                  <span className="block text-body break-all">
+                    {autoPartsUserData?.user?.email}
+                  </span>
+                </div>
+              )}
 
               <ul className="p-2 text-sm text-body font-medium">
                 <li>
                   <a
-                    href="/buyer-dashboard"
+                    href={
+                      autoPartsUserData?.user?.role === "buyer"
+                        ? "/buyer-dashboard"
+                        : "/my-account"
+                    }
                     className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue rounded"
                   >
-                    Dashboard
+                    {autoPartsUserData?.user?.role === "buyer"
+                      ? "Dashboard"
+                      : "My Account"}
                   </a>
                 </li>
-
+                {autoPartsUserData?.user?.role === "supplier" && (
+                  <li>
+                    <a
+                      href="/my-bids"
+                      className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue rounded"
+                    >
+                      My Bids
+                    </a>
+                  </li>
+                )}
                 <li>
                   <button
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-800 hover:text-hoverblue rounded"
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-800 hover:text-hoverblue rounded cursor-pointer"
                     onClick={handleLogout}
                   >
-                    Sign out
+                    Log out
                   </button>
                 </li>
               </ul>

@@ -90,7 +90,11 @@ export default function LoginPage() {
         localStorage.setItem("loginTime", Date.now().toString());
         localStorage.setItem("lastActivity", Date.now().toString());
         toast.success("Logged-in Successfully");
-        router.push("/buyer-dashboard");
+        if (response.data?.user?.role === "buyer") {
+          router.push("/buyer-dashboard");
+        } else {
+          router.push("/supplier-dashboard");
+        }
       }
     } catch (err: any) {
       // Handle errors more gracefully

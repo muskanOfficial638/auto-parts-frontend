@@ -181,28 +181,28 @@ export default function SignUpPage() {
 
       {/* signup Section */}
       <div
-        className="flex-1 flex justify-center bg-cover bg-center bg-black pt-[100px] pr-[8rem]"
+        className="flex-1 flex justify-center bg-cover bg-center bg-black pt-[100px] "
         style={{
           backgroundImage: "url('/signUpNewBg.jpg')",
         }}
       >
-        <div className="rounded-xl shadow-lg w-full pt-8 max-w-3xl">
+        <div className="rounded-xl shadow-lg w-full pt-8 px-[20px] ">
           <ToastContainer />
           <motion.div
-            className="w-[900px] bg-blue/40 backdrop-blur-xl p-10 rounded-2xl shadow-xl flex flex-col items-center border-2 border-borderblue"
+            className="w-[1000px] ms-[auto] me-[auto]  max-w-full bg-[#1d4aa4]/15 backdrop-blur-xl md:px-[47px] md:py-[50px] p-[30px] rounded-[20px] shadow-xl flex flex-col items-center border-2 border-borderblue"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: "easeOut" }}
             viewport={{ once: true }}
           >
-            <h2 className="text-white text-3xl font-semibold mb-6">Sign Up</h2>
+            <h2 className="text-white text-3xl font-semibold mb-[58px]">Sign Up</h2>
 
             <form
-              className="grid grid-cols-2 gap-8 w-[800px]"
+              className="grid grid-cols-1 md:grid-cols-2 md:gap-[43px] gap-[35px] w-full"
               onSubmit={handleRegister}
             >
               {/* Left Column */}
-              <div className="flex flex-col">
+              <div className="md:col-span-1 col-span-2">
                 <input
                   type="text"
                   name="name"
@@ -212,7 +212,7 @@ export default function SignUpPage() {
                     setNameError("");
                   }}
                   placeholder="Name*"
-                  className="col-span-1 bg-white text-gray-800 px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
+                  className=" w-full px-[25px] py-[15px] bg-white text-[19px] leading-[23px] rounded-sm placeholder-[#848484] text-[#848484] outline-none"
                 />
                 {nameError && (
                   <p className="text-red-500 text-sm mt-1">{nameError}</p>
@@ -224,7 +224,7 @@ export default function SignUpPage() {
                 name="company"
                 placeholder="Company"
                 onChange={(e) => setCompanyName(e.target.value)}
-                className="col-span-1 bg-white text-gray-800 px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
+                className="md:col-span-1 col-span-2 px-[25px] py-[15px] bg-white text-[19px] leading-[23px] rounded-sm placeholder-[#848484] text-[#848484] outline-none "
               />
 
               <select
@@ -232,14 +232,15 @@ export default function SignUpPage() {
                 name="role"
                 required
                 onChange={(e) => handleSelectChange(e.target.value)}
-                className="col-span-1 bg-white text-gray-800 px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
+                className="md:col-span-1 col-span-2 appearance-none cursor-pointer px-[25px] py-[15px] bg-white text-[19px] leading-[23px] rounded-sm text-[#848484] outline-none
+                relative before:content-[''] before:bg-no-repeat before:absolute before:inset-0 before:bg-[url('/Chevron.svg')] before:bg-cover before:bg-center before:h-[5px] before:w-[10px] "
               >
                 <option value="">Select role*</option>
                 <option value="buyer">Buyer</option>
                 <option value="supplier">Supplier</option>
               </select>
 
-              <div className="flex flex-col">
+              <div className="md:col-span-1 col-span-2">
                 <input
                   type="text"
                   name="vat_number"
@@ -250,7 +251,7 @@ export default function SignUpPage() {
                     setVatError("");
                   }}
                   placeholder="VAT Number"
-                  className="col-span-1 bg-white text-gray-800 px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-[25px] py-[15px] bg-white text-[19px] leading-[23px] rounded-sm placeholder-[#848484] text-[#848484] outline-none "
                 />
 
                 {vatError && (
@@ -263,7 +264,7 @@ export default function SignUpPage() {
                 required
                 onChange={handleEmailChange}
                 placeholder="Enter email*"
-                className="col-span-2 bg-white text-gray-800 px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
+                className="col-span-2 px-[25px] py-[15px] bg-white text-[19px] leading-[23px] rounded-sm placeholder-[#848484] text-[#848484] outline-none"
               />
               {emailError && (
                 <p className="text-red-500 text-sm mt-1">{emailError}</p>
@@ -275,11 +276,11 @@ export default function SignUpPage() {
                   required
                   onChange={handlePasswordChange}
                   placeholder="Enter password*"
-                  className="w-full bg-white text-gray-800 px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-[25px] py-[15px] bg-white text-[19px] leading-[23px] rounded-sm placeholder-[#848484] text-[#848484] outline-none"
                 />
                 <span
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-5 top-3 text-gray-400 cursor-pointer"
+                  className="absolute top-1/2 right-[25px] -translate-y-1/2 text-gray-400 cursor-pointer"
                 >
                   {showPassword ? (
                     <AiFillEye />
@@ -339,27 +340,27 @@ export default function SignUpPage() {
                 </ul>
               )}
 
-              <div className="col-span-2 flex justify-center space-x-2 mt-2">
+              <div className="col-span-2 flex justify-center md:items-center  items-start space-x-2">
                 <input
                   type="checkbox"
                   id="terms"
                   name="terms"
                   checked={isTermsChecked}
                   onChange={() => setIsTermsChecked(!isTermsChecked)}
-                  className="accent-blue-600 w-4 h-4"
+                  className="accent-blue-600 md:mt-[0] mt-[5px] w-4 h-4"
                 />
-                <div className="flex flex-row justify-between gap-[22rem]">
-                  <label htmlFor="terms" className="text-sm text-gray-400">
+                <div className="flex md:flex-row flex-col md:gap-[0] gap[35px] justify-between w-full">
+                  <label htmlFor="terms" className="text-base text-white tracking-[1px]">
                     I agree to the{" "}
                     <a href="#" className="underline text-autoblue">
                       Terms & Conditions
                     </a>
                   </label>
-                  <div className="text-white text-sm">
+                  <div className="text-white text-[19px] leading">
                     Are you already a user{" "}
                     <Link
                       href="/login"
-                      className="text-autoblue cursor-pointer hover:underline"
+                      className="text-autoblue font-bold cursor-pointer hover:underline"
                     >
                       Sign In
                     </Link>
@@ -369,7 +370,7 @@ export default function SignUpPage() {
               {error && <span className="text-red-500">{error}</span>}
               <button
                 type="submit"
-                className="col-span-2 bg-autoblue hover:bg-hoverblue text-white py-3 mt-4 font-semibold cursor-pointer"
+                className="col-span-2 bg-autoblue hover:bg-hoverblue text-[22px] leading[14px] rounded-sm text-white py-[20px] duration-400  font-semibold cursor-pointer"
               >
                 Create Account
               </button>

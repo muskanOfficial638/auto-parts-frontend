@@ -127,25 +127,25 @@ export default function LoginPage() {
 
       {/* Login Section */}
       <div
-        className="flex-1 flex justify-center bg-cover bg-center bg-black pt-[150px] pl-[12rem]"
+        className="flex-1 flex justify-center bg-cover bg-center bg-black pt-[150px] "
         style={{
           backgroundImage: "url('/signInNewBg.jpg')",
         }}
       >
-        <div className="rounded-xl shadow-lg w-full pt-8 max-w-3xl">
+        <div className="rounded-xl shadow-lg w-full pt-8 px-[20px]">
           <ToastContainer />
 
           <motion.div
-            className="w-[600px] bg-blue/40 backdrop-blur-xl p-10 rounded-2xl shadow-xl flex flex-col items-center border-2 border-borderblue"
+            className="w-[700px] max-w-[100%] ms-[auto] me-[auto] bg-[#1d4aa4]/15 backdrop-blur-xl px-10 py-[62px] rounded-[20px] shadow-xl flex flex-col items-center border-2 border-borderblue"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: "easeOut" }}
             viewport={{ once: true }}
           >
-            <h2 className="text-white text-3xl font-semibold my-6">Login</h2>
+            <h2 className="text-white text-4xl font-bold">Login</h2>
 
             <form
-              className="w-[400px] flex flex-col space-y-6 py-10"
+              className=" w-[429] max-w-[100%] flex flex-col gap-[43px] py-[43px]"
               onSubmit={handleLogin}
             >
               {/* Email */}
@@ -154,7 +154,7 @@ export default function LoginPage() {
                 name="email"
                 onChange={handleEmailChange}
                 placeholder="Enter email"
-                className="px-4 py-3 bg-white text-black focus:outline-none w-full"
+                className="px-[25px] py-[15px] bg-white text-[19px] leading-[23px] rounded-sm placeholder-[#848484] text-[#848484] focus:outline-none w-full"
               />
               {emailError && (
                 <p className="text-red-400 text-sm">{emailError}</p>
@@ -167,12 +167,12 @@ export default function LoginPage() {
                   name="password"
                   onChange={handlePasswordChange}
                   placeholder="Enter password"
-                  className="px-4 py-3  bg-white text-black w-full focus:outline-none"
+                  className="px-[25px] py-[15px] bg-white text-[19px] leading-[23px] rounded-sm placeholder-[#848484] text-[#848484] focus:outline-none w-full"
                 />
 
                 <span
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-3 text-gray-600 cursor-pointer"
+                  className="absolute top-1/2 right-[25px] -translate-y-1/2 text-gray-600 cursor-pointer"
                 >
                   {showPassword ? (
                     <AiFillEye className="text-autoblue" />
@@ -183,18 +183,18 @@ export default function LoginPage() {
               </div>
 
               {/* Forgot Password */}
-              <div className="text-md text-autoblue hover:underline cursor-pointer font-semibold">
+              <div className="text-[19px] leading-[23px] text-autoblue hover:underline cursor-pointer font-semibold">
                 Forgot Password ?
               </div>
 
               {/* Login Button */}
-              <button className="mt-1 bg-[#1DA1F2] text-white py-3 font-semibold hover:bg-[#1a8cd8] transition cursor-pointer">
+              <button className=" bg-[#1DA1F2] text-[22px] leading[14px] rounded-sm text-white py-[20px] font-semibold hover:bg-[#1a8cd8] duration-400 cursor-pointer">
                 Login
               </button>
             </form>
 
             {/* Signup */}
-            <div className="mt-5 text-white text-sm">
+            <div className="text-white text-[19px] leading-[23px]">
               Are you a new user{" "}
               <Link
                 href="/sign-up"

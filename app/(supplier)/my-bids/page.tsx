@@ -59,53 +59,13 @@ export default function BidListPage() {
         <div className="relative z-10 flex justify-center pt-36 pb-20 px-4">
           {/* List Items */}
           <div className="space-y-6 w-full max-w-5xl rounded-lg shadow-lg ">
-            <h2 className="text-xl font-bold pt-2 text-center">My bids</h2>
-            <div className="text-xl pt-2 items-center flex space-x-6">
-              <span
-                className={`cursor-pointer ${
-                  activeTab === "Active"
-                    ? "font-bold text-white"
-                    : "text-gray-400"
-                }`}
-                onClick={() => onTabClick("Active")}
-              >
-                Active
-              </span>
-
-              <span
-                className={`cursor-pointer ${
-                  activeTab === "Accepted"
-                    ? "font-bold text-white"
-                    : "text-gray-400"
-                }`}
-                onClick={() => onTabClick("Accepted")}
-              >
-                Accepted
-              </span>
-
-              <span
-                className={`cursor-pointer ${
-                  activeTab === "Canceled"
-                    ? "font-bold text-white"
-                    : "text-gray-400"
-                }`}
-                onClick={() => onTabClick("Canceled")}
-              >
-                Canceled
-              </span>
-
-              <span
-                className={`cursor-pointer ${
-                  activeTab === "Completed"
-                    ? "font-bold text-white"
-                    : "text-gray-400"
-                }`}
-                onClick={() => onTabClick("Completed")}
-              >
-                Completed
-              </span>
-            </div>
-
+          <h2 className="text-2xl text-white font-bold text-center">My bids</h2>
+           <div className="text-xl pt-2 items-center flex space-x-6">
+            <span className="font-bold cursor-pointer">Active</span>
+            <span className="text-gray-400 cursor-pointer">Accepted</span>
+            <span className="text-gray-400 cursor-pointer">Canceled</span>
+            <span className="text-gray-400 cursor-pointer">Completed</span>
+           </div>
             {parts.map((p) => (
               <div
                 key={p.id}
@@ -113,11 +73,13 @@ export default function BidListPage() {
               >
                 <div className="flex items-center gap-4">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
+                <div className="bg-white py-[11px] px-[18px] rounded-sm">
                   <img
                     src="/productImage.png"
                     alt="Filter"
-                    className="w-20 h-20 object-cover"
+                    className="w-[43px] h-[59px] object-cover"
                   />
+                </div>
 
                   <div>
                     <h3 className="text-xl font-bold">

@@ -5,8 +5,8 @@ import Image from "next/image";
 
 export default function StandardSection() {
   return (
-    <section className="bg-black text-white py-20 px-6 md:px-16">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+    <section className="bg-black text-white lg:py-20 md:pb-[60px] px-6 lg:px-16">
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-2 grid-cols-1 md:gap-12 items-center">
         {/* Left Image */}
         <motion.div
           className="relative w-full h-[450px] md:h-[550px]"
@@ -31,42 +31,42 @@ export default function StandardSection() {
           transition={{ duration: 0.5, ease: "easeOut" }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold leading-tight mb-10">
+          <h2 className="md:text-[40px] text-[30px] leading-[54px] font-bold mb-[30px]">
             <span className="text-autoblue">The Standard</span>{" "}
             Lorem Ipsum Passage, Used Since
           </h2>
 
           {/* Item 1 */}
-          <div className="mb-10">
-            <h3 className="text-lg font-semibold mb-2">
+          <div className="mb-[30px]">
+            <h3 className="md:text-[20px] text-[18px] font-bold leading-[24px] text-white mb-[13px]">
               Where can I get some
             </h3>
-            <p className="text-gray-300 text-sm leading-relaxed mb-2">
+            <p className="md:text-base text-sm leading-relaxed mb-[13px]">
               Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum is simply dummy text of the printing and
-              typesetting industry.
+              industry. standard dummy text ever since the 1500s, when an unknown printer took a galley 
+              of type and scrambled it to make a type specimen book.
             </p>
             <a
               href="#"
-              className="text-autoblue text-sm font-medium hover:underline"
+              className="text-autoblue text-sm font-semibold hover:underline"
             >
               View More →
             </a>
           </div>
 
           {/* Item 2 */}
-          <div className="mb-10">
-            <h3 className="text-lg font-semibold mb-2">
+          <div className="mb-[30px]">
+            <h3 className="md:text-[20px] text-[18px] font-bold leading-[24px] text-white mb-[13px]">
               Where can I get some
             </h3>
-            <p className="text-gray-300 text-sm leading-relaxed mb-2">
+            <p className="md:text-base text-sm leading-relaxed mb-[13px]">
               Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum is simply dummy text of the printing and
-              typesetting industry.
+              industry. standard dummy text ever since the 1500s, when an unknown printer took a galley 
+              of type and scrambled it to make a type specimen book.
             </p>
             <a
               href="#"
-              className="text-autoblue text-sm font-medium hover:underline"
+              className="text-autoblue text-base font-semibold hover:underline"
             >
               View More →
             </a>
@@ -74,17 +74,17 @@ export default function StandardSection() {
 
           {/* Item 3 */}
           <div>
-            <h3 className="text-lg font-semibold mb-2">
+            <h3 className="md:text-[20px] text-[18px] font-bold leading-[24px] text-white mb-[13px]">
               Where can I get some
             </h3>
-            <p className="text-gray-300 text-sm leading-relaxed mb-2">
+            <p className="md:text-base text-sm leading-relaxed mb-[13px]">
               Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum is simply dummy text of the printing and
-              typesetting industry.
+              industry. standard dummy text ever since the 1500s, when an unknown printer took a galley 
+              of type and scrambled it to make a type specimen book.
             </p>
             <a
               href="#"
-              className="text-autoblue text-sm font-medium hover:underline"
+              className="text-autoblue text-sm font-semibold hover:underline"
             >
               View More →
             </a>

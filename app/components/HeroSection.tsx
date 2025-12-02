@@ -19,7 +19,7 @@ export default function HeroSection() {
   return (
     <motion.section
       ref={container}
-      className="relative h-screen flex items-center justify-start px-10"
+      className="relative h-screen overflow-hidden flex items-center justify-start md:px-10 px-6"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
@@ -39,25 +39,25 @@ export default function HeroSection() {
       <ParallaxProvider>
         {" "}
         {/* Create scrollable content */}
-        <div className="relative z-10 max-w-2xl space-y-6 mt-[50px]">
-          <Parallax speed={10}>
+        <div className="relative z-10 max-w-2xl space-y-4 mt-[50px]">
+          <Parallax speed={10} className="mb-[0]">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
               viewport={{ once: true }}
             >
-              <h1 className="text-5xl md:text-6xl font-extrabold leading-tight">
+              <h1 className="md:text-6xl text-[40px] font-bold md:leading-[73px]">
                 What is <span className="block">Lorem Ipsum.</span>
               </h1>
             </motion.div>
           </Parallax>
           <Parallax speed={-1}>
-            <ul className="space-y-2 text-gray-300 list-disc list-inside list-none">
+            <ul className="space-y-2 text-gray-300 md:text-[20px] text-[17px] font-medium list-disc list-inside list-none">
               <div className="flex flex-row space-x-4 items-center text-white">
                 <svg
-                  width="14"
-                  height="13"
+                  width="15"
+                  height="15"
                   viewBox="0 0 14 13"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -136,13 +136,13 @@ export default function HeroSection() {
               <div className="flex space-x-4 pt-4">
                 <a
                   href="#"
-                  className="bg-autoblue hover:bg-hoverblue text-white px-5 py-2 rounded-md font-medium transition"
+                  className="bg-autoblue hover:bg-hoverblue text-[15px] leading-[15px] duration-400 text-white px-[30px] py-[15px] rounded-[4px] font-semibold"
                 >
                   View All Products
                 </a>
                 <a
                   href="#"
-                  className="border border-gray-400 hover:border-autoblue px-5 py-2 rounded-md font-medium transition"
+                  className="border border-gray-400 hover:border-autoblue hover:bg-autoblue text-[15px] leading-[15px] duration-400 text-white px-[30px] py-[15px] rounded-[4px] font-semibold"
                 >
                   Contact Us
                 </a>

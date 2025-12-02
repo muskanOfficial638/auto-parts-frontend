@@ -5,8 +5,8 @@ import Image from "next/image";
 
 export default function PartsGallery() {
   return (
-    <section className="bg-black py-20 px-6 md:px-16 text-white">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-6">
+    <section className="bg-black lg:py-[100px] md:pb-[60px] pb-0 pt-[60px] px-6 lg:px-16 text-white">
+      <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-[15px]">
         {/* Left Large Image */}
         <motion.div
           className="md:col-span-2 relative rounded-2xl overflow-hidden group"
@@ -26,16 +26,16 @@ export default function PartsGallery() {
           {/* Overlay bottom text and button (visible on hover only) */}
           <div
             className="absolute bottom-0 left-0 w-full bg-white/90 text-black flex 
-               items-center justify-between px-6 py-4 rounded-b-2xl
+               items-center justify-between flex-wrap gap-y-[10px] px-[20px] py-[20px] rounded-b-2xl
                opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           >
-            <span className="font-medium text-sm md:text-base">
+            <span className="font-semibold leading-[18px] text-[sm] md:text-[15px]">
               Spare Parts for Industry
             </span>
             <a
               href="#"
-              className="bg-autoblue hover:bg-hoverblue text-white px-4 py-2 rounded-md 
-                 text-sm font-medium transition"
+              className="bg-autoblue hover:bg-hoverblue text-white px-[13px] py-[8px] rounded-[4px] 
+                 text-sm font-semibold leading-[14px] duration-400"
             >
               Learn More
             </a>
@@ -43,7 +43,7 @@ export default function PartsGallery() {
         </motion.div>
 
         {/* Right Grid of 4 Small Images */}
-        <div className="grid grid-cols-2 grid-rows-2 gap-6">
+        <div className="grid grid-cols-2 grid-rows-2 gap-[15px]">
           <motion.div
             className="relative rounded-2xl overflow-hidden group"
             initial={{ opacity: 0, x: 50 }}
@@ -61,16 +61,16 @@ export default function PartsGallery() {
             {/* Overlay bottom text and button (visible on hover only) */}
           <div
             className="absolute bottom-0 left-0 w-full bg-white/90 text-black flex 
-               items-center justify-between px-6 py-4 rounded-b-2xl
+               items-center justify-between flex-wrap gap-y-[10px] px-[20px] py-[20px] rounded-b-2xl
                opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           >
-            <span className="font-medium text-sm md:text-base">
+            <span className="font-semibold leading-[18px] text-[sm] md:text-[15px]">
               Spare Parts for Industry
             </span>
             <a
               href="#"
-              className="bg-autoblue hover:bg-hoverblue text-white px-4 py-2 rounded-md 
-                 text-sm font-medium transition"
+              className="bg-autoblue hover:bg-hoverblue text-white px-[13px] py-[8px] rounded-[4px] 
+                 text-sm font-semibold leading-[14px] duration-400"
             >
               Learn More
             </a>
@@ -94,16 +94,16 @@ export default function PartsGallery() {
             {/* Overlay bottom text and button (visible on hover only) */}
           <div
             className="absolute bottom-0 left-0 w-full bg-white/90 text-black flex 
-               items-center justify-between px-6 py-4 rounded-b-2xl
+               items-center justify-between flex-wrap gap-y-[10px] px-[20px] py-[20px] rounded-b-2xl
                opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           >
-            <span className="font-medium text-sm md:text-base">
+            <span className="font-semibold leading-[18px] text-[sm] md:text-[15px]">
               Spare Parts for Industry
             </span>
             <a
               href="#"
-              className="bg-autoblue hover:bg-hoverblue text-white px-4 py-2 rounded-md 
-                 text-sm font-medium transition"
+              className="bg-autoblue hover:bg-hoverblue text-white px-[13px] py-[8px] rounded-[4px] 
+                 text-sm font-semibold leading-[14px] duration-400"
             >
               Learn More
             </a>
@@ -127,16 +127,16 @@ export default function PartsGallery() {
             {/* Overlay bottom text and button (visible on hover only) */}
           <div
             className="absolute bottom-0 left-0 w-full bg-white/90 text-black flex 
-               items-center justify-between px-6 py-4 rounded-b-2xl
+               items-center justify-between flex-wrap gap-y-[10px] px-[20px] py-[20px] rounded-b-2xl
                opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           >
-            <span className="font-medium text-sm md:text-base">
+            <span className="font-semibold leading-[18px] text-[sm] md:text-[15px]">
               Spare Parts for Industry
             </span>
             <a
               href="#"
-              className="bg-autoblue hover:bg-hoverblue text-white px-4 py-2 rounded-md 
-                 text-sm font-medium transition"
+              className="bg-autoblue hover:bg-hoverblue text-white px-[13px] py-[8px] rounded-[4px] 
+                 text-sm font-semibold leading-[14px] duration-400"
             >
               Learn More
             </a>
@@ -160,16 +160,16 @@ export default function PartsGallery() {
             {/* Overlay bottom text and button (visible on hover only) */}
           <div
             className="absolute bottom-0 left-0 w-full bg-white/90 text-black flex 
-               items-center justify-between px-6 py-4 rounded-b-2xl
+               items-center justify-between flex-wrap gap-y-[10px] px-[20px] py-[20px] rounded-b-2xl
                opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           >
-            <span className="font-medium text-sm md:text-base">
+            <span className="font-semibold leading-[18px] text-[sm] md:text-[15px]">
               Spare Parts for Industry
             </span>
             <a
               href="#"
-              className="bg-autoblue hover:bg-hoverblue text-white px-4 py-2 rounded-md 
-                 text-sm font-medium transition"
+              className="bg-autoblue hover:bg-hoverblue text-white px-[13px] py-[8px] rounded-[4px] 
+                 text-sm font-semibold leading-[14px] duration-400"
             >
               Learn More
             </a>

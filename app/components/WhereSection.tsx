@@ -18,27 +18,19 @@ export default function WhereSection() {
   return (
     <motion.section
       ref={container}
-      className="relative w-full h-screen flex items-center justify-start px-10 md:h-[600px] bg-black text-white overflow-hidden"
+      className="relative w-full bg-cover bg-center flex items-center justify-start lg:px-10 px-6 bg-black text-white overflow-hidden"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
       viewport={{ once: true }}
+      style={{ backgroundImage: "url('/where-section.jpg')" }}
     >
       {/* Background Image */}
-      <motion.div style={{ y }} className="absolute inset-0">
-        <Image
-          src="/where-section.jpg"
-          alt="Mechanic working on car"
-          fill
-          className="object-cover object-center opacity-90"
-          priority
-        />
-        {/* <div className="absolute inset-0 bg-black/70" /> Dark overlay */}
-      </motion.div>
+    
 
       {/* Content */}
       <motion.div
-        className="relative z-10 max-w-7xl mx-auto px-6 md:px-16 py-20 grid md:grid-cols-2 gap-12 items-center"
+        className="relative z-10 max-w-7xl mx-auto px-0 lg:px-16 lg:py-[100px] py-[60px] grid md:grid-cols-2 gap-12 items-center"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, ease: "easeOut" }}
@@ -46,40 +38,40 @@ export default function WhereSection() {
       >
         {/* Left Text Section */}
         <div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-12 leading-tight">
+          <h2 className="md:text-[40px] text-[30px] leading-[54px] font-bold mb-[30px]">
             <span className="text-autoblue">Where</span> Does It Come From
           </h2>
 
           {/* 2x2 grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-[30px] gap-x-[50px] ">
             <div>
-              <h3 className="text-lg font-semibold mb-2">
+              <h3 className="md:text-[20px] text-[18px] font-bold leading-[24px] text-white mb-[11px]">
                 Where can I get some
               </h3>
-              <p className="text-gray-300 text-sm leading-relaxed">
+              <p className="md:text-base text-sm leading-relaxed">
                 Lorem Ipsum is simply dummy text of the printing and typesetting
                 industry.
               </p>
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-2">
+              <h3 className="md:text-[20px] text-[18px] font-bold leading-[24px] text-white mb-[11px]">
                 Where does it come from
               </h3>
-              <p className="text-gray-300 text-sm leading-relaxed">
+              <p className="md:text-base text-sm leading-relaxed">
                 Lorem Ipsum is simply dummy text of the printing and typesetting
                 industry.
               </p>
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-2">Quality work</h3>
-              <p className="text-gray-300 text-sm leading-relaxed">
+              <h3 className="md:text-[20px] text-[18px] font-bold leading-[24px] text-white mb-[11px]">Quality work</h3>
+              <p className="md:text-base text-sm leading-relaxed">
                 Lorem Ipsum is simply dummy text of the printing and typesetting
                 industry.
               </p>
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-2">Affordable Rates</h3>
-              <p className="text-gray-300 text-sm leading-relaxed">
+              <h3 className="md:text-[20px] text-[18px] font-bold leading-[24px] text-white mb-[11px]">Affordable Rates</h3>
+              <p className="md:text-base text-sm leading-relaxed">
                 Lorem Ipsum is simply dummy text of the printing and typesetting
                 industry.
               </p>
@@ -88,7 +80,7 @@ export default function WhereSection() {
 
           <a
             href="#"
-            className="text-autoblue text-sm font-medium hover:underline inline-flex items-center"
+            className="inline-block mt-[24px] text-autoblue font-semibold text-sm hover:underline"
           >
             Read More →
           </a>

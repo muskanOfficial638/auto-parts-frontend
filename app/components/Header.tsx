@@ -38,7 +38,7 @@ export default function Header() {
         className="fixed top-0 left-0 w-full z-20
   bg-black/50 backdrop-blur-md
   flex items-center justify-between
-  px-8 lg:px-16 py-8"
+  px-8 lg:px-16 py-8 text-white"
       >
         <div className="flex flex-row space-x-10">
           {/* Logo */}
@@ -161,7 +161,7 @@ export default function Header() {
                   height={32}
                   className="w-8 h-8 rounded-full mr-2"
                 />
-                {autoPartsUserData?.user?.name || autoPartsUserData?.user?.role}
+                {autoPartsUserData?.user?.name ? autoPartsUserData?.user?.name : autoPartsUserData?.user?.role}
                 <span className="ml-1">▾</span>
               </button>
 

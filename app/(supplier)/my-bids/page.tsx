@@ -3,9 +3,8 @@
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { useState } from "react";
-import BidModal from "@/app/components/supplier/Modal/BidModal"
+import BidModal from "@/app/components/supplier/Modal/BidModal";
 function OTPModal({ open, onClose }: { open: boolean; onClose: () => void }) {
- 
   if (!open) return null;
 
   return (
@@ -20,7 +19,9 @@ function OTPModal({ open, onClose }: { open: boolean; onClose: () => void }) {
       <div className="relative bg-[#0A1A2F] text-white w-[480px] p-10 rounded-xl shadow-xl border border-white/10">
         {/* Close Button */}
         <button onClick={onClose} className="absolute top-4 right-4">
-          <span className="bg-white rounded-full p-2 text-black cursor-pointer">✕</span>
+          <span className="bg-white rounded-full p-2 text-black cursor-pointer">
+            ✕
+          </span>
         </button>
 
         {/* Title */}
@@ -48,7 +49,7 @@ function OTPModal({ open, onClose }: { open: boolean; onClose: () => void }) {
 }
 export default function BidListPage() {
   const [activeTab, setActiveTab] = useState("Active");
-    const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const [otpModalOpen, setOtpModalOpen] = useState(false);
 
   function onTabClick(tabName: string) {
@@ -184,10 +185,12 @@ export default function BidListPage() {
                 {activeTab === "Accepted" ? (
                   <div className="bg-[#011827] p-6 border border-[#153C51] text-white flex flex-col w-100">
                     <span className="font-semibold">
-                      Price: <small className="text-sm font-normal">$202.00</small>
+                      Price:{" "}
+                      <small className="text-sm font-normal">$202.00</small>
                     </span>
                     <span className="font-semibold">
-                      Date: <small className="text-sm font-normal">12/12/2025</small>
+                      Date:{" "}
+                      <small className="text-sm font-normal">12/12/2025</small>
                     </span>
                     <span className="font-semibold">
                       Description:{" "}
@@ -198,8 +201,10 @@ export default function BidListPage() {
                     </span>
                   </div>
                 ) : (
-                  <button className="bg-autoblue hover:hoverblue px-6 py-2 rounded-lg"
-                  onClick={() => setModalOpen(true)}>
+                  <button
+                    className="bg-autoblue hover:hoverblue px-6 py-2 rounded-lg"
+                    onClick={() => setModalOpen(true)}
+                  >
                     Bid Now
                   </button>
                 )}
@@ -209,12 +214,12 @@ export default function BidListPage() {
         </div>
       </div>
       <BidModal
-              open={modalOpen}
-              onClose={() => setModalOpen(false)}
-              openOTP={() => setOtpModalOpen(true)}
-            />
-      
-            <OTPModal open={otpModalOpen} onClose={() => setOtpModalOpen(false)} />
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        openOTP={() => setOtpModalOpen(true)}
+      />
+
+      <OTPModal open={otpModalOpen} onClose={() => setOtpModalOpen(false)} />
       <Footer></Footer>
     </>
   );

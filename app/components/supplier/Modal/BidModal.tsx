@@ -14,31 +14,32 @@ export default function BidModal({
       <div className="absolute inset-0" onClick={onClose} />
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/90 to-[#003253]/90" />
-      <div className="relative bg-[#0A1A2F] text-white w-[500px] p-8 rounded-xl shadow-xl border border-white/10 backdrop-blur">
-        <button onClick={onClose} className="absolute top-4 right-4">
-          <span className="bg-white rounded-full p-2 text-black cursor-pointer">✕</span>
+      <div className="relative bg-[#0A1A2F] text-white w-[700px] max-w-[100%] bg-[#1d4aa4]/15 backdrop-blur-xl px-10 py-[62px] rounded-[20px] ms-[auto] me-[auto] p-8 shadow-xl border border-white/10 backdrop-blur">
+        <button onClick={onClose} className="absolute top-[10px] right-[10px] bg-white cursor-pointer h-[40px] w-[40px] rounded-full">
+          <span className=" text-black ">✕</span>
         </button>
 
-        <h2 className="text-center text-2xl font-bold mb-6">Bid Info</h2>
+        <h2 className="text-center text-white text-3xl font-semibold mb-[58px]">Bid Info</h2>
 
         <input
           type="number"
           placeholder="Price"
-          className="w-full bg-white/90 text-gray-700 p-3 rounded-md mb-4"
+          className="px-[25px] mb-[43px] py-[15px] bg-white text-[19px] leading-[23px] rounded-sm placeholder-[#848484] text-[#848484] focus:outline-none w-full"
         />
 
         <input
-          type="date"
-          className="w-full bg-white/90 text-gray-700 p-3 rounded-md mb-4"
+          type="text"
+          placeholder="Estimate Days"
+          className="px-[25px] py-[15px] mb-[43px] bg-white text-[19px] leading-[23px] rounded-sm placeholder-[#848484] text-[#848484] focus:outline-none w-full"
         />
 
         <textarea
           placeholder="Description"
-          className="w-full bg-white/90 text-gray-700 p-3 rounded-md h-28 mb-6"
+          className="px-[25px] py-[15px] bg-white mb-[43px] h-[163px] text-[19px] leading-[23px] rounded-sm placeholder-[#848484] text-[#848484] focus:outline-none w-full"
         />
 
         <button
-          className="w-full bg-autoblue py-3 rounded-lg text-lg hover:bg-hoverblue cursor-pointer"
+          className="bg-[#1DA1F2] text-[22px] leading[14px] w-full rounded-sm text-white py-[20px] font-semibold hover:bg-[#1a8cd8] duration-400 cursor-pointer"
           onClick={() => {
             onClose();
             openOTP();

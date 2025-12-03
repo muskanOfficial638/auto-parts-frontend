@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
+import { FiChevronDown } from "react-icons/fi";
 
 export default function Header() {
   const router = useRouter();
@@ -36,9 +37,9 @@ export default function Header() {
       {/* HEADER */}
       <header
         className="fixed top-0 left-0 w-full z-20
-  bg-black/50 backdrop-blur-md
+  md:bg-black/50 md:backdrop-blur-md bg-black
   flex items-center justify-between
-  px-8 lg:px-16 py-8 text-white"
+  md:px-8 lg:px-16 md:py-8 text-white p-[20px]"
       >
         <div className="flex flex-row space-x-10">
           {/* Logo */}
@@ -127,6 +128,7 @@ export default function Header() {
               viewBox="0 0 20 20"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              className="mr-[17px]"
             >
               <g clipPath="url(#clip0_450_974)">
                 <path
@@ -153,20 +155,24 @@ export default function Header() {
 
             <div className="relative group">
               {/* User Button */}
-              <button className="flex text-sm rounded-full hover:text-hoverblue items-center">
+              <button className="flex text-[15px] font-semibold leading-[14px] py-[5px] px-[10px] bg-black duration-400 rounded-lg hover:text-hoverblue items-center">
                 <Image
                   src="/fake-user.png"
                   alt="User"
                   width={32}
                   height={32}
-                  className="w-8 h-8 rounded-full mr-2"
+                  className="w-[30px] h-[30px] rounded-full mr-[10px]"
                 />
                 {autoPartsUserData?.user?.name ? autoPartsUserData?.user?.name : autoPartsUserData?.user?.role}
-                <span className="ml-1">▾</span>
+                {/* <span className="ml-1">
+                  <FiChevronDown
+                    className={filtersOpen.a1 ? "rotate-180 text-[18px] text-[#D2D2D2]" : "text-[18px] text-[#D2D2D2]"}
+                  />
+                </span> */}
               </button>
 
               {/* Dropdown */}
-              <div className="absolute right-[-5rem] hidden group-hover:block bg-black/90 rounded-base shadow-lg w-44 m-0">
+              <div className="absolute right-[0] pt-[15px] hidden group-hover:block  shadow-lg w-44 ">
                 {autoPartsUserData?.user?.role === "buyer" && (
                   <div className="px-4 py-3 text-sm border-b border-default">
                     <span className="block text-heading font-medium">
@@ -178,7 +184,7 @@ export default function Header() {
                   </div>
                 )}
 
-                <ul className="p-2 text-sm text-body font-medium">
+                <ul className="py-[5px] px-[10px] text-xs leading-[31px] text-body font-medium bg-black/90 rounded-lg">
                   <li>
                     <a
                       href={
@@ -186,7 +192,7 @@ export default function Header() {
                           ? "/buyer-dashboard"
                           : "/my-account"
                       }
-                      className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue rounded"
+                      className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue duration-400 border-[#242529] border-b rounded"
                     >
                       {autoPartsUserData?.user?.role === "buyer"
                         ? "Dashboard"
@@ -197,7 +203,7 @@ export default function Header() {
                     <li>
                       <a
                         href="/my-bids"
-                        className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue rounded"
+                        className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue duration-400 border-[#242529] border-b rounded"
                       >
                         My Bids
                       </a>
@@ -205,7 +211,7 @@ export default function Header() {
                   )}
                   <li>
                     <button
-                      className="block w-full text-left px-4 py-2 hover:bg-gray-800 hover:text-hoverblue rounded cursor-pointer"
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-800 hover:text-hoverblue rounded duration-400 cursor-pointer"
                       onClick={handleLogout}
                     >
                       Log out
@@ -227,9 +233,8 @@ export default function Header() {
 
       {/* MOBILE SLIDE-IN MENU */}
       <div
-        className={`fixed top-0 right-0 h-full w-72 bg-black/90 text-white z-50 transform transition-transform duration-300 ${
-          mobileOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed top-0 right-0 h-full w-72 bg-black/90 text-white z-50 transform transition-transform duration-300 ${mobileOpen ? "translate-x-0" : "translate-x-full"
+          }`}
       >
         <button
           onClick={() => setMobileOpen(false)}

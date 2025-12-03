@@ -93,22 +93,19 @@ export default function SupplierDashboard() {
   return (
     <>
       <Header></Header>
-      <div className="min-h-screen flex">
-        {/* Background Image */}
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/dashboardBg.jpg')" }}
-        />
+      {/* Background Image */}  
+      <div className="min-h-screen md:flex bg-cover bg-center relative"       
+      style={{ backgroundImage: "url('/dashboardBg.jpg')"}}>  
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,50,83,0.95),rgba(0,0,0,0.95))]" />
+        <div className="absolute top-[0] bottom-[0] h-full w-full bg-[linear-gradient(to_bottom,rgba(0,50,83,0.95),rgba(0,0,0,0.95))]" />
         {/* Sidebar */}
-        <div className="relative w-72 bg-[#12151B] text-white fixed">
-          <div className="bg-autoblue mt-[6rem] py-2" />
-          <div className="px-[20px] py-[40px]">
-            <h2 className="text-2xl mb-[20px] leading-[14px]  font-bold ">Filters Parts</h2>
+        <div className="relative md:w-72 bg-[#12151B] text-white fixed">
+          <div className="bg-autoblue md:mt-[6rem] mt-[80px] md:py-2 py-[3px]" />
+          <div className="md:px-[20px] md:py-[40px] p-[20px]">
+            <h2 className="md:text-2xl text-lg mb-[20px] leading-[14px]  font-bold ">Filters Parts</h2>
             {/* MAKE FILTER */}
             <div className=" bg-black p-[20px] ">
-              <h4 className="text-[19px] text-white font-semibold">Make</h4>
+              <h4 className="md:text-[19px] text-base text-white font-semibold">Make</h4>
               {filtersOpen.make && (
                 <div className="mt-2  space-y-2 text-gray-300">
                   {/* BMW */}
@@ -137,7 +134,7 @@ export default function SupplierDashboard() {
                       >
                         A1{" "}
                         <FiChevronDown
-                          className={filtersOpen.a1 ? "rotate-180 text-[18px] text-[#D2D2D2]" : ""}
+                          className={filtersOpen.a1 ? "rotate-180 text-[18px] text-[#D2D2D2]" : "text-[18px] text-[#D2D2D2]"}
                         />
                       </button>
 
@@ -157,9 +154,9 @@ export default function SupplierDashboard() {
         </div>
 
         {/* Main Content */}
-        <div className="relative flex-1 p-10 text-white overflow-auto h-auto">
+        <div className="relative flex-1 md:p-10 p-[20px] text-white overflow-auto h-auto">
           {/* Search Bar */}
-          <div className="flex justify-center my-8 pt-[5rem]">
+          <div className="flex justify-center md:my-8 md:pt-[5rem] mb-[20px]">
             <div className="relative w-full max-w-3xl">
               <input
                 type="text"
@@ -177,15 +174,15 @@ export default function SupplierDashboard() {
             {parts.map((p) => (
               <div
                 key={p.id}
-                className="bg-[#12151B] p-[20px] rounded-lg flex items-center justify-between"
+                className="bg-[#12151B] p-[20px] rounded-lg flex flex-wrap lg:gap-[0] gap-y-[20px] items-center justify-between"
               >
-                <div className="flex items-center gap-4">
+                <div className="flex md:items-center items-start gap-4">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <div className="bg-white py-[11px] px-[18px] rounded-sm">
+                  <div className="bg-white py-[11px] px-[18px] md:mt-[0] mt-[4px] rounded-sm">
                   <img
                     src="/productImage.png"
                     alt="Filter"
-                    className="w-[43px] h-[59px] object-cover"
+                    className="md:w-[43px] md:h-[59px] w-[30px] h-[46px] object-cover"
                   />
                   </div>
                   <div>
@@ -196,7 +193,7 @@ export default function SupplierDashboard() {
                       </span>
                     </h3>
 
-                    <p className="text-sm leading-[22px] font-medium text-white mt-[5px]">{p.desc}</p>
+                    <p className="md:text-sm text-xs leading-[22px] font-medium text-white mt-[5px]">{p.desc}</p>
 
                     <p className="text-xs leading-[15px] font-medium text-[#A4A4A4] mt-[5px]">{p.trim}</p>
 
@@ -207,10 +204,10 @@ export default function SupplierDashboard() {
                 </div>
 
                 <button
-                  className="bg-autoblue text-base font-semibold leading-[14px] hover:bg-[#1a8cd8] duration-400 px-[44px] py-[13px] rounded-sm cursor-pointer"
+                  className="bg-autoblue md:text-base text-sm font-semibold leading-[14px] hover:bg-[#1a8cd8] md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm cursor-pointer"
                   onClick={() => setModalOpen(true)}
                 >
-                  Bid Now
+                  Quote Now
                 </button>
               </div>
             ))}

@@ -1,131 +1,182 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useState } from "react";
 import { CalendarDays } from "lucide-react";
+import { buyerPath } from "@/app/utils/api";
+import axios from "axios";
+import { toast } from "react-toastify";
+
+interface PartRequest {
+  title: string;
+  urgency: string;
+  vehicle_make: string;
+  vehicle_model: string;
+  vehicle_model_trim: string;
+  required_by_date: string;
+  attachment: string;
+}
 
 export default function RequestPartForm() {
-  const [date, setDate] = useState("");
+  const [formData, setFormData] = useState<PartRequest>();
+  const [attachement, setAttachement] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev: any) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  async function handleSave(e: React.FormEvent) {
+    console.log("formData", formData);
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(`${buyerPath}/part-request`, {
+        formData,
+        role: "buyer",
+        is_active: true,
+      });
+
+      // console.log("RegisterData:", response.data);
+      if (response?.data) {
+      }
+    } catch (err: any) {
+      // Handle errors more gracefully
+      if (err.response) {
+        // Server responded with a status other than 2xx
+        console.error("Server error:", err.response.data);
+        toast.error(err.response.data?.detail[0]?.msg || "Signup failed");
+      } else if (err.request) {
+        // Request was made but no response received
+        console.error("No response:", err.request);
+        toast.error("No response from server");
+      } else {
+        // Something else happened
+        console.error("Error:", err.message);
+        toast.error("No response from server");
+      }
+    }
+  }
 
   return (
     <div className="min-h-screen w-full relative">
+      {/* Background Image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/dashboardBg.jpg')" }}
+      />
 
-  {/* Background Image */}
-  <div
-    className="absolute inset-0 bg-cover bg-center"
-    style={{ backgroundImage: "url('/dashboardBg.jpg')" }}
-  />
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/90 to-[#003253]/90" />
 
-  {/* Gradient Overlay */}
-  <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/90 to-[#003253]/90" />
+      {/* Page Content */}
+      <div className="relative z-10 flex flex-col">
+        <div className="flex justify-center items-start pt-36 pb-20 px-4">
+          <div className="w-full max-w-3xl bg-[#12151B] rounded-lg p-10 shadow-xl border border-gray-800">
+            <h2 className="text-xl font-semibold text-white mb-8">
+              Request a Part
+            </h2>
 
-  {/* Page Content */}
-  <div className="relative z-10 flex flex-col">
-    <div className="flex justify-center items-start pt-36 pb-20 px-4">
-        <div className="w-full max-w-3xl bg-[#12151B] rounded-lg p-10 shadow-xl border border-gray-800">
-          <h2 className="text-xl font-semibold text-white mb-8">
-            Request a Part
-          </h2>
-
-          <form className="space-y-6">
-            {/* Product Name */}
-            <div>
-              <label className="text-gray-500 text-sm font-semibold">
-                Product Name
-              </label>
-              <input
-                type="text"
-                className="w-full mt-1 p-3 bg-white border border-gray-700 rounded-md text-gray-700 outline-none"
-              />
-            </div>
-
-            {/* Make */}
-            <div>
-              <label className="text-gray-500 text-sm font-semibold">
-                Make
-              </label>
-              <select className="w-full mt-1 p-3 bg-white border border-gray-700 rounded-md text-gray-700 outline-none">
-                <option value=""></option>
-              </select>
-            </div>
-
-            {/* Model */}
-            <div>
-              <label className="text-gray-500 text-sm font-semibold">
-                Model
-              </label>
-              <select className="w-full mt-1 p-3 bg-white border border-gray-700 rounded-md text-gray-700 outline-none">
-                <option value=""></option>
-              </select>
-            </div>
-
-            {/* Trim */}
-            <div>
-              <label className="text-gray-500 text-sm font-semibold">
-                Trim
-              </label>
-              <select className="w-full mt-1 p-3 bg-white border border-gray-700 rounded-md text-gray-700 outline-none">
-                <option value=""></option>
-              </select>
-            </div>
-
-            {/* Urgency */}
-            <div>
-              <label className="text-gray-500 text-sm font-semibold">
-                Urgency
-              </label>
-              <input
-                type="text"
-                className="w-full mt-1 p-3 bg-white border border-gray-700 rounded-md text-gray-700 outline-none"
-              />
-            </div>
-
-            {/* Required Date */}
-            <div>
-              <label className="text-gray-500 text-sm font-semibold">
-                Required
-              </label>
-
-              <div className="relative">
+            <form className="space-y-6">
+              {/* Product Name */}
+              <div>
+                <label className="text-gray-500 text-sm font-semibold">
+                  Product Name*
+                </label>
                 <input
-                  type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
+                  type="text"
                   className="w-full mt-1 p-3 bg-white border border-gray-700 rounded-md text-gray-700 outline-none"
                 />
-                <CalendarDays
-                  className="absolute right-3 top-4 text-gray-400"
-                  size={18}
+              </div>
+
+              {/* Make */}
+              <div>
+                <label className="text-gray-500 text-sm font-semibold">
+                  Make*
+                </label>
+                <select className="w-full mt-1 p-3 bg-white border border-gray-700 rounded-md text-gray-700 outline-none">
+                  <option value=""></option>
+                </select>
+              </div>
+
+              {/* Model */}
+              <div>
+                <label className="text-gray-500 text-sm font-semibold">
+                  Model*
+                </label>
+                <select className="w-full mt-1 p-3 bg-white border border-gray-700 rounded-md text-gray-700 outline-none">
+                  <option value=""></option>
+                </select>
+              </div>
+
+              {/* Trim */}
+              <div>
+                <label className="text-gray-500 text-sm font-semibold">
+                  Trim*
+                </label>
+                <select className="w-full mt-1 p-3 bg-white border border-gray-700 rounded-md text-gray-700 outline-none">
+                  <option value=""></option>
+                </select>
+              </div>
+
+              {/* Urgency */}
+              <div>
+                <label className="text-gray-500 text-sm font-semibold">
+                  Urgency*
+                </label>
+                <input
+                  type="text"
+                  className="w-full mt-1 p-3 bg-white border border-gray-700 rounded-md text-gray-700 outline-none"
                 />
               </div>
-            </div>
 
-            {/* Image Upload */}
-            <div className="flex flex-col">
-              <label className="text-gray-500 text-sm font-semibold">
-                Image
-              </label>
+              {/* Required Date */}
+              <div>
+                <label className="text-gray-500 text-sm font-semibold">
+                  Required
+                </label>
 
+                <div className="relative">
+                  <input
+                    type="date"
+                    value={attachement}
+                    onChange={(e) => setAttachement(e.target.value)}
+                    className="w-full mt-1 p-3 bg-white border border-gray-700 rounded-md text-gray-700 outline-none"
+                  />
+                  <CalendarDays
+                    className="absolute right-3 top-4 text-gray-400"
+                    size={18}
+                  />
+                </div>
+              </div>
+
+              {/* Image Upload */}
+              <div className="flex flex-col">
+                <label className="text-gray-500 text-sm font-semibold">
+                  Image*
+                </label>
+
+                <button
+                  type="button"
+                  className="px-4 py-2 w-36 mt-2 rounded-md border border-autoblue text-autoblue hover:border-hoverblue transition cursor-pointer"
+                >
+                  Browse image
+                </button>
+              </div>
+
+              {/* Save Button */}
               <button
-                type="button"
-                className="px-4 py-2 w-36 mt-2 rounded-md border border-autoblue text-autoblue hover:border-hoverblue transition cursor-pointer"
+                type="submit"
+                className="w-full bg-autoblue hover:bg-hoverblue text-white p-3 rounded-md text-lg font-medium mt-6 cursor-pointer"
               >
-                Browse image
+                Save Changes
               </button>
-            </div>
-
-            {/* Save Button */}
-            <button
-              type="submit"
-              className="w-full bg-autoblue hover:bg-hoverblue text-white p-3 rounded-md text-lg font-medium mt-6 cursor-pointer"
-            >
-              Save Changes
-            </button>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
-  </div>
-
-</div>
-
-    
+    </div>
   );
 }

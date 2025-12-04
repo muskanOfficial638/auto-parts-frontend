@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
-import { FiChevronDown } from "react-icons/fi";
+// import { FiChevronDown } from "react-icons/fi";
 
 export default function Header() {
   const router = useRouter();
@@ -163,12 +163,13 @@ export default function Header() {
                   height={32}
                   className="w-[30px] h-[30px] rounded-full mr-[10px]"
                 />
-                {autoPartsUserData?.user?.name ? autoPartsUserData?.user?.name : autoPartsUserData?.user?.role}
                 {/* <span className="ml-1">
                   <FiChevronDown
                     className={filtersOpen.a1 ? "rotate-180 text-[18px] text-[#D2D2D2]" : "text-[18px] text-[#D2D2D2]"}
                   />
                 </span> */}
+                {autoPartsUserData?.user?.user_name ? autoPartsUserData?.user?.user_name : autoPartsUserData?.user?.role}
+                <span className="ml-1">▾</span>
               </button>
 
               {/* Dropdown */}

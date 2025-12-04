@@ -6,8 +6,13 @@
     },
 
     {
-      "source": "/api/parts/:path*",
+      "source": "/api/supplier/:path*",
       "destination": "http://54.80.119.79:8005/v1/supplier/:path*/"
+    },
+
+    {
+      "source": "/api/buyer/:path*",
+      "destination": "http://54.80.119.79:8002/v1/buyer/:path*/"
     }
   ]
 }

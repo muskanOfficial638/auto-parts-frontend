@@ -1,4 +1,4 @@
-import Dashboard from "../../components/dashboard/Dashboard";
+import BuyerDashboard from "../../components/dashboard/BuyerDashboard";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 
@@ -6,7 +6,7 @@ export default function DashboardPage() {
   return (
     <div className="">
       <Header />
-      <Dashboard />
+      <BuyerDashboard />
       <Footer />
     </div>
   );

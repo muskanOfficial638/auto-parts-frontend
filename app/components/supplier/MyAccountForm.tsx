@@ -16,85 +16,86 @@ export default function MyAccountForm() {
       {/* Page Content */}
       <div className="relative z-10 flex flex-col">
         <div className="flex justify-center items-start pt-36 pb-20 px-4">
-          <div className="w-full max-w-3xl bg-[#12151B] rounded-lg p-10 shadow-xl border border-gray-800">
-            <h2 className="text-xl font-semibold text-white mb-8">
+          <div className="w-[1037px] max-w-[100%] bg-[#12151B] rounded-sm px-[30px] pt-[20px] pb-[60px]">
+            <div className="w-[808px] max-w-[100%] ms-[auto] me-[auto]">
+            <h2 className="md:text-[23px] text-text-lg leading-[36px] font-semibold text-white mb-[27px]">
               Account Details
             </h2>
-
-            <form className="space-y-6">
+            <form className="space-y-[28px]">
               {/* Product Name */}
               <div>
-                <label className="text-gray-500 text-sm font-semibold">
+                <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                   Full Name
                 </label>
                 <input
                   type="text"
-                  className="w-full mt-1 p-3 bg-white border border-gray-700 rounded-md text-gray-700 outline-none"
+                  className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
                 />
               </div>
 
               {/* Make */}
               <div>
-                <label className="text-gray-500 text-sm font-semibold">
+                <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                   Mobile Number
                 </label>
                 <input
                   type="text"
-                  className="w-full mt-1 p-3 bg-white border border-gray-700 rounded-md text-gray-700 outline-none"
+                  className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
                 />
               </div>
 
               {/* Model */}
               <div>
-                <label className="text-gray-500 text-sm font-semibold">
+                <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                   Email
                 </label>
                 <input
                   type="text"
-                  className="w-full mt-1 p-3 bg-white border border-gray-700 rounded-md text-gray-700 outline-none"
+                  className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
                 />
               </div>
-              <h2 className="text-xl font-semibold text-white mb-8">
+              <h2 className="md:text-[23px] text-text-lg leading-[36px] font-semibold text-white md:mb-[27px] mb-[15px] md:mt-[46px] mt-[30px] ">
                 Password
               </h2>
               {/* Trim */}
               <div>
-                <label className="text-gray-500 text-sm font-semibold">
+                <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                   Old Password
                 </label>
-                <select className="w-full mt-1 p-3 bg-white border border-gray-700 rounded-md text-gray-700 outline-none">
+                <select className="w-full py-[8px] text-[#6C7275] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none">
                   <option value=""></option>
                 </select>
               </div>
 
               {/* Urgency */}
               <div>
-                <label className="text-gray-500 text-sm font-semibold">
+                <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                   New Password
                 </label>
                 <input
                   type="text"
-                  className="w-full mt-1 p-3 bg-white border border-gray-700 rounded-md text-gray-700 outline-none"
+                  className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
                 />
               </div>
               <div>
-                <label className="text-gray-500 text-sm font-semibold">
+                <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                   Repeat New Password
                 </label>
                 <input
                   type="text"
-                  className="w-full mt-1 p-3 bg-white border border-gray-700 rounded-md text-gray-700 outline-none"
+                  className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
                 />
               </div>
 
               {/* Save Button */}
               <button
                 type="submit"
-                className="w-full bg-autoblue hover:bg-hoverblue text-white p-3 rounded-md text-lg font-medium mt-6 cursor-pointer"
+                className="bg-[#1DA1F2] md:text-[22px] text-base leading[14px] w-full rounded-sm text-white md:py-[20px] p-[13px] font-semibold hover:bg-[#1a8cd8] duration-400 cursor-pointer"
               >
                 Save Changes
               </button>
             </form>
+            </div>
           </div>
         </div>
       </div>

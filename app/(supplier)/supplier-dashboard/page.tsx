@@ -19,31 +19,32 @@ function OTPModal({ open, onClose }: { open: boolean; onClose: () => void }) {
       />
 
       {/* OTP Box */}
-      <div className="relative bg-[#0A1A2F] text-white w-[480px] p-10 rounded-xl shadow-xl border border-white/10">
+      <div className="relative bg-[#061D37] text-white w-[700px] max-w-[100%] py-[62px] rounded-[20px] ms-[auto] me-[auto] py-[92px] px-[30px]  shadow-xl border-2 border-[#426A84]">
         {/* Close Button */}
-        <button onClick={onClose} className="absolute top-4 right-4">
-          <span className="bg-white rounded-full p-2 text-black cursor-pointer">✕</span>
+        <button onClick={onClose} className="absolute top-[10px]  right-[10px] bg-white cursor-pointer h-[40px] w-[40px] rounded-full">
+          <span className="text-black">✕</span>
         </button>
-
+       <div className="w-[429px] max-w-[100%] ms-[auto] me-[auto]">
         {/* Title */}
-        <h2 className="text-center text-2xl font-bold mb-6">Enter OTP</h2>
+        <h2 className="text-center text-4xl leading-[44px] font-bold mb-[22px]">Enter OTP</h2>
 
         {/* OTP Inputs */}
-        <div className="flex justify-center gap-4 mb-6">
+        <div className="flex justify-center gap-[16px] mb-[22px]">
           {[0, 1, 2, 3].map((i) => (
             <input
               key={i}
               maxLength={1}
               type="text"
-              className="w-14 h-14 bg-white text-black text-center text-2xl font-bold rounded-md border focus:outline-none"
+              className="w-[90px] h-[90px] bg-white text-[#848484] text-center text-[39px] font-bold rounded-sm  focus:outline-none"
             />
           ))}
         </div>
 
         {/* Submit */}
-        <button className="w-full bg-autoblue py-3 rounded-lg text-lg hover:bg-hoverblue cursor-pointer">
+        <button className="bg-[#1DA1F2] text-[22px] leading[14px] w-full rounded-sm text-white py-[20px] font-semibold hover:bg-[#1a8cd8] duration-400 cursor-pointer">
           Submit
         </button>
+        </div>
       </div>
     </div>
   );

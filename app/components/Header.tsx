@@ -155,7 +155,7 @@ export default function Header() {
 
             <div className="relative group">
               {/* User Button */}
-              <button className="flex text-[15px] font-semibold leading-[14px] py-[5px] px-[10px] bg-black duration-400 rounded-lg hover:text-hoverblue items-center">
+              <button className="flex text-[15px] font-semibold leading-[14px] py-[5px] px-[10px] bg-black duration-400 cursor-pointer rounded-lg hover:text-hoverblue items-center">
                 <Image
                   src="/fake-user.png"
                   alt="User"

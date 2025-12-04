@@ -16,7 +16,7 @@ function OTPModal({ open, onClose }: { open: boolean; onClose: () => void }) {
       />
 
       {/* OTP Box */}
-      <div className="relative bg-[#0A1A2F] text-white w-[480px] p-10 rounded-xl shadow-xl border border-white/10">
+      <div className="relative bg-[#0A1A2F] text-white w-[700px] max-w-[100%] py-[62px] rounded-[20px] ms-[auto] me-[auto] p-10 rounded-xl shadow-xl border border-white/10">
         {/* Close Button */}
         <button onClick={onClose} className="absolute top-4 right-4">
           <span className="bg-white rounded-full p-2 text-black cursor-pointer">
@@ -98,19 +98,19 @@ export default function BidListPage() {
         />
 
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/90 to-[#003253]/90" />
+        <div className="absolute top-[0] bottom-[0] h-full w-full bg-[linear-gradient(to_bottom,rgba(0,50,83,0.95),rgba(0,0,0,0.95))]" />
 
         {/* Main Content */}
         <div className="relative z-10 flex justify-center pt-36 pb-20 px-4">
           {/* List Items */}
-          <div className="space-y-6 w-full max-w-5xl rounded-lg shadow-lg ">
-            <h2 className="text-xl font-bold pt-2 text-center">My bids</h2>
-            <div className="text-xl pt-2 items-center flex space-x-6">
+          <div className="space-y-[25px] w-full max-w-[1037px] rounded-lg shadow-lg ">
+            <h2 className="text-2xl leading-[14px] font-bold text-center">My bids</h2>
+            <div className="text-xl items-center flex space-x-[36px]">
               <span
-                className={`cursor-pointer ${
+                className={`cursor-pointer font-medium text-xl leading-[14px] ${
                   activeTab === "Active"
-                    ? "font-bold text-white"
-                    : "text-gray-400"
+                    ? "font-bold text-xl leading-[14px] text-white"
+                    : "text-[#6C6C6C]"
                 }`}
                 onClick={() => onTabClick("Active")}
               >
@@ -118,10 +118,10 @@ export default function BidListPage() {
               </span>
 
               <span
-                className={`cursor-pointer ${
+                className={`cursor-pointer font-medium text-xl leading-[14px] ${
                   activeTab === "Accepted"
-                    ? "font-bold text-white"
-                    : "text-gray-400"
+                    ? "font-bold text-xl leading-[14px] text-white"
+                    : "text-[#6C6C6C]"
                 }`}
                 onClick={() => onTabClick("Accepted")}
               >
@@ -129,10 +129,10 @@ export default function BidListPage() {
               </span>
 
               <span
-                className={`cursor-pointer ${
+                className={`cursor-pointer font-medium text-xl leading-[14px] ${
                   activeTab === "Canceled"
-                    ? "font-bold text-white"
-                    : "text-gray-400"
+                    ? "font-bold text-xl leading-[14px] text-white"
+                    : "text-[#6C6C6C]"
                 }`}
                 onClick={() => onTabClick("Canceled")}
               >
@@ -140,10 +140,10 @@ export default function BidListPage() {
               </span>
 
               <span
-                className={`cursor-pointer ${
+                className={`cursor-pointer font-medium text-xl leading-[14px] ${
                   activeTab === "Completed"
-                    ? "font-bold text-white"
-                    : "text-gray-400"
+                    ? "font-bold text-xl leading-[14px] text-white"
+                    : "text-[#6C6C6C]"
                 }`}
                 onClick={() => onTabClick("Completed")}
               >
@@ -154,59 +154,61 @@ export default function BidListPage() {
             {parts.map((p) => (
               <div
                 key={p.id}
-                className="bg-[#12151B] p-6 rounded-lg flex items-center justify-between"
+                className="bg-[#12151B] p-[20px] rounded-lg flex flex-wrap lg:gap-[0] gap-y-[20px] items-center justify-between"
               >
                 <div className="flex items-center gap-4">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <div className="bg-white py-[11px] px-[18px] md:mt-[0] mt-[4px] rounded-sm">
                   <img
                     src="/productImage.png"
                     alt="Filter"
-                    className="w-20 h-20 object-cover"
+                    className="md:w-[43px] md:h-[59px] w-[30px] h-[46px] object-cover"
                   />
+                  </div>
 
-                  <div>
-                    <h3 className="text-xl font-bold">
+                   <div>
+                    <h3 className="text-base leading-[22px] font-bold flex items-center gap-[8px]">
                       {p.title}{" "}
-                      <span className="text-xs text-green-500 bg-green-900 px-2 py-0.5 rounded">
+                      <span className="text-[8px] font-medium leading-[10px] text-white bg-[#52A84E] px-[9px] py-[1px] rounded-[50px]">
                         High
                       </span>
                     </h3>
 
-                    <p className="text-sm text-gray-300 mt-1">{p.desc}</p>
+                    <p className="md:text-sm text-xs leading-[22px] font-medium text-white mt-[5px]">{p.desc}</p>
 
-                    <p className="text-xs text-gray-400 mt-1">{p.trim}</p>
+                    <p className="text-xs leading-[15px] font-medium text-[#A4A4A4] mt-[5px]">{p.trim}</p>
 
-                    <p className="text-xs text-gray-300 mt-1">
+                    <p className="text-[10px] font-medium text-[#F8F8F8] mt-[5px]">
                       Required By: <span>{p.date}</span>
                     </p>
                   </div>
                 </div>
 
                 {activeTab === "Accepted" ? (
-                  <div className="bg-[#011827] p-6 border border-[#153C51] text-white flex flex-col w-100">
-                    <span className="font-semibold">
+                  <div className="bg-[#011827] p-[10px] border border-[#153C51] rounded-sm text-white flex flex-col w-100">
+                    <span className="font-bold text-xs leading-[22px]">
                       Price:{" "}
-                      <small className="text-sm font-normal">$202.00</small>
+                      <small className="font-medium ms-[6px] text-xs leading-[22px]">$202.00</small>
                     </span>
-                    <span className="font-semibold">
+                    <span className="font-bold text-xs leading-[22px]">
                       Date:{" "}
-                      <small className="text-sm font-normal">12/12/2025</small>
+                      <small className="font-medium ms-[6px] text-xs leading-[22px]">12/12/2025</small>
                     </span>
-                    <span className="font-semibold">
+                    <span className="font-bold flex text-xs leading-[22px]">
                       Description:{" "}
-                      <small className="text-sm font-normal">
+                      <small className="text-[10px] ms-[6px] mt-[5px] pb-[7px] font-medium leading-[12px]">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit,
                         sed do eiusmod tempor incididun.
                       </small>
                     </span>
                   </div>
                 ) : (
-                  <button
-                    className="bg-autoblue hover:hoverblue px-6 py-2 rounded-lg"
-                    onClick={() => setModalOpen(true)}
-                  >
-                    Bid Now
-                  </button>
+                   <button
+                  className="bg-autoblue md:text-base text-sm font-semibold leading-[14px] hover:bg-[#1a8cd8] md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm cursor-pointer"
+                  onClick={() => setModalOpen(true)}
+                >
+                  Quote Now
+                </button>
                 )}
               </div>
             ))}

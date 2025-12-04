@@ -14,12 +14,12 @@ export default function BidModal({
       <div className="absolute inset-0" onClick={onClose} />
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/90 to-[#003253]/90" />
-      <div className="relative bg-[#0A1A2F] text-white w-[700px] max-w-[100%] bg-[#1d4aa4]/15 backdrop-blur-xl px-10 py-[62px] rounded-[20px] ms-[auto] me-[auto] p-8 shadow-xl border border-white/10 backdrop-blur">
+      <div className="relative bg-[#061D37] text-white w-[700px] max-w-[100%] bg-[#1d4aa4]/15 backdrop-blur-xl px-10 py-[62px] rounded-[20px] ms-[auto] me-[auto] p-8 shadow-xl border border-white/10 backdrop-blur">
         <button onClick={onClose} className="absolute top-[10px] right-[10px] bg-white cursor-pointer h-[40px] w-[40px] rounded-full">
           <span className=" text-black ">✕</span>
         </button>
-
-        <h2 className="text-center text-white text-3xl font-semibold mb-[58px]">Bid Info</h2>
+       <div className="w-[429px] max-w-[100%] ms-[auto] me-[auto]">
+        <h2 className="text-center text-white text-4xl font-semibold mb-[58px]">Quote Now </h2>
 
         <input
           type="number"
@@ -47,6 +47,7 @@ export default function BidModal({
         >
           Submit
         </button>
+        </div>
       </div>
     </div>
   );

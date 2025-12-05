@@ -11,30 +11,7 @@ import {
 } from "@/app/utils/api";
 import { useSearchParams } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
-interface PartRequest {
-  title: string;
-  urgency: string;
-  vehicle_make: string;
-  vehicle_model: string;
-  vehicle_model_trim: string;
-  required_by_date: string;
-  attachment: string;
-  status: number;
-  description: string;
-}
-
-interface Quote {
-  id: string;
-  request_id: string;
-  user_id: string;
-  price_cents: string;
-  currency: string;
-  eta_days: string;
-  terms: string;
-  status: string;
-  created_at: string;
-  user?: object | any;
-}
+import { PartRequest, Quote } from "../common/interface";
 
 export default function ViewPartRequest() {
   const searchParams = useSearchParams();
@@ -60,7 +37,7 @@ export default function ViewPartRequest() {
   }, [request]);
 
   useEffect(() => {
-    console.log("quoteData:", quoteData);
+    // console.log("quoteData:", quoteData);
   }, [partRequest, quoteData]);
 
   async function handleActionChange(

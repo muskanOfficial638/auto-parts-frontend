@@ -11,18 +11,7 @@ import { useEffect, useState } from "react";
 import { fetchAllBuyerPartRequests } from "@/app/utils/api";
 import Loader from "../common/Loader";
 import { useRouter } from "next/navigation";
-
-interface PartRequest {
-  id: string;
-  title: string;
-  urgency: string;
-  vehicle_make: string;
-  vehicle_model: string;
-  vehicle_model_trim: string;
-  required_by_date: string;
-  attachment: string;
-  status: number;
-}
+import { PartRequest } from "../common/interface";
 
 export default function BuyerDashboard() {
   const [partRequestData, setPartRequestData] = useState<PartRequest[]>();
@@ -126,8 +115,8 @@ export default function BuyerDashboard() {
                     >
                       {/* Product */}
                       <td className="flex p-[10px] items-center gap-[15px]">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <div className="bg-white w-[50px] h-[50px] flex items-center justify-center rounded-sm">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src="/productImage.png"
                             alt="product"

@@ -1,52 +1,104 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import BidModal from "@/app/components/supplier/Modal/BidModal";
 import OTPModal from "@/app/components/supplier/Modal/OtpModal";
+import { fetchAllSupplierPartRequests } from "@/app/utils/api";
+import { PartRequest } from "../common/interface";
+import Loader from "../common/Loader";
 
 export default function SupplierDashboard() {
   const [modalOpen, setModalOpen] = useState(false);
   const [otpModalOpen, setOtpModalOpen] = useState(false);
-
+  const [partRequestData, setPartRequestData] = useState<PartRequest[]>();
   const [filtersOpen, setFiltersOpen] = useState({
     make: true,
     bmw: true,
     a1: true,
   });
+  const [loading, setIsLoading] = useState(true);
+  const [globalSearch, setGlobalSearch] = useState("");
 
-  const parts = [
-    {
-      id: 1,
-      title: "Filter Air Cleaner",
-      desc: "Air Filter for Mahindra Scorpio N, Thar 2nd Gen",
-      trim: "BMW A1 Trim",
-      date: "20/11/2015",
-    },
-    {
-      id: 2,
-      title: "Filter Air Cleaner",
-      desc: "Air Filter for Mahindra Scorpio N, Thar 2nd Gen",
-      trim: "BMW A1 Trim",
-      date: "20/11/2015",
-    },
-    {
-      id: 3,
-      title: "Filter Air Cleaner",
-      desc: "Air Filter for Mahindra Scorpio N, Thar 2nd Gen",
-      trim: "BMW A1 Trim",
-      date: "20/11/2015",
-    },
-    {
-      id: 4,
-      title: "Filter Air Cleaner",
-      desc: "Air Filter for Mahindra Scorpio N, Thar 2nd Gen",
-      trim: "BMW A1 Trim",
-      date: "20/11/2015",
-    },
-  ];
-  
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const autoPartsUserData = localStorage.getItem("autoPartsUserData");
+      const loggedInUser = JSON.parse(autoPartsUserData || "{}");
+      if (loggedInUser?.access_token) {
+        fetchAllSupplierPartRequests(loggedInUser.access_token).then((data) => {
+          setPartRequestData(data);
+          setIsLoading(false);
+        });
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    const delayFilter = setTimeout(() => {
+    const search = globalSearch.toLowerCase();
+    const filtered = partRequestData && partRequestData.filter(item => {
+      return (
+        item.title?.toLowerCase().includes(search) ||
+        item.description?.toLowerCase().includes(search) ||
+        item.urgency?.toLowerCase().includes(search) ||
+        item.vehicle_make?.toLowerCase().includes(search) ||
+        item.vehicle_model?.toLowerCase().includes(search)
+      );
+    });
+
+    setPartRequestData(filtered);
+  }, 300);
+
+  return () => clearTimeout(delayFilter);
+  }, [globalSearch, partRequestData]);
+
+  const handleGlobalSearch = (e: any) => {
+    if (e.target.value === "") {
+      const autoPartsUserData = localStorage.getItem("autoPartsUserData");
+      const loggedInUser = JSON.parse(autoPartsUserData || "{}");
+      if (loggedInUser?.access_token) {
+        fetchAllSupplierPartRequests(loggedInUser.access_token).then((data) => {
+          setPartRequestData(data);
+          setIsLoading(false);
+        });
+      }
+      return;
+    }
+  setGlobalSearch(e.target.value);
+};
+
+
+//   const onSearchPartRequest = debounce(async (event: any) => {
+//   const value = event.target.value;
+
+//   const autoPartsUserData = localStorage.getItem("autoPartsUserData");
+//   const loggedInUser = JSON.parse(autoPartsUserData || "{}");
+
+//   if (!loggedInUser?.access_token) return;
+
+//   const data = await fetchAllSupplierPartRequests( 
+//     loggedInUser.access_token,
+//     value,     // title search
+//     "",        // urgency
+//     "",        // description
+//     "",        // make
+//     ""         // model
+//   );
+
+//   setPartRequestData(data);
+// }, 400); // 400ms delay
+
+
+  if (loading) {
+    return (
+      <div className="h-screen">
+        <Loader />
+      </div>
+    );
+  }
+
   return (
     <>
       <div
@@ -134,6 +186,8 @@ export default function SupplierDashboard() {
               <input
                 type="text"
                 placeholder="Search"
+                onChange={handleGlobalSearch}
+                // onChange={onSearchPartRequest}
                 className="w-full bg-white text-sm text-[#848484] placeholder-[#848484] leading-[17px] rounded-sm py-[10px] px-[15px] border border-[#1f2d3a] focus:outline-none"
               />
               <div className="bg-autoblue text-white absolute right-0 flex  rounded-r-sm items-center h-full top-0 py-[10px] px-[13px] ">
@@ -144,6 +198,7 @@ export default function SupplierDashboard() {
 
           {/* List Items */}
           <div className="space-y-[10px]">
+<<<<<<< Updated upstream
             {parts.map((p) => (
               <div
                 key={p.id}
@@ -183,11 +238,56 @@ export default function SupplierDashboard() {
                 <button
                   className="bg-autoblue  md:text-base text-sm font-semibold leading-[14px] hover:bg-[#1a8cd8] md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm cursor-pointer"
                   onClick={() => setModalOpen(true)}
+=======
+            {partRequestData ? (
+              partRequestData.map((item) => (
+                <div
+                  key={item.id}
+                  className="bg-[#12151B] p-[20px] rounded-lg flex flex-wrap lg:gap-[0] gap-y-[20px] items-center justify-between"
+>>>>>>> Stashed changes
                 >
-                  Quote Now
-                </button>
-              </div>
-            ))}
+                  <div className="flex md:items-center items-start gap-4">
+                    <div className="bg-white py-[11px] px-[18px] md:mt-[0] mt-[4px] rounded-sm">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src="/productImage.png"
+                        alt="Filter"
+                        className="md:w-[43px] md:h-[59px] w-[30px] h-[46px] object-cover"
+                      />
+                    </div>
+                    <div>
+                      <h3 className="text-base leading-[22px] font-bold flex items-center gap-[8px]">
+                        {item.title}{" "}
+                        <span className="text-[8px] font-medium leading-[10px] text-white bg-[#52A84E] px-[9px] py-[1px] rounded-[50px]">
+                          {item.urgency}
+                        </span>
+                      </h3>
+
+                      <p className="md:text-sm text-xs leading-[22px] font-medium text-white mt-[5px]">
+                        {item.description}
+                      </p>
+
+                      <p className="text-xs leading-[15px] font-medium text-[#A4A4A4] mt-[5px]">
+                        {item.vehicle_make} {item.vehicle_model} {item.vehicle_model_trim}
+                      </p>
+
+                      <p className="text-[10px] font-medium text-[#F8F8F8] mt-[5px]">
+                        Required By: <span>{item.required_by_date}</span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    className="bg-autoblue md:text-base text-sm font-semibold leading-[14px] hover:bg-[#1a8cd8] md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm cursor-pointer"
+                    onClick={() => setModalOpen(true)}
+                  >
+                    Quote Now
+                  </button>
+                </div>
+              ))
+            ) : (
+              <h1 className="text-center text-gray-900">No Users found.</h1>
+            )}
           </div>
         </div>
       </div>
@@ -202,3 +302,14 @@ export default function SupplierDashboard() {
     </>
   );
 }
+// 🔍 Debounce utility
+
+// const debounce = (func: Function, delay: number) => {
+//   let timer: any;
+//   return (...args: any[]) => {
+//     clearTimeout(timer);
+//     timer = setTimeout(() => func(...args), delay);
+//   };
+// };
+
+

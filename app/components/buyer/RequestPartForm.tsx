@@ -5,16 +5,7 @@ import { CalendarDays } from "lucide-react";
 import { buyerPath } from "@/app/utils/api";
 import axios from "axios";
 import { toast } from "react-toastify";
-
-interface PartRequest {
-  title: string;
-  urgency: string;
-  vehicle_make: string;
-  vehicle_model: string;
-  vehicle_model_trim: string;
-  required_by_date: string;
-  attachment: string;
-}
+import { PartRequest } from "../common/interface";
 
 export default function RequestPartForm() {
   const [formData, setFormData] = useState<PartRequest>();

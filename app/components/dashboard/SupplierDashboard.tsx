@@ -130,7 +130,7 @@ export default function SupplierDashboard() {
         <div className="relative flex-1 md:p-10 p-[20px] text-white overflow-auto h-auto">
           {/* Search Bar */}
           <div className="flex justify-center md:my-8 md:pt-[5rem] mb-[20px]">
-            <div className="relative w-full max-w-3xl">
+            <div className="relative w-full max-w-[583px]">
               <input
                 type="text"
                 placeholder="Search"

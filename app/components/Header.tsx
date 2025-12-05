@@ -41,7 +41,7 @@ export default function Header() {
   flex items-center justify-between
   md:px-8 lg:px-16 md:py-8 text-white p-[20px]"
       >
-        <div className="flex flex-row space-x-10">
+        <div className="flex flex-row space-x-8">
           {/* Logo */}
           <Link href="/" scroll={true} className="relative w-40 h-10">
             <Image
@@ -56,9 +56,9 @@ export default function Header() {
 
           {/* Nav Links */}
           {!autoPartsUserData && (
-            <nav className="hidden md:flex items-center space-x-10 text-white text-sm font-medium">
+            <nav className="hidden md:flex items-center space-x-[25px] text-white text-sm font-medium">
               <div className="relative group">
-                <button className="hover:text-hoverblue flex items-center cursor-pointer">
+                <button className="hover:text-hoverblue text-[17px] duration-400 font-semibold leading-[15px] flex items-center cursor-pointer">
                   Find Auto Parts
                   {/* <span className="ml-1">▾</span> */}
                 </button>
@@ -86,10 +86,10 @@ export default function Header() {
             </div> */}
               </div>
 
-              <a href="#" className="hover:text-hoverblue">
+              <a href="#" className="hover:text-hoverblue text-[17px] duration-400 font-semibold leading-[15px]">
                 About Us
               </a>
-              <a href="#" className="hover:text-hoverblue">
+              <a href="#" className="hover:text-hoverblue text-[17px] duration-400 font-semibold leading-[15px]">
                 Contact
               </a>
             </nav>
@@ -98,16 +98,16 @@ export default function Header() {
 
         {/* Buttons */}
         {!autoPartsUserData ? (
-          <div className="hidden md:flex items-center space-x-6 text-sm font-medium text-white">
-            <a href="/login" className="hover:text-hoverblue">
+          <div className="hidden md:flex items-center space-x-[22px] text-[17px]  font-semibold leading-[15px] text-white">
+            <a href="/login" className="hover:text-hoverblue duration-400">
               Login
             </a>
-            <a href="/sign-up" className="hover:text-hoverblue">
+            <a href="/sign-up" className="hover:text-hoverblue duration-400">
               Sign Up
             </a>
             <button
               onClick={() => toast.error("Please login to your account!")}
-              className="bg-autoblue hover:bg-hoverblue text-white px-5 py-2 rounded-md transition"
+              className="bg-autoblue text-[15px] hover:bg-hoverblue text-white px-[15px] py-[11px] cursor-pointer rounded-sm duration-400"
             >
               Request Auto Parts
             </button>

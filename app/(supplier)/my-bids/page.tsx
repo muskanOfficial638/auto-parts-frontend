@@ -16,31 +16,31 @@ function OTPModal({ open, onClose }: { open: boolean; onClose: () => void }) {
       />
 
       {/* OTP Box */}
-      <div className="relative bg-[#0A1A2F] text-white w-[700px] max-w-[100%] py-[62px] rounded-[20px] ms-[auto] me-[auto] p-10 rounded-xl shadow-xl border border-white/10">
+      <div className="relative bg-[#061D37] text-white w-[700px] max-w-[100%] py-[62px] rounded-[20px] ms-[auto] me-[auto] py-[92px] px-[30px]  shadow-xl border-2 border-[#426A84]">
         {/* Close Button */}
-        <button onClick={onClose} className="absolute top-4 right-4">
-          <span className="bg-white rounded-full p-2 text-black cursor-pointer">
+        <button onClick={onClose} className="absolute top-[10px]  right-[10px] bg-white cursor-pointer h-[40px] w-[40px] rounded-full">
+          <span className="text-black">
             ✕
           </span>
         </button>
 
         {/* Title */}
-        <h2 className="text-center text-2xl font-bold mb-6">Enter OTP</h2>
+        <h2 className="text-center text-4xl leading-[44px] font-bold mb-[22px]">Enter OTP</h2>
 
         {/* OTP Inputs */}
-        <div className="flex justify-center gap-4 mb-6">
+        <div className="flex justify-center gap-[16px] mb-[22px]">
           {[0, 1, 2, 3].map((i) => (
             <input
               key={i}
               maxLength={1}
               type="text"
-              className="w-14 h-14 bg-white text-black text-center text-2xl font-bold rounded-md border focus:outline-none"
+              className="w-[90px] h-[90px] bg-white text-[#848484] text-center text-[39px] font-bold rounded-sm  focus:outline-none"
             />
           ))}
         </div>
 
         {/* Submit */}
-        <button className="w-full bg-autoblue py-3 rounded-lg text-lg hover:bg-hoverblue cursor-pointer">
+        <button className="bg-[#1DA1F2] text-[22px] leading[14px] w-full rounded-sm text-white py-[20px] font-semibold hover:bg-[#1a8cd8] duration-400 cursor-pointer">
           Submit
         </button>
       </div>
@@ -105,11 +105,11 @@ export default function BidListPage() {
           {/* List Items */}
           <div className="space-y-[25px] w-full max-w-[1037px] rounded-lg shadow-lg ">
             <h2 className="text-2xl leading-[14px] font-bold text-center">My bids</h2>
-            <div className="text-xl items-center flex space-x-[36px]">
+            <div className="text-xl items-center flex space-x-[36px]   md:overflow-x-visible overflow-x-auto">
               <span
-                className={`cursor-pointer font-medium text-xl leading-[14px] ${
+                className={`cursor-pointer font-medium text-xl md:leading-[14px] leading-[40px] ${
                   activeTab === "Active"
-                    ? "font-bold text-xl leading-[14px] text-white"
+                    ? "font-bold text-white"
                     : "text-[#6C6C6C]"
                 }`}
                 onClick={() => onTabClick("Active")}
@@ -118,9 +118,9 @@ export default function BidListPage() {
               </span>
 
               <span
-                className={`cursor-pointer font-medium text-xl leading-[14px] ${
+                className={`cursor-pointer font-medium text-xl md:leading-[14px] leading-[40px] ${
                   activeTab === "Accepted"
-                    ? "font-bold text-xl leading-[14px] text-white"
+                    ? "font-bold text-white"
                     : "text-[#6C6C6C]"
                 }`}
                 onClick={() => onTabClick("Accepted")}
@@ -129,9 +129,9 @@ export default function BidListPage() {
               </span>
 
               <span
-                className={`cursor-pointer font-medium text-xl leading-[14px] ${
+                className={`cursor-pointer font-medium text-xl md:leading-[14px] leading-[40px] ${
                   activeTab === "Canceled"
-                    ? "font-bold text-xl leading-[14px] text-white"
+                    ? "font-bold text-white"
                     : "text-[#6C6C6C]"
                 }`}
                 onClick={() => onTabClick("Canceled")}
@@ -140,9 +140,9 @@ export default function BidListPage() {
               </span>
 
               <span
-                className={`cursor-pointer font-medium text-xl leading-[14px] ${
+                className={`cursor-pointer font-medium text-xl md:leading-[14px] leading-[40px] ${
                   activeTab === "Completed"
-                    ? "font-bold text-xl leading-[14px] text-white"
+                    ? "font-bold text-white"
                     : "text-[#6C6C6C]"
                 }`}
                 onClick={() => onTabClick("Completed")}

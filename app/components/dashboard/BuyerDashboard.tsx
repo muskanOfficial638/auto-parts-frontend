@@ -46,10 +46,10 @@ export default function BuyerDashboard() {
     }
   }, []);
 
-  useEffect(() => {}, [partRequestData]);
+  useEffect(() => { }, [partRequestData]);
 
   function handleClick(item: PartRequest) {
-  router.push(`/view-part-request?request=${item.id}`);
+    router.push(`/view-part-request?request=${item.id}`);
   }
 
 
@@ -73,25 +73,25 @@ export default function BuyerDashboard() {
       <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/90 to-[#003253]/90" />
       {/* Page Content */}
       <div className="relative z-10 flex justify-center pb-20 px-4">
-        <div className="w-full max-w-5xl p-8">
+        <div className="w-full max-w-[1037px] md:w-[992px] overflow-auto  py-[30px]">
           {/* Search Bar */}
-          <div className="flex justify-center my-8 pt-[5rem]">
-            <div className="relative w-full max-w-3xl">
+          <div className="flex justify-center md:my-8 md:pt-[5rem] mb-[20px]">
+            <div className="relative w-full max-w-[583px]">
               <input
                 type="text"
                 placeholder="Search"
-                className="w-full bg-white text-gray-600 rounded-lg py-3 pl-4 pr-12 border border-[#1f2d3a] focus:outline-none"
+                className="w-full bg-white text-sm text-[#848484] placeholder-[#848484] leading-[17px] rounded-sm py-[10px] px-[15px] border border-[#1f2d3a] focus:outline-none"
               />
-              <div className="bg-autoblue text-white absolute right-0 top-0 p-2 rounded-l rounded-lg h-12.5">
-                <MagnifyingGlassIcon className="h-6 w-6 mt-1" />
+              <div className="bg-autoblue text-white absolute right-0 flex  rounded-r-sm items-center h-full top-0 py-[10px] px-[13px]">
+                <MagnifyingGlassIcon className="h-[14px] w-[14px]" />
               </div>
             </div>
           </div>
 
           {/* Table Container */}
-          <div className="bg-[#12151B] rounded-lg border border-[#1f2d3a]">
+          <div className="bg-[#12151B]  rounded-sm">
             {/* Header */}
-            <div className="grid grid-cols-8 bg-autoblue text-white font-semibold px-6 py-4 text-sm">
+            {/* <div className="grid grid-cols-8 bg-autoblue text-white font-semibold px-[70px] py-[9px] font-bold leading-[22px] text-sm">
               <p>Product</p>
               <p>Make</p>
               <p>Model</p>
@@ -100,53 +100,68 @@ export default function BuyerDashboard() {
               <p>Required</p>
               <p>Status</p>
               <p className="text-center">Action</p>
-            </div>
+            </div> */}
 
             {/* Rows */}
-            <div className="divide-y divide-[#1f2d3a]">
+            <div className="divide-y divide-[#2C364A]">
+              <div
+                className="grid bg-autoblue grid-cols-9 items-center p-[9px] rounded-tr-sm rounded-tl-sm  leading-[22px] font-bold text-[13px] text-white"
+              >
+                <p className=" col-span-2 text-center">Product</p>
+                <p className=" text-center">Make</p>
+                <p className=" text-center">Model</p>
+                <p className=" text-center">Trim</p>
+                <p className=" text-center">Urgency</p>
+                <p className=" text-center">Required</p>
+                <p className=" text-center">Status</p>
+                <p className=" text-center">Action</p>
+
+              </div>
+
               {partRequestData ? (
                 partRequestData.map((item, index) => (
                   <div
                     key={index}
-                    className="grid grid-cols-8 items-center px-6 py-4 text-white"
+                    className="grid grid-cols-9 items-center mx-[20px] py-[10px] text-white"
                   >
                     {/* Product */}
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center  col-span-2 gap-[15px]">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src="/productImage.png"
-                        alt="product"
-                        className="w-12 h-12 rounded"
-                      />
-                      <span>{item.title}</span>
+                      <div className="bg-white py-[6px] px-[11px] rounded-sm">
+                        <img
+                          src="/productImage.png"
+                          alt="product"
+                          className="w-[28px] h-[39px] "
+                        />
+                      </div>
+                      <span className="text-xs font-semibold leading-[22px]">{item.title}</span>
                     </div>
 
-                    <p>{item.vehicle_make}</p>
-                    <p>{item.vehicle_model}</p>
-                    <p>{item.vehicle_model_trim}</p>
+                    <p className=" text-xs leading-[22px] font-semibold text-center">{item.vehicle_make}</p>
+                    <p className=" text-xs leading-[22px] font-semibold text-center">{item.vehicle_model}</p>
+                    <p className=" text-xs leading-[22px] font-semibold text-center">{item.vehicle_model_trim}</p>
 
                     {/* Urgency Badge */}
-                    <span className="px-2 py-1 bg-green-600/80 text-white text-xs rounded-full w-[40px]">
+                    <span className="text-xs capitalize ms-[auto] me-[auto] font-medium leading-[15px] text-center text-white bg-[#52A84E] px-[9px] py-[2px] rounded-[50px] w-[46px]">
                       {item.urgency}
                     </span>
 
-                    <p>{item.required_by_date}</p>
+                    <p className="text-xs leading-[22px] font-semibold text-center">{item.required_by_date}</p>
 
                     {/* Status Color */}
                     <p
-                      className={`font-semibold ${
-                        item.status === 0
-                          ? "text-yellow-400"
-                          : item.status === 1
+                      className={`text-xs leading-[22px] font-semibold text-center ${item.status === 0
+                        ? "text-yellow-400"
+                        : item.status === 1
                           ? "text-green-500"
                           : "text-red-500"
-                      }`}
+                        }`}
                     >
                       {item.status === 0
                         ? "Incative"
                         : item.status === 1
-                        ? "Active"
-                        : "Suspend"}
+                          ? "Active"
+                          : "Suspend"}
                     </p>
 
                     {/* Actions */}
@@ -158,19 +173,19 @@ export default function BuyerDashboard() {
                         <EyeIcon className="h-5" />
                       </Link> */}
                       <button
-                        onClick={()=>handleClick(item)}
-                        className="p-2 rounded border border-autoblue text-autoblue hover:bg-blue-500/20 cursor-pointer"
+                        onClick={() => handleClick(item)}
+                        className="px-[5px] flex justify-center items-center h-[30px] w-[30px] bg-[#011827] rounded-sm border border-[#153C51] text-autoblue cursor-pointer"
                       >
-                        <EyeIcon className="h-5" />
+                        <EyeIcon className="h-[20px] w-[20px]" />
                       </button>
                       <Link
                         href="/request-part"
-                        className="p-2 rounded border border-autoblue text-autoblue hover:bg-blue-500/20 cursor-pointer"
+                        className="px-[5px] flex justify-center items-center h-[30px] w-[30px] bg-[#011827] rounded-sm border border-[#153C51] text-autoblue cursor-pointer"
                       >
-                        <PencilSquareIcon className="h-5" />
+                        <PencilSquareIcon className="h-[20px] w-[20px]" />
                       </Link>
-                      <button className="p-2 rounded border border-autoblue text-autoblue hover:bg-blue-500/20 cursor-pointer">
-                        <TrashIcon className="h-5" />
+                      <button className="px-[5px] flex justify-center items-center h-[30px] w-[30px] bg-[#011827] rounded-sm border border-[#153C51] text-autoblue cursor-pointer">
+                        <TrashIcon className="h-[20px] w-[20px]" />
                       </button>
                     </div>
                   </div>

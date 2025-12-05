@@ -62,7 +62,7 @@ export default function MyAccountForm() {
                 <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                   Old Password
                 </label>
-                <select className="w-full py-[8px] text-[#6C7275] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none">
+                <select className="w-full p-3 bg-white border border-gray-700 rounded-md text-gray-700 outline-none">
                   <option value=""></option>
                 </select>
               </div>
@@ -90,7 +90,7 @@ export default function MyAccountForm() {
               {/* Save Button */}
               <button
                 type="submit"
-                className="bg-[#1DA1F2] md:text-[22px] text-base leading[14px] w-full rounded-sm text-white md:py-[20px] p-[13px] font-semibold hover:bg-[#1a8cd8] duration-400 cursor-pointer"
+                className="bg-[#1DA1F2] md:text-[22px] text-base leading[14px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-[#1a8cd8] duration-400 cursor-pointer"
               >
                 Save Changes
               </button>

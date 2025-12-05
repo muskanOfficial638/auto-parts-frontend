@@ -123,54 +123,52 @@ export default function ViewPartRequest() {
 
       {/* Page Content */}
       <div className="relative z-10 flex justify-center pt-36 pb-20 px-4">
-        <div className="w-full max-w-5xl bg-[#12151B] rounded-lg shadow-lg border border-gray-800 p-8">
+        <div className="w-full max-w-[1037px] bg-[#12151B] rounded-sm shadow-lg p-[20px]">
           {/* Header (Image + Title + Button) */}
-          <div className="flex justify-between">
-            <div className="flex gap-5">
-              <div className="w-28 h-28 bg-black rounded-md flex items-center justify-center overflow-hidden">
+          <div className="flex justify-between flex-wrap gap-y-[20px] items-center">
+            <div className="flex items-start gap-[15px]">
+              <div className="bg-white md:py-[10px] md:px-[24px] py-[5px] px-[10px] rounded-sm flex items-center justify-center overflow-hidden">
                 <Image
                   src="/productImage.png"
                   alt="Filter"
                   width={120}
                   height={120}
-                  className="object-cover rounded"
+                  className="object-cover md:w-[71px] md:h-[99px] w-[36px] h-[50px]"
                 />
               </div>
 
-              <div className="flex flex-col justify-center">
-                <h1 className="text-2xl text-white font-semibold flex gap-2 items-center">
+              <div className="flex flex-col justify-start">
+                <h1 className="md:text-[26px] text-lg text-white font-bold leading-[22px] flex gap-2 items-center">
                   {partRequest?.title}
-                  <span className="px-2 py-1 bg-green-600/80 text-white text-xs rounded">
+                  <span className="text-[8px] font-medium capitalize leading-[10px] text-white bg-[#52A84E] px-[9px] py-[1px] rounded-[50px]">
                     {partRequest?.urgency}
                   </span>
                 </h1>
 
-                <p className="text-gray-200 text-sm">
+                <p className="md:text-sm text-xs leading-[22px] font-medium text-white mt-[5px]">
                   {partRequest?.description}
                 </p>
 
-                <p className="text-gray-400 text-sm mt-2">
+                <p className="md:text-xs text-[10px] leading-[15px] font-medium text-[#A4A4A4] md:mt-[15px] mt-[5px]">
                   {partRequest?.vehicle_make} {partRequest?.vehicle_model} •{" "}
                   {partRequest?.vehicle_model_trim}
                 </p>
-                <p className="text-gray-200 text-sm">
+                <p className="text-[10px] leading-[22px] font-medium text-[#F8F8F8] mt-[5px]">
                   Required By:{" "}
-                  <span className="text-white font-medium">
+                  <span className="font-bold">
                     {partRequest?.required_by_date}
                   </span>
                 </p>
               </div>
             </div>
 
-            <button className="text-autoblue rounded-md hover:border-hoverblue">
-              <span className="border border-autoblue p-4">
-                Mark as Completed
-              </span>
+            <button className="text-autoblue md:w-[auto] w-full cursor-pointer md:text-base text-sm leading-[14px] border border-autoblue py-[13px] px-[20px] duration-400 hover:text-white rounded-sm hover:bg-hoverblue hover:border-hoverblue">             
+                Mark as Completed             
             </button>
           </div>
 
           {/* QUOTES LIST */}
-          <div className="space-y-5 mt-4">
+          <div className="space-y-[10px] mt-[16px]">
             {/* === Quote Box Component === */}
             {/* {[1, 2, 3].map((quote, index) => (
               <div
@@ -227,35 +225,35 @@ export default function ViewPartRequest() {
               quoteData.map((data: Quote) => (
                 <div
                   key={data.id}
-                  className="bg-[#011827] border border-[#153C51] rounded-md p-5"
+                  className="bg-[#011827] border border-[#153C51] rounded-sm pt-[5px] pb-[15px] ps-[12px] pe-[22px]"
                 >
-                  <div className="flex justify-between items-start">
+                  <div className="flex justify-between flex-wrap gap-y-[20px] items-center">
                     <div>
-                      <p className="text-white font-semibold">
+                      <p className="text-white md:text-sm text-xs font-bold leading-[22px]">
                         @{data?.user?.user_name}
                       </p>
-                      <p className="text-gray-200 text-sm">
+                      <p className="leading-[22px] md:text-xs text-[10px]">
                         {data?.user?.email}
                       </p>
 
-                      <p className="text-gray-300 mt-3 text-sm">
-                        <span className="font-semibold text-gray-400">
+                      <p className="text-[#A4A4A4] mt-[5px] text-xs  leading-[15px]">
+                        <span className="font-semibold text-[#A4A4A4]">
                           Price:
                         </span>{" "}
-                        <span className="text-autoblue">
+                        <span className="text-[10px] medium leading-[22px] text-autoblue">
                           {data?.price_cents}
                         </span>
                       </p>
 
-                      <p className="text-gray-300 text-sm">
-                        <span className="font-semibold text-gray-400">
+                      <p className="text-[#A4A4A4] medium mt-[5px] text-xs leading-[15px]">
+                        <span className="font-bold text-[#A4A4A4]">
                           Delivery Days:
                         </span>{" "}
                         {data?.eta_days}
                       </p>
 
-                      <p className="text-gray-300 text-sm mt-2">
-                        <span className="font-semibold text-gray-400">
+                      <p className="text-[#A4A4A4] medium mt-[5px] text-xs leading-[15px]">
+                        <span className="font-bold text-[#A4A4A4]">
                           Description:
                         </span>{" "}
                         {data?.terms}
@@ -265,13 +263,13 @@ export default function ViewPartRequest() {
                     {/* Right-Side Buttons  */}
                     <div className="flex items-center gap-3">
                       {data?.status == "accepted" && (
-                        <div className="bg-autoblue px-5 py-2 text-white rounded-md">
+                        <div className="bg-autoblue hover:bg-hoverblue duration-400 cursor-pointer md:text-base text-xs leading-[14px] md:px-[38px] md:py-[13px] px-[28px] py-[8px] text-white rounded-sm">
                           Accepted
                         </div>
                       )} {data?.status == "pending" && (
                         <>
                           <button
-                            className="bg-green-600 px-5 py-2 text-white rounded-md hover:bg-green-700 cursor-pointer"
+                            className="bg-green-600 md:text-base text-xs duration-400 leading-[14px] md:px-[38px] md:py-[13px] px-[28px] py-[8px] text-white rounded-sm hover:bg-green-700 cursor-pointer"
                             onClick={() =>
                               handleActionChange(
                                 data?.id,
@@ -283,7 +281,7 @@ export default function ViewPartRequest() {
                             Accept
                           </button>
                           <button
-                            className="bg-red-600 px-5 py-2 text-white rounded-md hover:bg-red-700 cursor-pointer"
+                            className="bg-red-600 px-5 py-2 md:text-base text-xs duration-400 leading-[14px] md:px-[38px] md:py-[13px] px-[28px] py-[8px] text-white rounded-sm hover:bg-red-700 cursor-pointer"
                             onClick={() =>
                               handleActionChange(
                                 data?.id,

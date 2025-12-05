@@ -27,3 +27,6 @@ body {
   color: var(--foreground);
   font-family: 'Inter', sans-serif;
 }
+.table-container table tbody tr:last-child {
+    border-bottom: 0;
+}

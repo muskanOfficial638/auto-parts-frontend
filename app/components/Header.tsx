@@ -45,7 +45,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" scroll={true} className="relative w-40 h-10">
             <Image
-              src="/autoPartLogo.png"
+              src="/autoPartLogo.svg"
               alt="Auto Parts XChange Logo"
               fill
               className="object-contain"

@@ -181,7 +181,7 @@ export default function SupplierDashboard() {
                 </div>
 
                 <button
-                  className="bg-autoblue md:text-base text-sm font-semibold leading-[14px] hover:bg-[#1a8cd8] md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm cursor-pointer"
+                  className="bg-autoblue  md:text-base text-sm font-semibold leading-[14px] hover:bg-[#1a8cd8] md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm cursor-pointer"
                   onClick={() => setModalOpen(true)}
                 >
                   Quote Now

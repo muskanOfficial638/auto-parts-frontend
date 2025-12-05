@@ -73,9 +73,9 @@ export default function BuyerDashboard() {
       <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/90 to-[#003253]/90" />
       {/* Page Content */}
       <div className="relative z-10 flex justify-center pb-20 px-4">
-        <div className="w-full max-w-[1037px] md:w-[992px] overflow-auto  py-[30px]">
+        <div className="w-full max-w-[1037px]  py-[30px]">
           {/* Search Bar */}
-          <div className="flex justify-center md:my-8 md:pt-[5rem] mb-[20px]">
+          <div className="flex justify-center my-8 pt-[5rem]">
             <div className="relative w-full max-w-[583px]">
               <input
                 type="text"
@@ -89,7 +89,7 @@ export default function BuyerDashboard() {
           </div>
 
           {/* Table Container */}
-          <div className="bg-[#12151B]  rounded-sm">
+          
             {/* Header */}
             {/* <div className="grid grid-cols-8 bg-autoblue text-white font-semibold px-[70px] py-[9px] font-bold leading-[22px] text-sm">
               <p>Product</p>
@@ -103,98 +103,105 @@ export default function BuyerDashboard() {
             </div> */}
 
             {/* Rows */}
-            <div className="divide-y divide-[#2C364A]">
-              <div
-                className="grid bg-autoblue grid-cols-9 items-center p-[9px] rounded-tr-sm rounded-tl-sm  leading-[22px] font-bold text-[13px] text-white"
-              >
-                <p className=" col-span-2 text-center">Product</p>
-                <p className=" text-center">Make</p>
-                <p className=" text-center">Model</p>
-                <p className=" text-center">Trim</p>
-                <p className=" text-center">Urgency</p>
-                <p className=" text-center">Required</p>
-                <p className=" text-center">Status</p>
-                <p className=" text-center">Action</p>
-
-              </div>
-
-              {partRequestData ? (
-                partRequestData.map((item, index) => (
-                  <div
-                    key={index}
-                    className="grid grid-cols-9 items-center mx-[20px] py-[10px] text-white"
-                  >
-                    {/* Product */}
-                    <div className="flex items-center  col-span-2 gap-[15px]">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <div className="bg-white py-[6px] px-[11px] rounded-sm">
-                        <img
-                          src="/productImage.png"
-                          alt="product"
-                          className="w-[28px] h-[39px] "
-                        />
-                      </div>
-                      <span className="text-xs font-semibold leading-[22px]">{item.title}</span>
-                    </div>
-
-                    <p className=" text-xs leading-[22px] font-semibold text-center">{item.vehicle_make}</p>
-                    <p className=" text-xs leading-[22px] font-semibold text-center">{item.vehicle_model}</p>
-                    <p className=" text-xs leading-[22px] font-semibold text-center">{item.vehicle_model_trim}</p>
-
-                    {/* Urgency Badge */}
-                    <span className="text-xs capitalize ms-[auto] me-[auto] font-medium leading-[15px] text-center text-white bg-[#52A84E] px-[9px] py-[2px] rounded-[50px] w-[46px]">
-                      {item.urgency}
-                    </span>
-
-                    <p className="text-xs leading-[22px] font-semibold text-center">{item.required_by_date}</p>
-
-                    {/* Status Color */}
-                    <p
-                      className={`text-xs leading-[22px] font-semibold text-center ${item.status === 0
-                        ? "text-yellow-400"
-                        : item.status === 1
-                          ? "text-green-500"
-                          : "text-red-500"
-                        }`}
+            <div className=" table-container overflow-auto">
+              <table className="w-full border-0 bg-[#12151B]  rounded-sm">
+                <thead>
+                <tr> 
+                  <th className=" bg-autoblue rounded-tl-sm p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">Product</th>
+                  <th className=" bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">Make</th>
+                  <th className=" bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">Model</th>
+                  <th className=" bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">Trim</th>
+                  <th className=" bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">Urgency</th>
+                  <th className=" bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">Required</th>
+                  <th className=" bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">Status</th>
+                  <th className=" bg-autoblue rounded-tr-sm p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">Action</th>
+                </tr>
+                 </thead>                 
+                <tbody>
+                {partRequestData ? (
+                  partRequestData.map((item, index) => (
+                    <tr
+                      key={index}
+                      className=" text-white border-b border-[#2C364A] "
                     >
-                      {item.status === 0
-                        ? "Incative"
-                        : item.status === 1
-                          ? "Active"
-                          : "Suspend"}
-                    </p>
+                      {/* Product */}
+                      <td className="flex p-[10px] items-center gap-[15px]">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <div className="bg-white w-[50px] h-[50px] flex items-center justify-center rounded-sm">
+                          <img
+                            src="/productImage.png"
+                            alt="product"
+                            className="md:w-[28px] md:h-[39px] w-[22px] h-[22px] "
+                          />
+                        </div>
+                        <span className="md:text-xs text-[10px] font-semibold md:leading-[22px] leading-[13px]">{item.title}</span>
+                      </td>
 
-                    {/* Actions */}
-                    <div className="flex gap-3 justify-center">
-                      {/* <Link
+                      <td className=" p-[10px] md:text-xs text-[10px] md:leading-[22px] leading-[13px] font-semibold text-center">{item.vehicle_make}</td>
+                      <td className=" p-[10px] md:text-xs text-[10px] md:leading-[22px] leading-[13px] font-semibold text-center">{item.vehicle_model}</td>
+                      <td className=" p-[10px] md:text-xs text-[10px] md:leading-[22px] leading-[13px] font-semibold text-center">{item.vehicle_model_trim}</td>
+
+                      {/* Urgency Badge */}
+                      <td className="p-[10px]">
+                      <div className="text-[10px] capitalize font-medium leading-[15px] text-center text-white bg-[#52A84E] px-[9px] py-[2px] ms-auto me-auto w-[46px] rounded-[50px]">
+                        {item.urgency}
+                      </div>
+                      </td>
+
+                      <td className="md:text-xs text-[10px] p-[10px] md:leading-[22px] leading-[13px] font-semibold text-center">{item.required_by_date}</td>
+
+                      {/* Status Color */}
+                      <td
+                        className={`md:text-xs text-[10px] md:leading-[22px] leading-[13px] p-[10px] font-semibold text-center ${item.status === 0
+                          ? "text-yellow-400"
+                          : item.status === 1
+                            ? "text-green-500"
+                            : "text-red-500"
+                          }`}
+                      >
+                        {item.status === 0
+                          ? "Incative"
+                          : item.status === 1
+                            ? "Active"
+                            : "Suspend"}
+                      </td>
+
+                      {/* Actions */}
+                      <td>
+                       <div className="flex gap-3 p-[10px] justify-center">  
+                        {/* <Link
                         href={`/view-part-request?request=${item.id}`}
                         className="p-2 rounded border border-autoblue text-autoblue hover:bg-blue-500/20 cursor-pointer"
                       >
                         <EyeIcon className="h-5" />
                       </Link> */}
-                      <button
-                        onClick={() => handleClick(item)}
-                        className="px-[5px] flex justify-center items-center h-[30px] w-[30px] bg-[#011827] rounded-sm border border-[#153C51] text-autoblue cursor-pointer"
-                      >
-                        <EyeIcon className="h-[20px] w-[20px]" />
-                      </button>
-                      <Link
-                        href="/request-part"
-                        className="px-[5px] flex justify-center items-center h-[30px] w-[30px] bg-[#011827] rounded-sm border border-[#153C51] text-autoblue cursor-pointer"
-                      >
-                        <PencilSquareIcon className="h-[20px] w-[20px]" />
-                      </Link>
-                      <button className="px-[5px] flex justify-center items-center h-[30px] w-[30px] bg-[#011827] rounded-sm border border-[#153C51] text-autoblue cursor-pointer">
-                        <TrashIcon className="h-[20px] w-[20px]" />
-                      </button>
-                    </div>
-                  </div>
-                ))
+                        <button
+                          onClick={() => handleClick(item)}
+                          className="px-[5px] flex justify-center items-center h-[30px] w-[30px] bg-[#011827] rounded-sm border border-[#153C51] text-autoblue cursor-pointer"
+                        >
+                          <EyeIcon className="h-[20px] w-[20px]" />
+                        </button>
+                        <Link
+                          href="/request-part"
+                          className="px-[5px] flex justify-center items-center h-[30px] w-[30px] bg-[#011827] rounded-sm border border-[#153C51] text-autoblue cursor-pointer"
+                        >
+                          <PencilSquareIcon className="h-[20px] w-[20px]" />
+                        </Link>
+                        <button className="px-[5px] flex justify-center items-center h-[30px] w-[30px] bg-[#011827] rounded-sm border border-[#153C51] text-autoblue cursor-pointer">
+                          <TrashIcon className="h-[20px] w-[20px]" />
+                        </button>
+                        </div>
+                      </td>
+                    </tr>                 
+              ))
+              
               ) : (
-                <h1 className="text-center text-gray-900">No Users found.</h1>
+              <h1 className="text-center text-gray-900">No Users found.</h1>
               )}
+              </tbody>             
+               </table>
             </div>
-          </div>
+          
         </div>
       </div>
     </div>

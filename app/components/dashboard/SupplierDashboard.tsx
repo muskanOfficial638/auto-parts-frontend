@@ -198,53 +198,11 @@ export default function SupplierDashboard() {
 
           {/* List Items */}
           <div className="space-y-[10px]">
-<<<<<<< Updated upstream
-            {parts.map((p) => (
-              <div
-                key={p.id}
-                className="bg-[#12151B] p-[20px] rounded-lg flex flex-wrap lg:gap-[0] gap-y-[20px] items-center justify-between"
-              >
-                <div className="flex md:items-center items-start gap-4">
-                  <div className="bg-white py-[11px] px-[18px] md:mt-[0] mt-[4px] rounded-sm">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/productImage.png"
-                      alt="Filter"
-                      className="md:w-[43px] md:h-[59px] w-[30px] h-[46px] object-cover"
-                    />
-                  </div>
-                  <div>
-                    <h3 className="text-base leading-[22px] font-bold flex items-center gap-[8px]">
-                      {p.title}{" "}
-                      <span className="text-[8px] font-medium leading-[10px] text-white bg-[#52A84E] px-[9px] py-[1px] rounded-[50px]">
-                        High
-                      </span>
-                    </h3>
-
-                    <p className="md:text-sm text-xs leading-[22px] font-medium text-white mt-[5px]">
-                      {p.desc}
-                    </p>
-
-                    <p className="text-xs leading-[15px] font-medium text-[#A4A4A4] mt-[5px]">
-                      {p.trim}
-                    </p>
-
-                    <p className="text-[10px] font-medium text-[#F8F8F8] mt-[5px]">
-                      Required By: <span>{p.date}</span>
-                    </p>
-                  </div>
-                </div>
-
-                <button
-                  className="bg-autoblue  md:text-base text-sm font-semibold leading-[14px] hover:bg-[#1a8cd8] md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm cursor-pointer"
-                  onClick={() => setModalOpen(true)}
-=======
             {partRequestData ? (
               partRequestData.map((item) => (
                 <div
                   key={item.id}
                   className="bg-[#12151B] p-[20px] rounded-lg flex flex-wrap lg:gap-[0] gap-y-[20px] items-center justify-between"
->>>>>>> Stashed changes
                 >
                   <div className="flex md:items-center items-start gap-4">
                     <div className="bg-white py-[11px] px-[18px] md:mt-[0] mt-[4px] rounded-sm">

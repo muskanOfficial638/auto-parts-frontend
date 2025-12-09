@@ -78,20 +78,6 @@ export default function BuyerDashboard() {
           </div>
 
           {/* Table Container */}
-          
-            {/* Header */}
-            {/* <div className="grid grid-cols-8 bg-autoblue text-white font-semibold px-[70px] py-[9px] font-bold leading-[22px] text-sm">
-              <p>Product</p>
-              <p>Make</p>
-              <p>Model</p>
-              <p>Trim</p>
-              <p>Urgency</p>
-              <p>Required</p>
-              <p>Status</p>
-              <p className="text-center">Action</p>
-            </div> */}
-
-            {/* Rows */}
             <div className=" table-container overflow-auto">
               <table className="w-full border-0 bg-[#12151B]  rounded-sm">
                 <thead>

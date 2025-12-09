@@ -4,11 +4,14 @@ import axios from "axios";
 // export const authApiPath = "http://54.80.119.79:8001/v1";
 // export const supplierPath = "http://54.80.119.79:8005/v1/supplier";
 // export const buyerPath = "http://54.80.119.79:8002/v1/buyer";
+// export const vehicleApiPath = "http://54.80.119.79:8006/v1/vehicle";
+
 
 // API paths for Vercel
 export const authApiPath = "/api/auth";
 export const supplierPath = "/api/supplier";
 export const buyerPath = "/api/buyer";
+export const vehicleApiPath = "/api/vehicle";
 
 // BUYER
 // Buyer All part requests
@@ -185,4 +188,18 @@ export async function sendVerification(email: string) {
       console.error("Verification failed:", error);
       throw error;
     });
+}
+
+// VEHICLE
+// Get Vehicle make
+export async function viewVehicleMake() {
+  const res = await fetch(`${vehicleApiPath}/view/`, {
+    cache: "no-store",
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (!res.ok) throw new Error("Failed to vehicle makes");
+  return res.json();
 }

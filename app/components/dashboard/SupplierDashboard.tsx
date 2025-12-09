@@ -5,15 +5,14 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import BidModal from "@/app/components/supplier/Modal/BidModal";
-import OTPModal from "@/app/components/supplier/Modal/OtpModal";
 import { fetchAllSupplierPartRequests } from "@/app/utils/api";
 import { PartRequest } from "../common/interface";
 import Loader from "../common/Loader";
 
 export default function SupplierDashboard() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [otpModalOpen, setOtpModalOpen] = useState(false);
   const [partRequestData, setPartRequestData] = useState<PartRequest[]>();
+  const [userRequest, setUserRequest] = useState<PartRequest>();
   const [filtersOpen, setFiltersOpen] = useState({
     make: true,
     bmw: true,
@@ -37,21 +36,22 @@ export default function SupplierDashboard() {
 
   useEffect(() => {
     const delayFilter = setTimeout(() => {
-    const search = globalSearch.toLowerCase();
-    const filtered = partRequestData && partRequestData.filter(item => {
-      return (
-        item.title?.toLowerCase().includes(search) ||
-        item.description?.toLowerCase().includes(search) ||
-        item.urgency?.toLowerCase().includes(search) ||
-        item.vehicle_make?.toLowerCase().includes(search) ||
-        item.vehicle_model?.toLowerCase().includes(search)
-      );
-    });
+      const search = globalSearch.toLowerCase();
+      const filtered =
+        partRequestData &&
+        partRequestData.filter((item) => {
+          return (
+            item.title?.toLowerCase().includes(search) ||
+            item.description?.toLowerCase().includes(search) ||
+            item.urgency?.toLowerCase().includes(search) ||
+            item.vehicle_make?.toLowerCase().includes(search) ||
+            item.vehicle_model?.toLowerCase().includes(search)
+          );
+        });
+      setPartRequestData(filtered);
+    }, 300);
 
-    setPartRequestData(filtered);
-  }, 300);
-
-  return () => clearTimeout(delayFilter);
+    return () => clearTimeout(delayFilter);
   }, [globalSearch, partRequestData]);
 
   const handleGlobalSearch = (e: any) => {
@@ -66,30 +66,33 @@ export default function SupplierDashboard() {
       }
       return;
     }
-  setGlobalSearch(e.target.value);
-};
+    setGlobalSearch(e.target.value);
+  };
 
+  function ModalOpen(requestData: PartRequest) {
+    setUserRequest(requestData);
+    setModalOpen(true);
+  }
 
-//   const onSearchPartRequest = debounce(async (event: any) => {
-//   const value = event.target.value;
+  //   const onSearchPartRequest = debounce(async (event: any) => {
+  //   const value = event.target.value;
 
-//   const autoPartsUserData = localStorage.getItem("autoPartsUserData");
-//   const loggedInUser = JSON.parse(autoPartsUserData || "{}");
+  //   const autoPartsUserData = localStorage.getItem("autoPartsUserData");
+  //   const loggedInUser = JSON.parse(autoPartsUserData || "{}");
 
-//   if (!loggedInUser?.access_token) return;
+  //   if (!loggedInUser?.access_token) return;
 
-//   const data = await fetchAllSupplierPartRequests( 
-//     loggedInUser.access_token,
-//     value,     // title search
-//     "",        // urgency
-//     "",        // description
-//     "",        // make
-//     ""         // model
-//   );
+  //   const data = await fetchAllSupplierPartRequests(
+  //     loggedInUser.access_token,
+  //     value,     // title search
+  //     "",        // urgency
+  //     "",        // description
+  //     "",        // make
+  //     ""         // model
+  //   );
 
-//   setPartRequestData(data);
-// }, 400); // 400ms delay
-
+  //   setPartRequestData(data);
+  // }, 400); // 400ms delay
 
   if (loading) {
     return (
@@ -226,7 +229,8 @@ export default function SupplierDashboard() {
                       </p>
 
                       <p className="text-xs leading-[15px] font-medium text-[#A4A4A4] mt-[5px]">
-                        {item.vehicle_make} {item.vehicle_model} {item.vehicle_model_trim}
+                        {item.vehicle_make} {item.vehicle_model}{" "}
+                        {item.vehicle_model_trim}
                       </p>
 
                       <p className="text-[10px] font-medium text-[#F8F8F8] mt-[5px]">
@@ -237,7 +241,7 @@ export default function SupplierDashboard() {
 
                   <button
                     className="bg-autoblue md:text-base text-sm font-semibold leading-[14px] hover:bg-[#1a8cd8] md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm cursor-pointer"
-                    onClick={() => setModalOpen(true)}
+                    onClick={() => ModalOpen(item)}
                   >
                     Quote Now
                   </button>
@@ -252,11 +256,9 @@ export default function SupplierDashboard() {
 
       <BidModal
         open={modalOpen}
+        userRequest={userRequest}
         onClose={() => setModalOpen(false)}
-        openOTP={() => setOtpModalOpen(true)}
       />
-
-      <OTPModal open={otpModalOpen} onClose={() => setOtpModalOpen(false)} />
     </>
   );
 }
@@ -269,5 +271,3 @@ export default function SupplierDashboard() {
 //     timer = setTimeout(() => func(...args), delay);
 //   };
 // };
-
-

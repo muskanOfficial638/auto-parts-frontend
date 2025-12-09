@@ -1,15 +1,30 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useState } from "react";
-import { CalendarDays } from "lucide-react";
-import { buyerPath } from "@/app/utils/api";
+import { useEffect, useState } from "react";
+// import { CalendarDays } from "lucide-react";
+import { buyerPath, viewVehicleMake } from "@/app/utils/api";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { PartRequest } from "../common/interface";
+import { Make, Model, PartRequest, Trim } from "../common/interface";
 
 export default function RequestPartForm() {
   const [formData, setFormData] = useState<PartRequest>();
-  const [attachement, setAttachement] = useState("");
+  const [makeData, setMakeData] = useState<Make[]>([]);
+  const [modelData, setModelData] = useState<Model[]>([]);
+  const [trimData, setTrimData] = useState<Trim[]>([]);
+  const [selectedMake, setSelectedMake] = useState<Make>();
+  const [selectedModel, setSelectedModel] = useState<Model>();
+  const [selectedTrim, setSelectedTrim] = useState<Trim>();
+
+  // Use useEffect to fetch the data asynchronously
+  useEffect(() => {
+    const fetchData = async () => {
+      const makeData = await viewVehicleMake();
+      // console.log("makeData", makeData)
+      setMakeData(makeData);
+    };
+    fetchData();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -19,15 +34,73 @@ export default function RequestPartForm() {
     }));
   };
 
-  async function handleSave(e: React.FormEvent) {
-    console.log("formData", formData);
-    e.preventDefault();
+  const handleSelectMakeChange = async (makeId: string) => {
+    console.log("make id", makeId);
+    const selectedId = makeId;
+    const vehicleMakeData = await viewVehicleMake();
+    // Find the corresponding make name from your makes array
+    const selectedMake = vehicleMakeData.find(
+      (make: Make) => make.make_id === selectedId
+    );
+    // console.log("selected Make", selectedMake);
 
+    if (selectedMake) {
+      setSelectedMake(selectedMake);
+      setModelData(selectedMake?.models);
+      console.log("modelData", selectedMake?.models);
+      // const selectedModel = selectedModel?.models.find(
+      //   (model: Model) => model.id
+      // );
+      // setSelectedModel(selectedModel);
+    } else {
+      console.warn("Make not found for ID:", selectedId);
+    }
+  };
+
+  const handleSelectModelChange = async (modelId: string) => {
+    const selectedId = modelId;
+    const vehicleModelData = modelData;
+    // Find the corresponding make name from your makes array
+    const selectedModelData = vehicleModelData.find(
+      (model: Model) => model?.id === selectedId
+    );
+
+    if (selectedModelData) {
+      setSelectedModel(selectedModelData);
+      setTrimData(selectedModelData?.trims);
+      console.log("Trim data", selectedModelData?.trims);
+    } else {
+      console.warn("Model not found for ID:", selectedId);
+    }
+  };
+
+  const handleSelectTrimChange = async (trimId: string) => {
+    const selectedId = trimId;
+    const vehicleModelData = trimData;
+    // Find the corresponding make name from your makes array
+    const selectedTrimData = vehicleModelData.find(
+      (trim: Trim) => trim?.id === selectedId
+    );
+
+    if (selectedTrimData) {
+      setSelectedTrim(selectedTrimData);
+      console.log("selectedTrimData", selectedTrimData);
+    } else {
+      console.warn("Trim not found for ID:", selectedId);
+    }
+  };
+
+  async function handleSave(e: React.FormEvent) {
+    e.preventDefault();
+    const autoPartsUserData = localStorage.getItem("autoPartsUserData");
+    const loggedInUser = JSON.parse(autoPartsUserData || "{}");
     try {
       const response = await axios.post(`${buyerPath}/part-request`, {
-        formData,
-        role: "buyer",
-        is_active: true,
+        ...formData,
+        user_id: loggedInUser?.user?.id || "",
+        vehicle_make: selectedMake?.make_name || "",
+        vehicle_model: selectedModel?.name || "",
+        vehicle_model_trim: selectedTrim?.trim || "",
       });
 
       // console.log("RegisterData:", response.data);
@@ -38,7 +111,9 @@ export default function RequestPartForm() {
       if (err.response) {
         // Server responded with a status other than 2xx
         console.error("Server error:", err.response.data);
-        toast.error(err.response.data?.detail[0]?.msg || "Signup failed");
+        toast.error(
+          err.response.data?.detail[0]?.msg || "Failed to create part request"
+        );
       } else if (err.request) {
         // Request was made but no response received
         console.error("No response:", err.request);
@@ -67,105 +142,142 @@ export default function RequestPartForm() {
         <div className="flex justify-center items-start pt-36 pb-20 px-4">
           <div className="w-[1037px] max-w-[100%] bg-[#12151B] rounded-sm px-[30px] pt-[20px] pb-[60px]">
             <div className="w-[808px] max-w-[100%] ms-[auto] me-[auto]">
-            <h2 className="md:text-[23px] text-text-lg leading-[36px] font-semibold text-white mb-[27px]">
-              Request a Part
-            </h2>
+              <h2 className="md:text-[23px] text-text-lg leading-[36px] font-semibold text-white mb-[27px]">
+                Request a Part
+              </h2>
 
-            <form className="space-y-[28px]">
-              {/* Product Name */}
-              <div>
-                <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-                  Product Name*
-                </label>
-                <input
-                  type="text"
-                  className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
-                />
-              </div>
-
-              {/* Make */}
-              <div>
-                <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-                  Make*
-                </label>
-                <select className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none">
-                  <option value=""></option>
-                </select>
-              </div>
-
-              {/* Model */}
-              <div>
-                <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-                  Model*
-                </label>
-                <select className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none">
-                  <option value=""></option>
-                </select>
-              </div>
-
-              {/* Trim */}
-              <div>
-                <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-                  Trim*
-                </label>
-                <select className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none">
-                  <option value=""></option>
-                </select>
-              </div>
-
-              {/* Urgency */}
-              <div>
-                <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-                  Urgency*
-                </label>
-                <input
-                  type="text"
-                  className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
-                />
-              </div>
-
-              {/* Required Date */}
-              <div>
-                <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-                  Required
-                </label>
-
-                <div className="relative">
+              <form className="space-y-[28px]" onSubmit={handleSave}>
+                {/* Product Name */}
+                <div>
+                  <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                    Product Name*
+                  </label>
                   <input
-                    type="date"
-                    value={attachement}
-                    onChange={(e) => setAttachement(e.target.value)}
+                    type="text"
+                    name="title"
+                    placeholder="Enter product name"
+                    onChange={handleChange}
                     className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
                   />
-                  <CalendarDays
-                    className="absolute right-3 top-4 text-gray-400"
-                    size={18}
+                </div>
+
+                {/* Make */}
+                <div>
+                  <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                    Make*
+                  </label>
+                  <select
+                    onChange={(e) => handleSelectMakeChange(e.target.value)}
+                    name="vehicle_make"
+                    className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
+                  >
+                    <option value="">Select Make</option>
+                    {makeData &&
+                      makeData.map((make: Make) => (
+                        <option key={make?.make_id} value={make?.make_id}>
+                          {make?.make_name}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+
+                {/* Model */}
+                <div>
+                  <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                    Model*
+                  </label>
+                  <select
+                    name="vehicle_model"
+                    onChange={(e) => handleSelectModelChange(e.target.value)}
+                    className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
+                  >
+                    <option value="">Select Model</option>
+                    {modelData &&
+                      modelData.map((model: Model) => (
+                        <option key={model?.id} value={model?.id}>
+                          {model?.name}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+
+                {/* Trim */}
+                <div>
+                  <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                    Trim*
+                  </label>
+                  <select
+                    name="vehicle_model"
+                    onChange={(e) => handleSelectTrimChange(e.target.value)}
+                    className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
+                  >
+                    <option value="">Select Trim</option>
+                    {trimData &&
+                      trimData.map((trim: Trim) => (
+                        <option key={trim?.id} value={trim?.id}>
+                          {trim?.trim}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+
+                {/* Urgency */}
+                <div>
+                  <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                    Urgency*
+                  </label>
+                  <input
+                    type="text"
+                    name="urgency"
+                    placeholder="Ex.- High, low, medium"
+                    onChange={handleChange}
+                    className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
                   />
                 </div>
-              </div>
 
-              {/* Image Upload */}
-              <div className="flex flex-col">
-                <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-                  Image*
-                </label>
+                {/* Required Date */}
+                <div>
+                  <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                    Required
+                  </label>
 
+                  <div className="relative">
+                    <input
+                      type="date"
+                      name="required_by_date"
+                      onChange={handleChange}
+                      className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
+                    />
+                    {/* <CalendarDays
+                      className="absolute right-5 top-4 text-gray-400"
+                      size={18}
+                    /> */}
+                  </div>
+                </div>
+
+                {/* Image Upload */}
+                <div className="flex flex-col">
+                  <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                    Image*
+                  </label>
+
+                  <input
+                    type="file"
+                    name="attachment"
+                    onChange={handleChange}
+                    placeholder="Browse Image"
+                    className="px-[14px] py-[7px] font-sm leading-[29px] w-[138px] rounded-sm border border-autoblue text-autoblue hover:border-hoverblue duration-400 cursor-pointer cursor-pointer"
+                  />
+                </div>
+
+                {/* Save Button */}
                 <button
-                  type="button"
-                  className="px-[14px] py-[7px] font-sm leading-[29px] w-[138px]  rounded-sm border border-autoblue text-autoblue hover:border-hoverblue duration-400 cursor-pointer"
+                  type="submit"
+                  className="bg-[#1DA1F2] md:text-[22px] text-base leading[14px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-[#1a8cd8] duration-400 cursor-pointer"
                 >
-                  Browse image
+                  Save Changes
                 </button>
-              </div>
-
-              {/* Save Button */}
-              <button
-                type="submit"
-                className="bg-[#1DA1F2] md:text-[22px] text-base leading[14px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-[#1a8cd8] duration-400 cursor-pointer"
-              >
-                Save Changes
-              </button>
-            </form>
+              </form>
             </div>
           </div>
         </div>

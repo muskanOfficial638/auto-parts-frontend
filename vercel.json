@@ -13,6 +13,11 @@
     {
       "source": "/api/buyer/:path*",
       "destination": "http://54.80.119.79:8002/v1/buyer/:path*/"
+    },
+
+    {
+      "source": "/api/vehicle:path*",
+      "destination": "http://54.80.119.79:8006/v1/vehicle/:path*/"
     }
   ]
 }

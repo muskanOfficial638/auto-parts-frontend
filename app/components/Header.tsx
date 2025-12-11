@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
+import { viewSupplierProfile } from "../utils/api";
 // import { FiChevronDown } from "react-icons/fi";
 
 export default function Header() {
@@ -14,12 +15,28 @@ export default function Header() {
     string | null | any
   >(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [profileData, setProfileData] = useState({
+    user_id: "",
+    email: "",
+    user_name: "",
+    company_name: "",
+    kyc_status: "",
+  });
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const data = localStorage.getItem("autoPartsUserData");
+      const loggedInUser = data ? JSON.parse(data) : null;
+      if (loggedInUser?.user && loggedInUser?.user?.role === "supplier") {
+        viewSupplierProfile(
+          loggedInUser.user.id,
+          loggedInUser.access_token
+        ).then((data: any) => {
+          setProfileData(data);
+        });
+      }
       Promise.resolve().then(() => {
-        setAutoPartsUserData(data ? JSON.parse(data) : null);
+        setAutoPartsUserData(loggedInUser);
       });
     }
   }, []);
@@ -86,10 +103,16 @@ export default function Header() {
             </div> */}
               </div>
 
-              <a href="#" className="hover:text-hoverblue text-[17px] duration-400 font-semibold leading-[15px]">
+              <a
+                href="#"
+                className="hover:text-hoverblue text-[17px] duration-400 font-semibold leading-[15px]"
+              >
                 About Us
               </a>
-              <a href="#" className="hover:text-hoverblue text-[17px] duration-400 font-semibold leading-[15px]">
+              <a
+                href="#"
+                className="hover:text-hoverblue text-[17px] duration-400 font-semibold leading-[15px]"
+              >
                 Contact
               </a>
             </nav>
@@ -155,22 +178,41 @@ export default function Header() {
 
             <div className="relative group">
               {/* User Button */}
-              <button className="flex text-[15px] font-semibold leading-[14px] py-[5px] px-[10px] bg-black duration-400 cursor-pointer rounded-lg hover:text-hoverblue items-center">
-                <Image
-                  src="/fake-user.png"
-                  alt="User"
-                  width={32}
-                  height={32}
-                  className="w-[30px] h-[30px] rounded-full mr-[10px]"
-                />
-                {/* <span className="ml-1">
+              {autoPartsUserData?.user?.role === "supplier" ? (
+                <button className="flex text-[15px] font-semibold leading-[14px] py-[5px] px-[10px] bg-black duration-400 cursor-pointer rounded-lg hover:text-hoverblue items-center">
+                  <Image
+                    src="/fake-user.png"
+                    alt="User"
+                    width={32}
+                    height={32}
+                    className="w-[30px] h-[30px] rounded-full mr-[10px]"
+                  />
+
+                  {profileData?.user_name
+                    ? profileData?.user_name
+                    : autoPartsUserData?.user?.role}
+                  <span className="ml-1">▾</span>
+                </button>
+              ) : (
+                <button className="flex text-[15px] font-semibold leading-[14px] py-[5px] px-[10px] bg-black duration-400 cursor-pointer rounded-lg hover:text-hoverblue items-center">
+                  <Image
+                    src="/fake-user.png"
+                    alt="User"
+                    width={32}
+                    height={32}
+                    className="w-[30px] h-[30px] rounded-full mr-[10px]"
+                  />
+                  {/* <span className="ml-1">
                   <FiChevronDown
                     className={filtersOpen.a1 ? "rotate-180 text-[18px] text-[#D2D2D2]" : "text-[18px] text-[#D2D2D2]"}
                   />
                 </span> */}
-                {autoPartsUserData?.user?.user_name ? autoPartsUserData?.user?.user_name : autoPartsUserData?.user?.role}
-                <span className="ml-1">▾</span>
-              </button>
+                  {autoPartsUserData?.user?.user_name
+                    ? autoPartsUserData?.user?.user_name
+                    : autoPartsUserData?.user?.role}
+                  <span className="ml-1">▾</span>
+                </button>
+              )}
 
               {/* Dropdown */}
               <div className="absolute right-[0] pt-[15px] hidden group-hover:block  shadow-lg w-44 ">
@@ -191,15 +233,24 @@ export default function Header() {
                       href={
                         autoPartsUserData?.user?.role === "buyer"
                           ? "/buyer-dashboard"
-                          : "/my-account"
+                          : "/supplier-dashboard"
                       }
                       className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue duration-400 border-[#242529] border-b rounded"
                     >
-                      {autoPartsUserData?.user?.role === "buyer"
-                        ? "Dashboard"
-                        : "My Account"}
+                      Dashboard
                     </a>
                   </li>
+                  {autoPartsUserData?.user?.role === "supplier" && (
+                    <li>
+                      <a
+                        href="/my-account"
+                        className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue duration-400 border-[#242529] border-b rounded"
+                      >
+                        My Account
+                      </a>
+                    </li>
+                  )}
+
                   {autoPartsUserData?.user?.role === "supplier" && (
                     <li>
                       <a
@@ -234,8 +285,9 @@ export default function Header() {
 
       {/* MOBILE SLIDE-IN MENU */}
       <div
-        className={`fixed top-0 right-0 h-full w-72 bg-black/90 text-white z-50 transform transition-transform duration-300 ${mobileOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+        className={`fixed top-0 right-0 h-full w-72 bg-black/90 text-white z-50 transform transition-transform duration-300 ${
+          mobileOpen ? "translate-x-0" : "translate-x-full"
+        }`}
       >
         <button
           onClick={() => setMobileOpen(false)}

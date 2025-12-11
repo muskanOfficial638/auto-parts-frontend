@@ -1,13 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useEffect, useState } from "react";
-// import { CalendarDays } from "lucide-react";
-import { buyerPath, viewVehicleMake } from "@/app/utils/api";
-import axios from "axios";
+import {
+  buyerPath,
+  fetchPartRequestsById,
+  viewVehicleMake,
+} from "@/app/utils/api";
 import { toast } from "react-toastify";
 import { Make, Model, PartRequest, Trim } from "../common/interface";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function RequestPartForm() {
+  const searchParams = useSearchParams();
+  const requestId = searchParams.get("request") || "";
+  const router = useRouter();
   const [formData, setFormData] = useState<PartRequest>();
   const [makeData, setMakeData] = useState<Make[]>([]);
   const [modelData, setModelData] = useState<Model[]>([]);
@@ -16,21 +22,30 @@ export default function RequestPartForm() {
   const [selectedModel, setSelectedModel] = useState<Model>();
   const [selectedTrim, setSelectedTrim] = useState<Trim>();
 
-  // Use useEffect to fetch the data asynchronously
   useEffect(() => {
+    const autoPartsUserData = localStorage.getItem("autoPartsUserData");
+    const loggedInUser = JSON.parse(autoPartsUserData || "{}");
+
+    if (loggedInUser?.access_token && requestId) {
+      fetchPartRequestsById(requestId, loggedInUser.access_token).then(
+        (data: PartRequest) => {
+          // console.log("data",data);
+          setFormData(data);
+        }
+      );
+    }
     const fetchData = async () => {
       const makeData = await viewVehicleMake();
-      // console.log("makeData", makeData)
       setMakeData(makeData);
     };
     fetchData();
-  }, []);
+  }, [requestId]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name, type, files, value } = e.target;
     setFormData((prev: any) => ({
       ...prev,
-      [name]: value,
+      [name]: type === "file" ? files?.[0] : value,
     }));
   };
 
@@ -92,37 +107,61 @@ export default function RequestPartForm() {
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
+
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
+
+    const updatedData: any = {
+      ...formData,
+      user_id: loggedInUser?.user?.id || "",
+      vehicle_make: formData?.vehicle_make ? formData?.vehicle_make : selectedMake?.make_name || "",
+      vehicle_model: formData?.vehicle_model ? formData?.vehicle_model : selectedModel?.name || "",
+      vehicle_model_trim: formData?.vehicle_model_trim ? formData?.vehicle_model_trim : selectedTrim?.trim || "",
+    };
+
+    const multipartData = new FormData();
+    Object.entries(updatedData).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        multipartData.append(key, value as any);
+      }
+    });
+
     try {
-      const response = await axios.post(`${buyerPath}/part-request`, {
-        ...formData,
-        user_id: loggedInUser?.user?.id || "",
-        vehicle_make: selectedMake?.make_name || "",
-        vehicle_model: selectedModel?.name || "",
-        vehicle_model_trim: selectedTrim?.trim || "",
+      const url = requestId
+        ? `${buyerPath}/part-request/${requestId}`
+        : `${buyerPath}/part-request`;
+
+      const method = requestId ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
+        body: multipartData,
+        headers: {
+          // Add Authorization if your API requires it
+          ...(loggedInUser?.access_token && {
+            Authorization: `Bearer ${loggedInUser.access_token}`,
+          }),
+        },
       });
 
-      // console.log("RegisterData:", response.data);
-      if (response?.data) {
-      }
-    } catch (err: any) {
-      // Handle errors more gracefully
-      if (err.response) {
-        // Server responded with a status other than 2xx
-        console.error("Server error:", err.response.data);
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Server error:", errorData);
         toast.error(
-          err.response.data?.detail[0]?.msg || "Failed to create part request"
+          errorData?.detail?.[0]?.msg || "Failed to save part request"
         );
-      } else if (err.request) {
-        // Request was made but no response received
-        console.error("No response:", err.request);
-        toast.error("No response from server");
-      } else {
-        // Something else happened
-        console.error("Error:", err.message);
-        toast.error("No response from server");
+        return;
       }
+
+      const data = await response.json();
+      console.log("Success:", data);
+      toast.success(
+        requestId ? "Part request updated" : "Part request created"
+      );
+      router.push("/buyer-dashboard");
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      toast.error("Network error or server not responding");
     }
   }
 
@@ -143,7 +182,7 @@ export default function RequestPartForm() {
           <div className="w-[1037px] max-w-[100%] bg-[#12151B] rounded-sm px-[30px] pt-[20px] pb-[60px]">
             <div className="w-[808px] max-w-[100%] ms-[auto] me-[auto]">
               <h2 className="md:text-[23px] text-text-lg leading-[36px] font-semibold text-white mb-[27px]">
-                Request a Part
+                {requestId ? "Edit Part request" : "Request a Part"}
               </h2>
 
               <form className="space-y-[28px]" onSubmit={handleSave}>
@@ -155,6 +194,7 @@ export default function RequestPartForm() {
                   <input
                     type="text"
                     name="title"
+                    value={formData?.title || ""}
                     placeholder="Enter product name"
                     onChange={handleChange}
                     className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
@@ -171,7 +211,9 @@ export default function RequestPartForm() {
                     name="vehicle_make"
                     className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
                   >
-                    <option value="">Select Make</option>
+                    <option value={requestId ? formData?.vehicle_make : ""}>
+                      {requestId ? formData?.vehicle_make : "Select Make"}
+                    </option>
                     {makeData &&
                       makeData.map((make: Make) => (
                         <option key={make?.make_id} value={make?.make_id}>
@@ -191,7 +233,9 @@ export default function RequestPartForm() {
                     onChange={(e) => handleSelectModelChange(e.target.value)}
                     className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
                   >
-                    <option value="">Select Model</option>
+                    <option value={requestId && !selectedMake ? formData?.vehicle_model : ""}>
+                      {requestId && !selectedMake ? formData?.vehicle_model : "Select Model"}
+                    </option>
                     {modelData &&
                       modelData.map((model: Model) => (
                         <option key={model?.id} value={model?.id}>
@@ -211,7 +255,11 @@ export default function RequestPartForm() {
                     onChange={(e) => handleSelectTrimChange(e.target.value)}
                     className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
                   >
-                    <option value="">Select Trim</option>
+                    <option
+                      value={requestId && !selectedMake ? formData?.vehicle_model_trim : ""}
+                    >
+                      {requestId && !selectedMake ? formData?.vehicle_model_trim : "Select Trim"}
+                    </option>
                     {trimData &&
                       trimData.map((trim: Trim) => (
                         <option key={trim?.id} value={trim?.id}>
@@ -231,6 +279,7 @@ export default function RequestPartForm() {
                     name="urgency"
                     placeholder="Ex.- High, low, medium"
                     onChange={handleChange}
+                    value={formData?.urgency || ""}
                     className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
                   />
                 </div>
@@ -246,6 +295,7 @@ export default function RequestPartForm() {
                       type="date"
                       name="required_by_date"
                       onChange={handleChange}
+                      value={formData?.required_by_date}
                       className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
                     />
                     {/* <CalendarDays
@@ -260,14 +310,21 @@ export default function RequestPartForm() {
                   <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                     Image*
                   </label>
-
-                  <input
-                    type="file"
-                    name="attachment"
-                    onChange={handleChange}
-                    placeholder="Browse Image"
-                    className="px-[14px] py-[7px] font-sm leading-[29px] w-[138px] rounded-sm border border-autoblue text-autoblue hover:border-hoverblue duration-400 cursor-pointer cursor-pointer"
-                  />
+                  <div className="flex flex-row">
+                    <input
+                      type="file"
+                      name="attachment"
+                      accept="image/*"
+                      onChange={handleChange}
+                      placeholder="Browse Image"
+                      className="px-[14px] py-[7px] font-sm leading-[29px] w-[138px] rounded-sm border border-autoblue text-autoblue hover:border-hoverblue duration-400 cursor-pointer cursor-pointer"
+                    />
+                    <span className="justify-center p-4">
+                      {requestId && formData?.attachment
+                        ? formData?.attachment
+                        : formData?.attachment?.name || ""}
+                    </span>
+                  </div>
                 </div>
 
                 {/* Save Button */}
@@ -275,7 +332,7 @@ export default function RequestPartForm() {
                   type="submit"
                   className="bg-[#1DA1F2] md:text-[22px] text-base leading[14px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-[#1a8cd8] duration-400 cursor-pointer"
                 >
-                  Save Changes
+                  {requestId ? "Update" : "Save Changes"}
                 </button>
               </form>
             </div>

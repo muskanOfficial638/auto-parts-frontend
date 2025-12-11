@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 
 // API paths for LOCAL
@@ -62,6 +63,26 @@ export async function getQuoteByRequest(
   );
   if (!res.ok) throw new Error("Failed to load Quotes");
   return res.json();
+}
+
+// Delete buyer part request
+export async function deletePartRequest(token: string, requestId: string) {
+  return axios.delete(
+    `${buyerPath}/part-request/${requestId}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+    }
+  )
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error("unable to delete part request", error);
+      throw error;
+    });
 }
 
 // Update quote by action
@@ -130,6 +151,42 @@ export async function getQuoteBySupplier(
   return res.json();
 }
 
+export async function viewSupplierProfile(
+  user_id: string,
+  token: string
+) {
+  const res = await fetch(`${supplierPath}/profile/${user_id}`, {
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) throw new Error("Failed to load part request data");
+  return res.json();
+}
+
+// edit supplier
+export async function updateSupplierProfile(
+  user_id: string,
+  token: string,
+  payload: any
+) {
+  const res = await fetch(`${supplierPath}/profile/edit/${user_id}`, {
+    method: "PATCH",
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) throw new Error("Failed to update supplier");
+
+  return res.json();
+}
+
 // Search part requests
 // export async function searchSupplierPartRequests(
 //   token: string,
@@ -172,7 +229,7 @@ export async function verifyEmail(token: string) {
     });
 }
 
-// resend Verifiaction
+// resend Verification
 export async function sendVerification(email: string) {
   return axios
     .post(`${authApiPath}/auth/resend-verification?email=${email}`, {

@@ -70,6 +70,7 @@ export default function SupplierDashboard() {
   };
 
   function ModalOpen(requestData: PartRequest) {
+    // console.log("requestData",requestData)
     setUserRequest(requestData);
     setModalOpen(true);
   }

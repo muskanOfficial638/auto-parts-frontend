@@ -81,7 +81,7 @@ export default function MyBids() {
         <div className="relative z-10 flex justify-center pt-36 pb-20 px-4">
           {/* List Items */}
           <div className="space-y-[25px] w-full max-w-[1037px] rounded-lg shadow-lg ">
-            <h2 className="text-2xl leading-[14px] font-bold text-center">
+            <h2 className="text-2xl leading-[14px] font-bold text-center text-white">
               My bids
             </h2>
             <div className="text-xl items-center flex space-x-[36px]">
@@ -194,16 +194,17 @@ export default function MyBids() {
                     </div>
                   ) : (
                     <button
-                      className="bg-autoblue md:text-base text-sm font-semibold leading-[14px] hover:bg-[#1a8cd8] md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm cursor-pointer"
-                      onClick={() => setModalOpen(true)}
+                      className="bg-autoblue md:text-base text-sm font-semibold leading-[14px]  md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm"
+                      // onClick={() => setModalOpen(true)}
+                      disabled
                     >
-                      Quote Now
+                      {data?.status}
                     </button>
                   )}
                 </div>
               ))
             ) : (
-              <div className="font-bold flex items-center">
+              <div className="font-bold flex items-center text-white">
                 No quotes {}found for this user.
               </div>
             )}

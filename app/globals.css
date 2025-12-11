@@ -13,6 +13,7 @@
   --color-autoblue: #29B2FE;
   --color-hoverblue: #0092ff;
   --color-borderblue: #426A84;
+  --color-modalblue: #061D37;
 }
 
 @media (prefers-color-scheme: dark) {

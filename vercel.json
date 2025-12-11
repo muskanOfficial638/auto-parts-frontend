@@ -9,10 +9,18 @@
       "source": "/api/supplier/:path*",
       "destination": "http://54.80.119.79:8005/v1/supplier/:path*/"
     },
+    {
+      "source": "/api/supplier/quote/view",
+      "destination": "http://54.80.119.79:8005/v1/supplier/quote/view"
+    },
 
     {
       "source": "/api/buyer/:path*",
       "destination": "http://54.80.119.79:8002/v1/buyer/:path*/"
+    },
+    {
+      "source": "/api/buyer/all/part-request/:id",
+      "destination": "http://54.80.119.79:8002/v1/buyer/all/part-request/:id"
     },
 
     {

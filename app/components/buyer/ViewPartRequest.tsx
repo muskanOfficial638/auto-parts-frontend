@@ -146,60 +146,8 @@ export default function ViewPartRequest() {
 
           {/* QUOTES LIST */}
           <div className="space-y-[10px] mt-[16px]">
-            {/* === Quote Box Component === */}
-            {/* {[1, 2, 3].map((quote, index) => (
-              <div
-                key={quote}
-                className="bg-[#011827] border border-[#153C51] rounded-md p-5"
-              >
-                <div className="flex justify-between items-start">
-                  <div>
-                    <p className="text-white font-semibold">@Jam Corse</p>
-                    <p className="text-gray-200 text-sm">jam.corse9@gmail.com</p>
-
-                    <p className="text-gray-300 mt-3 text-sm">
-                      <span className="font-semibold text-gray-400">Price:</span>{" "}
-                      <span className="text-autoblue">$200.00</span>
-                    </p>
-
-                    <p className="text-gray-300 text-sm">
-                      <span className="font-semibold text-gray-400">
-                        Delivery Date:
-                      </span>{" "}
-                      12/12/2025
-                    </p>
-
-                    <p className="text-gray-300 text-sm mt-2">
-                      <span className="font-semibold text-gray-400">
-                        Description:
-                      </span>{" "}
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                      do eiusmod tempor incididunt.
-                    </p>
-                  </div>
-
-                   Right-Side Buttons 
-                  <div className="flex items-center gap-3">
-                    {index === 0 ? (
-                      <div className="bg-autoblue px-5 py-2 text-white rounded-md">
-                        Accepted
-                      </div>
-                    ) : (
-                      <>
-                        <button className="bg-green-600 px-5 py-2 text-white rounded-md hover:bg-green-700 cursor-pointer">
-                          Accept
-                        </button>
-                        <button className="bg-red-600 px-5 py-2 text-white rounded-md hover:bg-red-700 cursor-pointer">
-                          Reject
-                        </button>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))} */}
-            {quoteData &&
-              quoteData.map((data: Quote) => (
+            {quoteData?.length &&
+              quoteData?.map((data: Quote) => (
                 <div
                   key={data.id}
                   className="bg-[#011827] border border-[#153C51] rounded-sm pt-[5px] pb-[15px] ps-[12px] pe-[22px]"
@@ -243,7 +191,13 @@ export default function ViewPartRequest() {
                         <div className="bg-autoblue hover:bg-hoverblue duration-400 cursor-pointer md:text-base text-xs leading-[14px] md:px-[38px] md:py-[13px] px-[28px] py-[8px] text-white rounded-sm">
                           Accepted
                         </div>
-                      )} {data?.status == "pending" && (
+                      )}
+                      {data?.status == "rejected" && (
+                        <button disabled className="bg-red-600 duration-400 md:text-base text-xs leading-[14px] md:px-[38px] md:py-[13px] px-[28px] py-[8px] text-white rounded-sm">
+                          Rejected
+                        </button>
+                      )}
+                       {data?.status == "pending" && (
                         <>
                           <button
                             className="bg-green-600 md:text-base text-xs duration-400 leading-[14px] md:px-[38px] md:py-[13px] px-[28px] py-[8px] text-white rounded-sm hover:bg-green-700 cursor-pointer"

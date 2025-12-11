@@ -34,20 +34,19 @@ export default function BidModal({
   };
 
   async function handleSave(e: React.FormEvent) {
-    // console.log("formData =>", formData);
     e.preventDefault();
-
+    const autoPartsUserData = localStorage.getItem("autoPartsUserData");
+    const loggedInUser = JSON.parse(autoPartsUserData || "{}");
     try {
       const response = await axios.post(`${supplierPath}/quote`, {
         request_id: userRequest?.id,
-        user_id: userRequest?.user_id,
+        user_id: loggedInUser?.user?.id,
         ...formData,
       });
 
       if (response?.status === 200) {
         toast.success("Quote Submitted Successfully!");
         onClose();
-        // openOTP();
       }
     } catch (err: any) {
       // Handle errors more gracefully

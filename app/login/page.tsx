@@ -93,7 +93,7 @@ export default function LoginPage() {
         if (response.data?.user?.role === "buyer") {
           router.push("/buyer-dashboard");
         } else {
-          router.push("/supplier-dashboard");
+          router.push(response.data?.user?.profile?.kyc_status==="pending" ? "/kyc-page" : "/supplier-dashboard");
         }
       }
     } catch (err: any) {

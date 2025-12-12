@@ -7,7 +7,6 @@ import axios from "axios";
 // export const buyerPath = "http://54.80.119.79:8002/v1/buyer";
 // export const vehicleApiPath = "http://54.80.119.79:8006/v1/vehicle";
 
-
 // API paths for Vercel
 export const authApiPath = "/api/auth";
 export const supplierPath = "/api/supplier";
@@ -67,15 +66,13 @@ export async function getQuoteByRequest(
 
 // Delete buyer part request
 export async function deletePartRequest(token: string, requestId: string) {
-  return axios.delete(
-    `${buyerPath}/part-request/${requestId}`,
-    {
+  return axios
+    .delete(`${buyerPath}/part-request/${requestId}`, {
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
-    }
-  )
+    })
     .then((response) => {
       return response;
     })
@@ -151,10 +148,7 @@ export async function getQuoteBySupplier(
   return res.json();
 }
 
-export async function viewSupplierProfile(
-  user_id: string,
-  token: string
-) {
+export async function viewSupplierProfile(user_id: string, token: string) {
   const res = await fetch(`${supplierPath}/profile/${user_id}`, {
     cache: "no-store",
     headers: {
@@ -184,6 +178,25 @@ export async function updateSupplierProfile(
 
   if (!res.ok) throw new Error("Failed to update supplier");
 
+  return res.json();
+}
+
+//kyc detail
+export async function uploadKycDoc(
+  token: string,
+  path: string,
+  payload: any,
+  method: string
+) {
+  const res = await fetch(`${supplierPath}/kyc/${path}`, {
+    cache: "no-store",
+    method: method,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: payload,
+  });
+  if (!res.ok) throw new Error("Failed to load upload doc");
   return res.json();
 }
 

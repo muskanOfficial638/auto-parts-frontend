@@ -13,7 +13,7 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#12151B] text-white pt-[66px] pb-[24px] ">
+    <footer className="bg-brandBlack text-white pt-[66px] pb-[24px] ">
       <div className="container">
       {/* Top Section */}      
         <div className="grid grid-cols-1 md:grid-cols-5 gap-10 border-b border-[#232A35] pb-[50px]">

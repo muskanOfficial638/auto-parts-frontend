@@ -174,12 +174,12 @@ export default function RequestPartForm() {
       />
 
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/90 to-[#003253]/90" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#003253]/95 to-black/95" />
 
       {/* Page Content */}
       <div className="relative z-10 flex flex-col">
         <div className="flex justify-center items-start pt-36 pb-20 px-4">
-          <div className="w-[1037px] max-w-[100%] bg-[#12151B] rounded-sm px-[30px] pt-[20px] pb-[60px]">
+          <div className="w-[1037px] max-w-[100%] bg-brandBlack rounded-sm px-[30px] pt-[20px] pb-[60px]">
             <div className="w-[808px] max-w-[100%] ms-[auto] me-[auto]">
               <h2 className="md:text-[23px] text-text-lg leading-[36px] font-semibold text-white mb-[27px]">
                 {requestId ? "Edit Part request" : "Request a Part"}
@@ -188,7 +188,7 @@ export default function RequestPartForm() {
               <form className="space-y-[28px]" onSubmit={handleSave}>
                 {/* Product Name */}
                 <div>
-                  <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                  <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                     Product Name*
                   </label>
                   <input
@@ -197,19 +197,19 @@ export default function RequestPartForm() {
                     value={formData?.title || ""}
                     placeholder="Enter product name"
                     onChange={handleChange}
-                    className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
+                    className="w-full py-[8px] px-[18px]  bg-white md:text-[19px] text-[15px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
                   />
                 </div>
 
                 {/* Make */}
                 <div>
-                  <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                  <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                     Make*
                   </label>
                   <select
                     onChange={(e) => handleSelectMakeChange(e.target.value)}
                     name="vehicle_make"
-                    className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
+                    className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
                   >
                     <option value={requestId ? formData?.vehicle_make : ""}>
                       {requestId ? formData?.vehicle_make : "Select Make"}
@@ -225,13 +225,13 @@ export default function RequestPartForm() {
 
                 {/* Model */}
                 <div>
-                  <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                  <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                     Model*
                   </label>
                   <select
                     name="vehicle_model"
                     onChange={(e) => handleSelectModelChange(e.target.value)}
-                    className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
+                    className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
                   >
                     <option value={requestId && !selectedMake ? formData?.vehicle_model : ""}>
                       {requestId && !selectedMake ? formData?.vehicle_model : "Select Model"}
@@ -247,13 +247,13 @@ export default function RequestPartForm() {
 
                 {/* Trim */}
                 <div>
-                  <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                  <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                     Trim*
                   </label>
                   <select
                     name="vehicle_model"
                     onChange={(e) => handleSelectTrimChange(e.target.value)}
-                    className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
+                    className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
                   >
                     <option
                       value={requestId && !selectedMake ? formData?.vehicle_model_trim : ""}
@@ -271,7 +271,7 @@ export default function RequestPartForm() {
 
                 {/* Urgency */}
                 <div>
-                  <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                  <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                     Urgency*
                   </label>
                   <input
@@ -280,13 +280,13 @@ export default function RequestPartForm() {
                     placeholder="Ex.- High, low, medium"
                     onChange={handleChange}
                     value={formData?.urgency || ""}
-                    className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
+                    className="w-full py-[8px] px-[18px] placeholder-Gray bg-white md:text-[19px] text-[15px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
                   />
                 </div>
 
                 {/* Required Date */}
                 <div>
-                  <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                  <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                     Required
                   </label>
 
@@ -296,7 +296,7 @@ export default function RequestPartForm() {
                       name="required_by_date"
                       onChange={handleChange}
                       value={formData?.required_by_date}
-                      className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
+                      className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
                     />
                     {/* <CalendarDays
                       className="absolute right-5 top-4 text-gray-400"
@@ -307,19 +307,19 @@ export default function RequestPartForm() {
 
                 {/* Image Upload */}
                 <div className="flex flex-col">
-                  <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                  <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                     Image*
                   </label>
-                  <div className="flex flex-row">
+                  <div className="flex flex-row items-center">
                     <input
                       type="file"
                       name="attachment"
                       accept="image/*"
                       onChange={handleChange}
                       placeholder="Browse Image"
-                      className="px-[14px] py-[7px] font-sm leading-[29px] w-[138px] rounded-sm border border-autoblue text-autoblue hover:border-hoverblue duration-400 cursor-pointer cursor-pointer"
+                      className="px-[14px] py-[7px] placeholder-Gray font-sm leading-[29px] w-[138px] rounded-sm border border-autoblue text-autoblue hover:border-hoverblue duration-400 cursor-pointer cursor-pointer"
                     />
-                    <span className="justify-center p-4">
+                    <span className="justify-center break-all p-4">
                       {requestId && formData?.attachment
                         ? formData?.attachment
                         : formData?.attachment?.name || ""}
@@ -330,7 +330,7 @@ export default function RequestPartForm() {
                 {/* Save Button */}
                 <button
                   type="submit"
-                  className="bg-[#1DA1F2] md:text-[22px] text-base leading[14px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-[#1a8cd8] duration-400 cursor-pointer"
+                  className="bg-autoblue md:text-[22px] text-base leading[14px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
                 >
                   {requestId ? "Update" : "Save Changes"}
                 </button>

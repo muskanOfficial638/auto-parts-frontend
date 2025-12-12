@@ -37,13 +37,13 @@ export default function OTPModal({
                 key={i}
                 maxLength={1}
                 type="text"
-                className="w-[90px] h-[90px] bg-white text-[#848484] text-center text-[39px] font-bold rounded-sm  focus:outline-none"
+                className="w-[90px] h-[90px] bg-white text-grayMedium text-center text-[39px] font-bold rounded-sm  focus:outline-none"
               />
             ))}
           </div>
 
           {/* Submit */}
-          <button className="bg-[#1DA1F2] text-[22px] leading[14px] w-full rounded-sm text-white py-[20px] font-semibold hover:bg-[#1a8cd8] duration-400 cursor-pointer">
+          <button className="bg-autoblue text-[22px] leading[14px] w-full rounded-sm text-white py-[20px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer">
             Submit
           </button>
         </div>

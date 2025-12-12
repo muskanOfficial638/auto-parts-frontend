@@ -74,7 +74,7 @@ export default function BidModal({
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="absolute inset-0" onClick={onClose} />
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/90 to-[#003253]/90" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#003253]/95 to-black/95" />
       <div className="p-[20px] h-[100vh] max-h-[742px] scrollbar-none overflow-auto bid-modal-box ">
         <div className="relative bg-[#061D37] text-white w-[700px] max-w-[100%] bg-[#1d4aa4]/15 backdrop-blur-xl md:px-10 px-[30px] md:py-[62px] py-[40px] rounded-[20px] ms-[auto] me-[auto] p-8 shadow-xl border border-white/10 backdrop-blur">
           <button
@@ -96,7 +96,7 @@ export default function BidModal({
               placeholder="Price"
               name="price_cents"
               onChange={handleChange}
-              className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] md:mb-[43px] mb-[30px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-[#848484] text-[#848484] focus:outline-none w-full"
+              className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] md:mb-[43px] mb-[30px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
             />
 
             <input
@@ -104,18 +104,18 @@ export default function BidModal({
               placeholder="Estimate Days"
               name="eta_days"
               onChange={handleChange}
-              className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] md:mb-[43px] mb-[30px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-[#848484] text-[#848484] focus:outline-none w-full"
+              className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] md:mb-[43px] mb-[30px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
             />
 
             <textarea
               placeholder="Description"
               name="terms"
               onChange={handleChange}
-              className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:mb-[43px] mb-[30px] h-[163px] md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-[#848484] text-[#848484] focus:outline-none w-full"
+              className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:mb-[43px] mb-[30px] h-[163px] md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
             />
 
             <button
-              className="bg-[#1DA1F2] w-full md:text-[22px] text-[15px] leading[14px] rounded-sm text-white md:py-[20px] py-[10px] font-semibold hover:bg-[#1a8cd8] duration-400 cursor-pointer"
+              className="bg-autoblue w-full md:text-[22px] text-[15px] leading[14px] rounded-sm text-white md:py-[20px] py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
               type="submit"
             >
               Submit

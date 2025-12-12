@@ -95,12 +95,12 @@ export default function ViewPartRequest() {
       />
 
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/90 to-[#003253]/90" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#003253]/95 to-black/95" />
       <ToastContainer />
 
       {/* Page Content */}
       <div className="relative z-10 flex justify-center pt-36 pb-20 px-4">
-        <div className="w-full max-w-[1037px] bg-[#12151B] rounded-sm shadow-lg p-[20px]">
+        <div className="w-full max-w-[1037px] bg-brandBlack rounded-sm shadow-lg p-[20px]">
           {/* Header (Image + Title + Button) */}
           <div className="flex justify-between flex-wrap gap-y-[20px] items-center">
             <div className="flex items-start gap-[15px]">
@@ -126,7 +126,7 @@ export default function ViewPartRequest() {
                   {partRequest?.description}
                 </p>
 
-                <p className="md:text-xs text-[10px] leading-[15px] font-medium text-[#A4A4A4] md:mt-[15px] mt-[5px]">
+                <p className="md:text-xs text-[10px] leading-[15px] font-medium text-neutralLight md:mt-[15px] mt-[5px]">
                   {partRequest?.vehicle_make} {partRequest?.vehicle_model} •{" "}
                   {partRequest?.vehicle_model_trim}
                 </p>
@@ -161,8 +161,8 @@ export default function ViewPartRequest() {
                         {data?.user?.email}
                       </p>
 
-                      <p className="text-[#A4A4A4] mt-[5px] text-xs  leading-[15px]">
-                        <span className="font-semibold text-[#A4A4A4]">
+                      <p className="text-neutralLight mt-[5px] text-xs  leading-[15px]">
+                        <span className="font-semibold text-neutralLight">
                           Price:
                         </span>{" "}
                         <span className="text-[10px] medium leading-[22px] text-autoblue">
@@ -170,15 +170,15 @@ export default function ViewPartRequest() {
                         </span>
                       </p>
 
-                      <p className="text-[#A4A4A4] medium mt-[5px] text-xs leading-[15px]">
-                        <span className="font-bold text-[#A4A4A4]">
+                      <p className="text-neutralLight medium mt-[5px] text-xs leading-[15px]">
+                        <span className="font-bold text-neutralLight">
                           Delivery Days:
                         </span>{" "}
                         {data?.eta_days}
                       </p>
 
-                      <p className="text-[#A4A4A4] medium mt-[5px] text-xs leading-[15px]">
-                        <span className="font-bold text-[#A4A4A4]">
+                      <p className="text-neutralLight medium mt-[5px] text-xs leading-[15px]">
+                        <span className="font-bold text-neutralLight">
                           Description:
                         </span>{" "}
                         {data?.terms}

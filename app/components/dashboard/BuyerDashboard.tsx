@@ -96,7 +96,7 @@ export default function BuyerDashboard() {
         />
 
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b bg-[linear-gradient(to_bottom,rgba(0,50,83,0.95),rgba(0,0,0,0.95))]" />
+        <div className="absolute inset-0 bg-gradient-to-b bg-gradient-to-b from-[#003253]/95 to-black/95" />
         {/* Page Content */}
         <div className="relative z-10 flex justify-center pb-20 px-4">
           <div className="w-full max-w-[1037px]  py-[30px]">
@@ -106,7 +106,7 @@ export default function BuyerDashboard() {
                 <input
                   type="text"
                   placeholder="Search"
-                  className="w-full bg-white text-sm text-[#848484] placeholder-[#848484] leading-[17px] rounded-sm py-[10px] px-[15px] border border-[#1f2d3a] focus:outline-none"
+                  className="w-full bg-white text-sm text-grayMedium placeholder-grayMedium leading-[17px] rounded-sm py-[10px] px-[15px] border border-[#1f2d3a] focus:outline-none"
                 />
                 <div className="bg-autoblue text-white absolute right-0 flex  rounded-r-sm items-center h-full top-0 py-[10px] px-[13px]">
                   <MagnifyingGlassIcon className="h-[14px] w-[14px]" />
@@ -116,7 +116,7 @@ export default function BuyerDashboard() {
 
             {/* Table Container */}
             <div className=" table-container overflow-auto">
-              <table className="w-full border-0 bg-[#12151B] text-white  rounded-sm">
+              <table className="w-full border-0 bg-brandBlack text-white  rounded-sm">
                 <thead>
                   <tr>
                     <th className=" bg-autoblue rounded-tl-sm p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">

@@ -209,11 +209,7 @@ export default function Header() {
                     height={32}
                     className="w-[30px] h-[30px] rounded-full mr-[10px]"
                   />
-                  {/* <span className="ml-1">
-                  <FiChevronDown
-                    className={filtersOpen.a1 ? "rotate-180 text-[18px] text-[#D2D2D2]" : "text-[18px] text-[#D2D2D2]"}
-                  />
-                </span> */}
+                  
                   {autoPartsUserData?.user?.user_name
                     ? autoPartsUserData?.user?.user_name
                     : autoPartsUserData?.user?.role}
@@ -230,7 +226,7 @@ export default function Header() {
               {/* Dropdown */}
               <div className="absolute bg-black/90 rounded-lg py-[5px] px-[10px] right-[0] pt-[15px] hidden group-hover:block  shadow-lg w-44 ">
                 {autoPartsUserData?.user?.role === "buyer" && (
-                  <div className="px-4 py-3 text-sm border-[#242529] border-b border-default">
+                  <div className="px-4 py-3 text-sm border-Dark border-b border-default">
                     <span className="block text-heading font-medium">
                       {autoPartsUserData?.user?.name}
                     </span>
@@ -248,7 +244,7 @@ export default function Header() {
                           ? "/buyer-dashboard"
                           : "/supplier-dashboard"
                       }
-                      className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue duration-400 border-[#242529] border-b rounded"
+                      className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue duration-400 border-Dark border-b rounded"
                     >
                       Dashboard
                     </a>
@@ -257,7 +253,7 @@ export default function Header() {
                     <li>
                       <a
                         href="/my-account"
-                        className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue duration-400 border-[#242529] border-b rounded"
+                        className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue duration-400 border-Dark border-b rounded"
                       >
                         My Account
                       </a>
@@ -268,7 +264,7 @@ export default function Header() {
                     <li>
                       <a
                         href="/my-bids"
-                        className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue duration-400 border-[#242529] border-b rounded"
+                        className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue duration-400 border-Dark border-b rounded"
                       >
                         My Bids
                       </a>

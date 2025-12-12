@@ -212,7 +212,7 @@ export default function SignUpPage() {
                     setNameError("");
                   }}
                   placeholder="Name*"
-                  className=" w-full md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-[#848484] text-[#848484] outline-none"
+                  className=" w-full md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium outline-none"
                 />
                 {nameError && (
                   <p className="text-red-500 text-sm mt-1">{nameError}</p>
@@ -224,7 +224,7 @@ export default function SignUpPage() {
                 name="company"
                 placeholder="Company"
                 onChange={(e) => setCompanyName(e.target.value)}
-                className="md:col-span-1 col-span-2 md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-[#848484] text-[#848484] outline-none "
+                className="md:col-span-1 col-span-2 md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium outline-none "
               />
 
               <select
@@ -232,8 +232,8 @@ export default function SignUpPage() {
                 name="role"
                 required
                 onChange={(e) => handleSelectChange(e.target.value)}
-                className="md:col-span-1 col-span-2 appearance-none cursor-pointer md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm text-[#848484] outline-none
-                relative before:content-[''] before:bg-no-repeat before:absolute before:inset-0 before:bg-[url('/Chevron.svg')] before:bg-cover before:bg-center before:h-[5px] before:w-[10px] "
+                className="md:col-span-1 col-span-2 cursor-pointer md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm text-grayMedium outline-none
+                "
               >
                 <option value="">Select role*</option>
                 <option value="buyer">Buyer</option>
@@ -251,7 +251,7 @@ export default function SignUpPage() {
                     setVatError("");
                   }}
                   placeholder="VAT Number"
-                  className="w-full md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-[#848484] text-[#848484] outline-none "
+                  className="w-full md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium outline-none "
                 />
 
                 {vatError && (
@@ -264,7 +264,7 @@ export default function SignUpPage() {
                 required
                 onChange={handleEmailChange}
                 placeholder="Enter email*"
-                className="col-span-2 md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-[#848484] text-[#848484] outline-none"
+                className="col-span-2 md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium outline-none"
               />
               {emailError && (
                 <p className="text-red-500 text-sm mt-1">{emailError}</p>
@@ -276,7 +276,7 @@ export default function SignUpPage() {
                   required
                   onChange={handlePasswordChange}
                   placeholder="Enter password*"
-                  className="w-full md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-[#848484] text-[#848484] outline-none"
+                  className="w-full md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium outline-none"
                 />
                 <span
                   onClick={() => setShowPassword(!showPassword)}
@@ -370,7 +370,7 @@ export default function SignUpPage() {
               {error && <span className="text-red-500">{error}</span>}
               <button
                 type="submit"
-                className="col-span-2 bg-[#1DA1F2] md:text-[22px] text-[15px] leading[14px] rounded-sm text-white md:py-[20px] py-[10px] font-semibold hover:bg-[#1a8cd8] duration-400 cursor-pointer"
+                className="col-span-2 bg-autoblue md:text-[22px] text-[15px] leading[14px] rounded-sm text-white md:py-[20px] py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
               >
                 Create Account
               </button>

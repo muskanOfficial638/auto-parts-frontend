@@ -110,9 +110,9 @@ export default function SupplierDashboard() {
         style={{ backgroundImage: "url('/dashboardBg.jpg')" }}
       >
         {/* Gradient Overlay */}
-        <div className="absolute top-[0] bottom-[0] h-full w-full bg-[linear-gradient(to_bottom,rgba(0,50,83,0.95),rgba(0,0,0,0.95))]" />
+        <div className="absolute top-[0] bottom-[0] h-full w-full bg-gradient-to-b from-[#003253]/95 to-black/95" />
         {/* Sidebar */}
-        <div className="relative md:w-72 bg-[#12151B] text-white fixed">
+        <div className="relative md:w-72 bg-brandBlack text-white fixed">
           <div className="bg-autoblue md:mt-[6rem] mt-[80px] md:py-2 py-[3px]" />
           <div className="md:px-[20px] md:py-[40px] p-[20px]">
             <h2 className="md:text-2xl text-lg mb-[20px] leading-[14px]  font-bold ">
@@ -130,13 +130,13 @@ export default function SupplierDashboard() {
                     onClick={() =>
                       setFiltersOpen({ ...filtersOpen, bmw: !filtersOpen.bmw })
                     }
-                    className="flex justify-between w-full text-left items-center text-[#D2D2D2] border-[#242529] font-medium text-xs leading-[33px] border-b  "
+                    className="flex justify-between cursor-pointer w-full text-left items-center text-LightGray border-Dark font-medium text-xs leading-[33px] border-b  "
                   >
                     BMW{" "}
                     <FiChevronDown
                       className={
                         filtersOpen.bmw
-                          ? "rotate-180 text-[18px] text-[#D2D2D2]"
+                          ? "rotate-180 text-[18px] text-LightGray"
                           : ""
                       }
                     />
@@ -151,24 +151,24 @@ export default function SupplierDashboard() {
                             a1: !filtersOpen.a1,
                           })
                         }
-                        className="flex justify-between w-full text-left ps-[10px] items-center text-[#848484] border-[#242529] text-xs font-medium leading-[33px] border-b "
+                        className="flex justify-between cursor-pointer w-full text-left ps-[10px] items-center text-grayMedium border-Dark text-xs font-medium leading-[33px] border-b "
                       >
                         A1{" "}
                         <FiChevronDown
                           className={
                             filtersOpen.a1
-                              ? "rotate-180 text-[18px] text-[#D2D2D2]"
-                              : "text-[18px] text-[#D2D2D2]"
+                              ? "rotate-180 text-[18px] text-LightGray"
+                              : "text-[18px] text-LightGray"
                           }
                         />
                       </button>
 
                       {filtersOpen.a1 && (
-                        <div className=" space-y-2 text-[#848484] font-medium items-center text-xs leading-[33px]">
-                          <p className="border-b ps-[30px] border-[#242529] font-medium">
+                        <div className=" space-y-2 text-grayMedium font-medium items-center text-xs leading-[33px]">
+                          <p className="border-b ps-[30px] border-Dark font-medium">
                             Trim1
                           </p>
-                          <p className="border-b ps-[30px] border-[#242529] font-medium">
+                          <p className="border-b ps-[30px] border-Dark font-medium">
                             Trim1a
                           </p>
                           <p className="ps-[30px] ">Trim1a</p>
@@ -192,7 +192,7 @@ export default function SupplierDashboard() {
                 placeholder="Search"
                 onChange={handleGlobalSearch}
                 // onChange={onSearchPartRequest}
-                className="w-full bg-white text-sm text-[#848484] placeholder-[#848484] leading-[17px] rounded-sm py-[10px] px-[15px] border border-[#1f2d3a] focus:outline-none"
+                className="w-full bg-white text-sm text-grayMedium placeholder-grayMedium leading-[17px] rounded-sm py-[10px] px-[15px] border border-[#1f2d3a] focus:outline-none"
               />
               <div className="bg-autoblue text-white absolute right-0 flex  rounded-r-sm items-center h-full top-0 py-[10px] px-[13px] ">
                 <MagnifyingGlassIcon className="h-[14px] w-[14px]" />
@@ -206,7 +206,7 @@ export default function SupplierDashboard() {
               partRequestData.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-[#12151B] p-[20px] rounded-lg flex flex-wrap lg:gap-[0] gap-y-[20px] items-center justify-between"
+                  className="bg-brandBlack p-[20px] rounded-lg flex flex-wrap lg:gap-[0] gap-y-[20px] items-center justify-between"
                 >
                   <div className="flex md:items-center items-start gap-4">
                     <div className="bg-white py-[11px] px-[18px] md:mt-[0] mt-[4px] rounded-sm">
@@ -229,7 +229,7 @@ export default function SupplierDashboard() {
                         {item.description}
                       </p>
 
-                      <p className="text-xs leading-[15px] font-medium text-[#A4A4A4] mt-[5px]">
+                      <p className="text-xs leading-[15px] font-medium text-neutralLight mt-[5px]">
                         {item.vehicle_make} {item.vehicle_model}{" "}
                         {item.vehicle_model_trim}
                       </p>
@@ -241,7 +241,7 @@ export default function SupplierDashboard() {
                   </div>
 
                   <button
-                    className="bg-autoblue md:text-base text-sm font-semibold leading-[14px] hover:bg-[#1a8cd8] md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm cursor-pointer"
+                    className="bg-autoblue md:text-base text-sm font-semibold leading-[14px] hover:bg-hoverblue md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm cursor-pointer"
                     onClick={() => ModalOpen(item)}
                   >
                     Quote Now

@@ -75,7 +75,7 @@ export default function MyBids() {
         />
 
         {/* Gradient Overlay */}
-        <div className="absolute top-[0] bottom-[0] h-full w-full bg-[linear-gradient(to_bottom,rgba(0,50,83,0.95),rgba(0,0,0,0.95))]" />
+        <div className="absolute top-[0] bottom-[0] h-full w-full bg-gradient-to-b from-[#003253]/95 to-black/95" />
 
         {/* Main Content */}
         <div className="relative z-10 flex justify-center pt-36 pb-20 px-4">
@@ -134,7 +134,7 @@ export default function MyBids() {
               quoteData.map((data: Quote) => (
                 <div
                   key={data.id}
-                  className="bg-[#12151B] p-[20px] rounded-lg flex flex-wrap lg:gap-[0] gap-y-[20px] items-center justify-between"
+                  className="bg-brandBlack p-[20px] rounded-lg flex flex-wrap lg:gap-[0] gap-y-[20px] items-center justify-between"
                 >
                   <div className="flex items-center gap-4">
                     <div className="bg-white py-[11px] px-[18px] md:mt-[0] mt-[4px] rounded-sm">
@@ -158,7 +158,7 @@ export default function MyBids() {
                         {data?.part_request?.description}
                       </p>
 
-                      <p className="text-xs leading-[15px] font-medium text-[#A4A4A4] mt-[5px]">
+                      <p className="text-xs leading-[15px] font-medium text-neutralLight mt-[5px]">
                         {data?.part_request?.vehicle_make}{" "}
                         {data?.part_request?.vehicle_model}{" "}
                         {data?.part_request?.vehicle_model_trim}

@@ -2,18 +2,27 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #171717;  
 }
+
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-foreground: var(--foreground);  
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-autoblue: #29B2FE;
   --color-hoverblue: #0092ff;
   --color-borderblue: #426A84;
   --color-modalblue: #061D37;
+  --color-Gray: #6C7275;
+  --color-brandBlack: #12151B;
+  --color-grayMedium: #848484;
+  --color-neutralLight: #A4A4A4;
+  --color-Dark: #242529;
+  --color-LightGray: #D2D2D2;
+  --color-LightNeutral: #CBCBCB;
+  
 }
 
 @media (prefers-color-scheme: dark) {

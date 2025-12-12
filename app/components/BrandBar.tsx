@@ -13,7 +13,7 @@ const brands = [
 
 export default function BrandBar() {
   return (
-    <section className="w-full bg-[#12151B] py-6">
+    <section className="w-full bg-brandBlack py-6">
       <div className="container mx-auto flex items-center justify-center gap-16">
         {brands.map((src, i) => (
           <Image

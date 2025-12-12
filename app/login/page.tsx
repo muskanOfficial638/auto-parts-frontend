@@ -154,7 +154,7 @@ export default function LoginPage() {
                 name="email"
                 onChange={handleEmailChange}
                 placeholder="Enter email"
-                className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-[#848484] text-[#848484] focus:outline-none w-full"
+                className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
               />
               {emailError && (
                 <p className="text-red-400 text-sm">{emailError}</p>
@@ -167,7 +167,7 @@ export default function LoginPage() {
                   name="password"
                   onChange={handlePasswordChange}
                   placeholder="Enter password"
-                  className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-[#848484] text-[#848484] focus:outline-none w-full"
+                  className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
                 />
 
                 <span
@@ -188,7 +188,7 @@ export default function LoginPage() {
               </div>
 
               {/* Login Button */}
-              <button className=" bg-[#1DA1F2] md:text-[22px] text-[15px] leading[14px] rounded-sm text-white md:py-[20px] py-[10px] font-semibold hover:bg-[#1a8cd8] duration-400 cursor-pointer">
+              <button className=" bg-autoblue md:text-[22px] text-[15px] leading[14px] rounded-sm text-white md:py-[20px] py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer">
                 Login
               </button>
             </form>

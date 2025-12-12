@@ -77,12 +77,12 @@ export default function KycDetailForm() {
       />
 
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/90 to-[#003253]/90" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#003253]/95 to-black/95" />
 
       {/* Page Content */}
       <div className="relative z-10 flex flex-col">
         <div className="flex justify-center items-start pt-36 pb-20 px-4">
-          <div className="w-[1037px] max-w-[100%] bg-[#12151B] rounded-sm px-[30px] pt-[20px] pb-[60px]">
+          <div className="w-[1037px] max-w-[100%] bg-brandBlack rounded-sm px-[30px] pt-[20px] pb-[60px]">
             <div className="w-[808px] max-w-[100%] ms-[auto] me-[auto]">
               <h2 className="md:text-[23px] text-text-lg leading-[36px] font-semibold text-white mb-[27px]">
                 Submit KYC Detail
@@ -94,7 +94,7 @@ export default function KycDetailForm() {
               >
                 {/* Image Upload */}
                 <div className="flex flex-col">
-                  <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                  <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                     Upload KYC doc
                   </label>
                   <div className="flex flex-row">
@@ -115,7 +115,7 @@ export default function KycDetailForm() {
                 {/* Save Button */}
                 <button
                   type="submit"
-                  className="bg-[#1DA1F2] md:text-[22px] text-base leading[14px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-[#1a8cd8] duration-400 cursor-pointer"
+                  className="bg-autoblue md:text-[22px] text-base leading[14px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
                 >
                   {kycId ? "Replace document" : "Upload Document"}
                 </button>

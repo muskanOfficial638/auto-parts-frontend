@@ -109,12 +109,12 @@ export default function MyAccountForm() {
       />
 
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/90 to-[#003253]/90" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#003253]/95 to-black/95" />
 
       {/* Page Content */}
       <div className="relative z-10 flex flex-col">
         <div className="flex justify-center items-start pt-36 pb-20 px-4">
-          <div className="w-[1037px] max-w-[100%] bg-[#12151B] rounded-sm px-[30px] pt-[20px] pb-[60px]">
+          <div className="w-[1037px] max-w-[100%] bg-brandBlack rounded-sm px-[30px] pt-[20px] pb-[60px]">
             <div className="w-[808px] max-w-[100%] ms-[auto] me-[auto]">
               <h2 className="md:text-[23px] text-text-lg leading-[36px] font-semibold text-white mb-[27px]">
                 Account Details
@@ -122,7 +122,7 @@ export default function MyAccountForm() {
               <form className="space-y-[28px]" onSubmit={handleSubmit}>
                 {/* Product Name */}
                 <div>
-                  <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                  <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                     Full Name
                   </label>
                   <input
@@ -130,13 +130,13 @@ export default function MyAccountForm() {
                     name="user_name"
                     value={profileData?.user_name || ""}
                     onChange={handleProfileChange}
-                    className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
+                    className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
                   />
                 </div>
 
                 {/* Make */}
                 <div>
-                  <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                  <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                     Company Name
                   </label>
                   <input
@@ -144,20 +144,20 @@ export default function MyAccountForm() {
                     name="company_name"
                     value={profileData?.profile?.company_name || ""}
                     onChange={handleProfileChange}
-                    className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
+                    className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
                   />
                 </div>
 
                 {/* Model */}
                 <div>
-                  <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                  <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                     Email
                   </label>
                   <input
                     disabled
                     type="text"
                     placeholder={profileData?.email || ""}
-                    className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
+                    className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray placeholder-Gray outline-none"
                   />
                 </div>
                 <h2 className="md:text-[23px] text-text-lg leading-[36px] font-semibold text-white md:mb-[27px] mb-[15px] md:mt-[46px] mt-[30px] ">
@@ -165,7 +165,7 @@ export default function MyAccountForm() {
                 </h2>
                 {/* Trim */}
                 <div>
-                  <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                  <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                     Old Password
                   </label>
                   <input
@@ -173,12 +173,12 @@ export default function MyAccountForm() {
                     placeholder="***********"
                     name="old_password"
                     onChange={handlePasswordChange}
-                    className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
+                    className="w-full py-[8px] px-[18px] bg-white md:text-[19px] placeholder-Gray  text-[15px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                  <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                     New Password
                   </label>
                   <input
@@ -186,11 +186,11 @@ export default function MyAccountForm() {
                     placeholder="***********"
                     name="password_hash"
                     onChange={handlePasswordChange}
-                    className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
+                    className="w-full  placeholder-Gray py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
                   />
                 </div>
                 <div>
-                  <label className="text-[#6C7275] md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                  <label className="text-Gray  md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                     Repeat New Password
                   </label>
                   <input
@@ -198,14 +198,14 @@ export default function MyAccountForm() {
                     placeholder="***********"
                     name="confirm_password"
                     onChange={handlePasswordChange}
-                    className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-[#CBCBCB] rounded-sm text-[#6C7275] outline-none"
+                    className="w-full py-[8px] placeholder-Gray px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
                   />
                 </div>
 
                 {/* Save Button */}
                 <button
                   type="submit"
-                  className="bg-[#1DA1F2] md:text-[22px] text-base leading[14px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-[#1a8cd8] duration-400 cursor-pointer"
+                  className="bg-autoblue md:text-[22px] text-base leading[14px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
                 >
                   Save Changes
                 </button>

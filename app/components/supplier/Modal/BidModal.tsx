@@ -54,7 +54,7 @@ export default function BidModal({
         // Server responded with a status other than 2xx
         console.error("Server error:", err.response.data);
         toast.error(
-          err.response.data?.detail[0]?.msg || "unable to create quote"
+          err?.response?.data?.detail || "unable to create quote"
         );
       } else if (err.request) {
         // Request was made but no response received

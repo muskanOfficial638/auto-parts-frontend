@@ -19,13 +19,17 @@ export async function fetchAllBuyerPartRequests(
   user_id: string,
   token: string
 ) {
-  const res = await fetch(`${buyerPath}/all/part-request/${user_id}`, {
-    cache: "no-store",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const res = await fetch(`/api/buyer/all/part-request/${user_id}`, {
+  headers: { Authorization: `Bearer ${token}` }
+}); //vercel
+
+  // fetch(`${buyerPath}/all/part-request/${user_id}`, {
+  //   cache: "no-store",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     Authorization: `Bearer ${token}`,
+  //   },
+  // }); //local
   if (!res.ok) throw new Error("Failed to load part requests");
   return res.json();
 }
@@ -135,7 +139,8 @@ export async function getQuoteBySupplier(
   token: string
 ) {
   const res = await fetch(
-    `${supplierPath}/quote/view?user_id=${userId}&status=${status}&page=${page}&limit=${limit}`,
+    // `${supplierPath}/quote/view?user_id=${userId}&status=${status}&page=${page}&limit=${limit}`,  //for local
+    `/api/supplier/quote/view?user_id=${userId}&status=${status}&page=${page}&limit=${limit}`,  //for vercel
     {
       cache: "no-store",
       headers: {
@@ -149,13 +154,16 @@ export async function getQuoteBySupplier(
 }
 
 export async function viewSupplierProfile(user_id: string, token: string) {
+//   const res = await fetch(`/api/supplier/profile/${user_id}`, {
+//   headers: { Authorization: `Bearer ${token}` },
+// }); //vercel
   const res = await fetch(`${supplierPath}/profile/${user_id}`, {
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-  });
+  }); // local
   if (!res.ok) throw new Error("Failed to load part request data");
   return res.json();
 }

@@ -8,7 +8,7 @@ export default function WhyChooseUs() {
   return (
       <section className="bg-black text-white relative overflow-hidden">
          <BrandBar />
-        <div className="max-w-7xl mx-auto lg:pt-[100px] pt-[60px] grid md:grid-cols-2 gap-12 items-center lg:px-4 px-6">
+        <div className="container lg:pt-[100px] pt-[60px] grid md:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <motion.div
             className="z-10"

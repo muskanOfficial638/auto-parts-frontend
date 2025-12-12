@@ -136,16 +136,16 @@ export default function LoginPage() {
           <ToastContainer />
 
           <motion.div
-            className="w-[700px] max-w-[100%] ms-[auto] me-[auto] bg-[#1d4aa4]/15 backdrop-blur-xl px-10 py-[62px] rounded-[20px] shadow-xl flex flex-col items-center border-2 border-borderblue"
+            className="w-[700px] max-w-[100%] ms-[auto] me-[auto] bg-[#1d4aa4]/15 backdrop-blur-xl md:px-10 px-[30px] md:py-[62px] py-[40px] rounded-[20px] shadow-xl flex flex-col items-center border-2 border-borderblue"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: "easeOut" }}
             viewport={{ once: true }}
           >
-            <h2 className="text-white text-4xl font-bold">Login</h2>
+            <h2 className="text-white md:text-4xl text-[25px] font-bold">Login</h2>
 
             <form
-              className=" w-[429] max-w-[100%] flex flex-col gap-[43px] py-[43px]"
+              className=" w-[429] max-w-[100%] flex flex-col md:gap-[43px] gap-[30px] md:py-[43px] py-[30px]"
               onSubmit={handleLogin}
             >
               {/* Email */}
@@ -154,7 +154,7 @@ export default function LoginPage() {
                 name="email"
                 onChange={handleEmailChange}
                 placeholder="Enter email"
-                className="px-[25px] py-[15px] bg-white text-[19px] leading-[23px] rounded-sm placeholder-[#848484] text-[#848484] focus:outline-none w-full"
+                className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-[#848484] text-[#848484] focus:outline-none w-full"
               />
               {emailError && (
                 <p className="text-red-400 text-sm">{emailError}</p>
@@ -167,7 +167,7 @@ export default function LoginPage() {
                   name="password"
                   onChange={handlePasswordChange}
                   placeholder="Enter password"
-                  className="px-[25px] py-[15px] bg-white text-[19px] leading-[23px] rounded-sm placeholder-[#848484] text-[#848484] focus:outline-none w-full"
+                  className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-[#848484] text-[#848484] focus:outline-none w-full"
                 />
 
                 <span
@@ -183,22 +183,22 @@ export default function LoginPage() {
               </div>
 
               {/* Forgot Password */}
-              <div className="text-[19px] leading-[23px] text-autoblue hover:underline cursor-pointer font-semibold">
+              <div className="md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] text-autoblue hover:underline cursor-pointer font-semibold">
                 Forgot Password ?
               </div>
 
               {/* Login Button */}
-              <button className=" bg-[#1DA1F2] text-[22px] leading[14px] rounded-sm text-white py-[20px] font-semibold hover:bg-[#1a8cd8] duration-400 cursor-pointer">
+              <button className=" bg-[#1DA1F2] md:text-[22px] text-[15px] leading[14px] rounded-sm text-white md:py-[20px] py-[10px] font-semibold hover:bg-[#1a8cd8] duration-400 cursor-pointer">
                 Login
               </button>
             </form>
 
             {/* Signup */}
-            <div className="text-white text-[19px] leading-[23px]">
+            <div className="text-white font-medium md:text-[19px] text-[15px]  md:leading-[23px] leading-[20px]">
               Are you a new user{" "}
               <Link
                 href="/sign-up"
-                className="text-autoblue cursor-pointer hover:underline text-md font-semibold"
+                className="text-autoblue cursor-pointer hover:underline text-md font-bold"
               >
                 Sign Up
               </Link>

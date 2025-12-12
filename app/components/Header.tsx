@@ -55,9 +55,10 @@ export default function Header() {
       <header
         className="fixed top-0 left-0 w-full z-20
   md:bg-black/50 md:backdrop-blur-md bg-black
-  flex items-center justify-between
-  md:px-8 lg:px-16 md:py-8 text-white p-[20px]"
+  
+   md:py-8 py-[20px] text-white"
       >
+        <div className="container flex items-center justify-between">
         <div className="flex flex-row space-x-8">
           {/* Logo */}
           <Link href="/" scroll={true} className="relative w-40 h-10">
@@ -130,17 +131,17 @@ export default function Header() {
             </a>
             <button
               onClick={() => toast.error("Please login to your account!")}
-              className="bg-autoblue text-[15px] hover:bg-hoverblue text-white px-[15px] py-[11px] cursor-pointer rounded-sm duration-400"
+              className="bg-autoblue leading-[19px] font-semibold text-base hover:bg-hoverblue text-white px-[18px] py-[12px] cursor-pointer rounded-sm duration-400"
             >
               Request Auto Parts
             </button>
           </div>
         ) : (
-          <div className="hidden md:flex items-center space-x-2">
+          <div className="hidden md:flex items-center space-x-[17px]">
             {autoPartsUserData?.user?.role === "buyer" && (
               <a
                 href="/request-part"
-                className="bg-autoblue hover:bg-hoverblue text-white px-5 py-2 rounded-md transition"
+                className="bg-autoblue leading-[19px] font-semibold text-base hover:bg-hoverblue text-white px-[18px] py-[12px] cursor-pointer rounded-sm duration-400"
               >
                 Request Auto Parts
               </a>
@@ -191,7 +192,13 @@ export default function Header() {
                   {profileData?.user_name
                     ? profileData?.user_name
                     : autoPartsUserData?.user?.role}
-                  <span className="ml-1">▾</span>
+                  <span className="ml-[10px]"> <Image
+                    src="/dropdown.svg"
+                    alt="dropdown" 
+                    width={10}
+                    height={6}             
+                    className="w-[10px] h-[6px]"
+                  /></span>
                 </button>
               ) : (
                 <button className="flex text-[15px] font-semibold leading-[14px] py-[5px] px-[10px] bg-black duration-400 cursor-pointer rounded-lg hover:text-hoverblue items-center">
@@ -210,14 +217,20 @@ export default function Header() {
                   {autoPartsUserData?.user?.user_name
                     ? autoPartsUserData?.user?.user_name
                     : autoPartsUserData?.user?.role}
-                  <span className="ml-1">▾</span>
+                   <span className="ml-[10px]"> <Image
+                    src="/dropdown.svg"
+                    alt="dropdown"
+                    width={10} 
+                    height={6}                  
+                    className="w-[10px] h-[6px]"
+                  /></span>
                 </button>
               )}
 
               {/* Dropdown */}
-              <div className="absolute right-[0] pt-[15px] hidden group-hover:block  shadow-lg w-44 ">
+              <div className="absolute bg-black/90 rounded-lg py-[5px] px-[10px] right-[0] pt-[15px] hidden group-hover:block  shadow-lg w-44 ">
                 {autoPartsUserData?.user?.role === "buyer" && (
-                  <div className="px-4 py-3 text-sm border-b border-default">
+                  <div className="px-4 py-3 text-sm border-[#242529] border-b border-default">
                     <span className="block text-heading font-medium">
                       {autoPartsUserData?.user?.name}
                     </span>
@@ -227,7 +240,7 @@ export default function Header() {
                   </div>
                 )}
 
-                <ul className="py-[5px] px-[10px] text-xs leading-[31px] text-body font-medium bg-black/90 rounded-lg">
+                <ul className=" text-xs leading-[31px] text-body font-medium ">
                   <li>
                     <a
                       href={
@@ -281,6 +294,7 @@ export default function Header() {
         >
           ☰
         </button>
+        </div>
       </header>
 
       {/* MOBILE SLIDE-IN MENU */}
@@ -308,7 +322,7 @@ export default function Header() {
               </a>
               <button
                 onClick={() => toast.error("Please login to your account!")}
-                className="bg-autoblue hover:bg-hoverblue w-full text-white px-5 py-2 rounded-md"
+                className="bg-autoblue leading-[19px] font-semibold text-base hover:bg-hoverblue text-white px-[18px] py-[12px] cursor-pointer rounded-sm duration-400"
               >
                 Request Auto Parts
               </button>
@@ -328,7 +342,7 @@ export default function Header() {
           ) : (
             <>
               {/* User Info Mobile */}
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-[17px]">
                 <Image
                   src="/fake-user.png"
                   alt="User"
@@ -349,7 +363,7 @@ export default function Header() {
               {autoPartsUserData?.user?.role === "buyer" && (
                 <a
                   href="/request-part"
-                  className="bg-autoblue hover:bg-hoverblue text-white px-5 py-2 rounded-md"
+                  className="bg-autoblue leading-[19px] font-semibold text-base hover:bg-hoverblue text-white px-[18px] py-[12px] cursor-pointer rounded-sm duration-400"
                 >
                   Request Auto Parts
                 </a>

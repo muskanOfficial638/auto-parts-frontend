@@ -96,7 +96,7 @@ export default function BuyerDashboard() {
         />
 
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/90 to-[#003253]/90" />
+        <div className="absolute inset-0 bg-gradient-to-b bg-[linear-gradient(to_bottom,rgba(0,50,83,0.95),rgba(0,0,0,0.95))]" />
         {/* Page Content */}
         <div className="relative z-10 flex justify-center pb-20 px-4">
           <div className="w-full max-w-[1037px]  py-[30px]">
@@ -116,7 +116,7 @@ export default function BuyerDashboard() {
 
             {/* Table Container */}
             <div className=" table-container overflow-auto">
-              <table className="w-full border-0 bg-[#12151B]  rounded-sm">
+              <table className="w-full border-0 bg-[#12151B] text-white  rounded-sm">
                 <thead>
                   <tr>
                     <th className=" bg-autoblue rounded-tl-sm p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">

@@ -84,9 +84,9 @@ export default function MyBids() {
             <h2 className="text-2xl leading-[14px] font-bold text-center text-white">
               My bids
             </h2>
-            <div className="text-xl items-center flex space-x-[36px]">
+            <div className="text-xl font-medium items-center flex space-x-[36px]">
               <span
-                className={`cursor-pointer font-medium text-xl leading-[14px] ${
+                className={`cursor-pointer text-xl leading-[14px] ${
                   activeTab === "pending"
                     ? "font-bold text-xl leading-[14px] text-white"
                     : "text-[#6C6C6C]"
@@ -97,7 +97,7 @@ export default function MyBids() {
               </span>
 
               <span
-                className={`cursor-pointer font-medium text-xl leading-[14px] ${
+                className={`cursor-pointer text-xl leading-[14px] ${
                   activeTab === "accepted"
                     ? "font-bold text-xl leading-[14px] text-white"
                     : "text-[#6C6C6C]"
@@ -108,7 +108,7 @@ export default function MyBids() {
               </span>
 
               <span
-                className={`cursor-pointer font-medium text-xl leading-[14px] ${
+                className={`cursor-pointer text-xl leading-[14px] ${
                   activeTab === "cancelled"
                     ? "font-bold text-xl leading-[14px] text-white"
                     : "text-[#6C6C6C]"
@@ -119,7 +119,7 @@ export default function MyBids() {
               </span>
 
               <span
-                className={`cursor-pointer font-medium text-xl leading-[14px] ${
+                className={`cursor-pointer text-xl leading-[14px] ${
                   activeTab === "completed"
                     ? "font-bold text-xl leading-[14px] text-white"
                     : "text-[#6C6C6C]"
@@ -147,7 +147,7 @@ export default function MyBids() {
                     </div>
 
                     <div>
-                      <h3 className="text-base leading-[22px] font-bold flex items-center gap-[8px]">
+                      <h3 className="text-base leading-[22px] text-white font-bold flex items-center gap-[8px]">
                         {data?.part_request?.title}{" "}
                         <span className="text-[8px] font-medium leading-[10px] text-white bg-[#52A84E] px-[9px] py-[1px] rounded-[50px]">
                           {data?.part_request?.urgency}
@@ -194,7 +194,7 @@ export default function MyBids() {
                     </div>
                   ) : (
                     <button
-                      className="bg-autoblue md:text-base text-sm font-semibold leading-[14px]  md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm"
+                      className="bg-autoblue text-white md:text-base text-sm font-semibold leading-[14px]  md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm"
                       // onClick={() => setModalOpen(true)}
                       disabled
                     >

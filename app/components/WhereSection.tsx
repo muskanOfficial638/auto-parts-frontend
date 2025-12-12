@@ -18,7 +18,7 @@ export default function WhereSection() {
   return (
     <motion.section
       ref={container}
-      className="relative w-full bg-cover bg-center flex items-center justify-start lg:px-10 px-6 bg-black text-white overflow-hidden"
+      className="relative w-full bg-cover bg-center flex items-center justify-start bg-black text-white overflow-hidden"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
@@ -30,7 +30,7 @@ export default function WhereSection() {
 
       {/* Content */}
       <motion.div
-        className="relative z-10 max-w-7xl mx-auto px-0 lg:px-16 lg:py-[100px] py-[60px] grid md:grid-cols-2 gap-12 items-center"
+        className="relative container z-10 lg:py-[100px] py-[60px] grid md:grid-cols-2 gap-12 items-center"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, ease: "easeOut" }}

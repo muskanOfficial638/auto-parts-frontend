@@ -31,3 +31,14 @@ body {
 .table-container table tbody tr:last-child {
     border-bottom: 0;
 }
+.container{
+  max-width: 1510px;
+  padding-left: 20px;
+  padding-right: 20px;
+  width: 100%;  
+  margin-left: auto;
+  margin-right: auto;
+}
+.bid-modal-box{
+  scrollbar-width: none;
+}

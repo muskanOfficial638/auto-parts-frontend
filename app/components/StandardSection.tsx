@@ -5,8 +5,8 @@ import Image from "next/image";
 
 export default function StandardSection() {
   return (
-    <section className="bg-black text-white lg:py-20 md:pb-[60px] px-6 lg:px-16">
-      <div className="max-w-7xl mx-auto grid lg:grid-cols-2 grid-cols-1 md:gap-12 items-center">
+    <section className="bg-black text-white lg:py-20 md:pb-[60px]">
+      <div className="container grid lg:grid-cols-2 grid-cols-1 md:gap-12 items-center">
         {/* Left Image */}
         <motion.div
           className="relative w-full h-[450px] md:h-[550px]"

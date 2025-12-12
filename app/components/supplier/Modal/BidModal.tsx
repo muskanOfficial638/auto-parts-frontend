@@ -75,51 +75,53 @@ export default function BidModal({
       <div className="absolute inset-0" onClick={onClose} />
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/90 to-[#003253]/90" />
-      <div className="relative bg-[#061D37] text-white w-[700px] max-w-[100%] bg-[#1d4aa4]/15 backdrop-blur-xl px-10 py-[62px] rounded-[20px] ms-[auto] me-[auto] p-8 shadow-xl border border-white/10 backdrop-blur">
-        <button
-          onClick={onClose}
-          className="absolute top-[10px] right-[10px] bg-white cursor-pointer h-[40px] w-[40px] rounded-full"
-        >
-          <span className=" text-black ">✕</span>
-        </button>
-        <form
-          className="w-[429px] max-w-[100%] ms-[auto] me-[auto]"
-          onSubmit={handleSave}
-        >
-          <h2 className="text-center text-white text-4xl font-semibold mb-[58px]">
-            Quote Now{" "}
-          </h2>
-
-          <input
-            type="number"
-            placeholder="Price"
-            name="price_cents"
-            onChange={handleChange}
-            className="px-[25px] mb-[43px] py-[15px] bg-white text-[19px] leading-[23px] rounded-sm placeholder-[#848484] text-[#848484] focus:outline-none w-full"
-          />
-
-          <input
-            type="number"
-            placeholder="Estimate Days"
-            name="eta_days"
-            onChange={handleChange}
-            className="px-[25px] py-[15px] mb-[43px] bg-white text-[19px] leading-[23px] rounded-sm placeholder-[#848484] text-[#848484] focus:outline-none w-full"
-          />
-
-          <textarea
-            placeholder="Description"
-            name="terms"
-            onChange={handleChange}
-            className="px-[25px] py-[15px] bg-white mb-[43px] h-[163px] text-[19px] leading-[23px] rounded-sm placeholder-[#848484] text-[#848484] focus:outline-none w-full"
-          />
-
+      <div className="p-[20px] h-[100vh] max-h-[742px] scrollbar-none overflow-auto bid-modal-box ">
+        <div className="relative bg-[#061D37] text-white w-[700px] max-w-[100%] bg-[#1d4aa4]/15 backdrop-blur-xl md:px-10 px-[30px] md:py-[62px] py-[40px] rounded-[20px] ms-[auto] me-[auto] p-8 shadow-xl border border-white/10 backdrop-blur">
           <button
-            className="bg-[#1DA1F2] text-[22px] leading[14px] w-full rounded-sm text-white py-[20px] font-semibold hover:bg-[#1a8cd8] duration-400 cursor-pointer"
-            type="submit"
+            onClick={onClose}
+            className="absolute top-[10px] right-[10px] bg-white cursor-pointer h-[40px] w-[40px] rounded-full"
           >
-            Submit
+            <span className=" text-black ">✕</span>
           </button>
-        </form>
+          <form
+            className="w-[429px] max-w-[100%] ms-[auto] me-[auto]"
+            onSubmit={handleSave}
+          >
+            <h2 className="text-white md:text-4xl text-[25px] font-bold md:mb-[58px] mb-[30px]">
+              Quote Now{" "}
+            </h2>
+
+            <input
+              type="number"
+              placeholder="Price"
+              name="price_cents"
+              onChange={handleChange}
+              className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] md:mb-[43px] mb-[30px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-[#848484] text-[#848484] focus:outline-none w-full"
+            />
+
+            <input
+              type="number"
+              placeholder="Estimate Days"
+              name="eta_days"
+              onChange={handleChange}
+              className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] md:mb-[43px] mb-[30px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-[#848484] text-[#848484] focus:outline-none w-full"
+            />
+
+            <textarea
+              placeholder="Description"
+              name="terms"
+              onChange={handleChange}
+              className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:mb-[43px] mb-[30px] h-[163px] md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-[#848484] text-[#848484] focus:outline-none w-full"
+            />
+
+            <button
+              className="bg-[#1DA1F2] w-full md:text-[22px] text-[15px] leading[14px] rounded-sm text-white md:py-[20px] py-[10px] font-semibold hover:bg-[#1a8cd8] duration-400 cursor-pointer"
+              type="submit"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

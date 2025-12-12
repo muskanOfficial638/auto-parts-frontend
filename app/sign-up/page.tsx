@@ -195,10 +195,10 @@ export default function SignUpPage() {
             transition={{ duration: 0.9, ease: "easeOut" }}
             viewport={{ once: true }}
           >
-            <h2 className="text-white text-3xl font-semibold mb-[58px]">Sign Up</h2>
+            <h2 className="text-white md:text-4xl text-[25px] font-bold md:mb-[58px] mb-[30px]">Sign Up</h2>
 
             <form
-              className="grid grid-cols-1 md:grid-cols-2 md:gap-[43px] gap-[35px] w-full"
+              className="grid grid-cols-1 md:grid-cols-2 md:gap-[43px] md:gap-[35px] gap-[30px] w-full"
               onSubmit={handleRegister}
             >
               {/* Left Column */}
@@ -212,7 +212,7 @@ export default function SignUpPage() {
                     setNameError("");
                   }}
                   placeholder="Name*"
-                  className=" w-full px-[25px] py-[15px] bg-white text-[19px] leading-[23px] rounded-sm placeholder-[#848484] text-[#848484] outline-none"
+                  className=" w-full md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-[#848484] text-[#848484] outline-none"
                 />
                 {nameError && (
                   <p className="text-red-500 text-sm mt-1">{nameError}</p>
@@ -224,7 +224,7 @@ export default function SignUpPage() {
                 name="company"
                 placeholder="Company"
                 onChange={(e) => setCompanyName(e.target.value)}
-                className="md:col-span-1 col-span-2 px-[25px] py-[15px] bg-white text-[19px] leading-[23px] rounded-sm placeholder-[#848484] text-[#848484] outline-none "
+                className="md:col-span-1 col-span-2 md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-[#848484] text-[#848484] outline-none "
               />
 
               <select
@@ -232,7 +232,7 @@ export default function SignUpPage() {
                 name="role"
                 required
                 onChange={(e) => handleSelectChange(e.target.value)}
-                className="md:col-span-1 col-span-2 appearance-none cursor-pointer px-[25px] py-[15px] bg-white text-[19px] leading-[23px] rounded-sm text-[#848484] outline-none
+                className="md:col-span-1 col-span-2 appearance-none cursor-pointer md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm text-[#848484] outline-none
                 relative before:content-[''] before:bg-no-repeat before:absolute before:inset-0 before:bg-[url('/Chevron.svg')] before:bg-cover before:bg-center before:h-[5px] before:w-[10px] "
               >
                 <option value="">Select role*</option>
@@ -251,7 +251,7 @@ export default function SignUpPage() {
                     setVatError("");
                   }}
                   placeholder="VAT Number"
-                  className="w-full px-[25px] py-[15px] bg-white text-[19px] leading-[23px] rounded-sm placeholder-[#848484] text-[#848484] outline-none "
+                  className="w-full md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-[#848484] text-[#848484] outline-none "
                 />
 
                 {vatError && (
@@ -264,7 +264,7 @@ export default function SignUpPage() {
                 required
                 onChange={handleEmailChange}
                 placeholder="Enter email*"
-                className="col-span-2 px-[25px] py-[15px] bg-white text-[19px] leading-[23px] rounded-sm placeholder-[#848484] text-[#848484] outline-none"
+                className="col-span-2 md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-[#848484] text-[#848484] outline-none"
               />
               {emailError && (
                 <p className="text-red-500 text-sm mt-1">{emailError}</p>
@@ -276,7 +276,7 @@ export default function SignUpPage() {
                   required
                   onChange={handlePasswordChange}
                   placeholder="Enter password*"
-                  className="w-full px-[25px] py-[15px] bg-white text-[19px] leading-[23px] rounded-sm placeholder-[#848484] text-[#848484] outline-none"
+                  className="w-full md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-[#848484] text-[#848484] outline-none"
                 />
                 <span
                   onClick={() => setShowPassword(!showPassword)}
@@ -350,13 +350,13 @@ export default function SignUpPage() {
                   className="accent-blue-600 md:mt-[0] mt-[5px] w-4 h-4"
                 />
                 <div className="flex md:flex-row flex-col md:gap-[0] gap[35px] justify-between w-full">
-                  <label htmlFor="terms" className="text-base text-white tracking-[1px]">
+                  <label htmlFor="terms" className="md:text-base text-sm text-white tracking-[1px]">
                     I agree to the{" "}
                     <a href="#" className="underline text-autoblue">
                       Terms & Conditions
                     </a>
                   </label>
-                  <div className="text-white text-[19px] leading">
+                  <div className="text-white md:text-[19px] text-sm leading">
                     Are you already a user{" "}
                     <Link
                       href="/login"
@@ -370,7 +370,7 @@ export default function SignUpPage() {
               {error && <span className="text-red-500">{error}</span>}
               <button
                 type="submit"
-                className="col-span-2 bg-autoblue hover:bg-hoverblue text-[22px] leading[14px] rounded-sm text-white py-[20px] duration-400  font-semibold cursor-pointer"
+                className="col-span-2 bg-[#1DA1F2] md:text-[22px] text-[15px] leading[14px] rounded-sm text-white md:py-[20px] py-[10px] font-semibold hover:bg-[#1a8cd8] duration-400 cursor-pointer"
               >
                 Create Account
               </button>

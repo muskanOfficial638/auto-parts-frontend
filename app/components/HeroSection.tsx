@@ -19,7 +19,7 @@ export default function HeroSection() {
   return (
     <motion.section
       ref={container}
-      className="relative h-screen overflow-hidden flex items-center justify-start md:px-10 px-6"
+      className="relative h-screen overflow-hidden flex items-center justify-start "
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
@@ -39,7 +39,7 @@ export default function HeroSection() {
       <ParallaxProvider>
         {" "}
         {/* Create scrollable content */}
-        <div className="relative z-10 max-w-2xl space-y-4 mt-[50px]">
+        <div className="relative container  z-10 max-w-2xl space-y-4 mt-[50px]">
           <Parallax speed={10} className="mb-[0]">
             <motion.div
               initial={{ opacity: 0, y: 50 }}

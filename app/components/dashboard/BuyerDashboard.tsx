@@ -8,17 +8,27 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
-import { fetchAllBuyerPartRequests } from "@/app/utils/api";
+import { fetchAllBuyerPartRequests, imagePath } from "@/app/utils/api";
 import Loader from "../common/Loader";
 import { useRouter } from "next/navigation";
 import { PartRequest } from "../common/interface";
 import DeleteModal from "../buyer/modal/DeleteModal";
+import { FaSort } from "react-icons/fa6";
 
 export default function BuyerDashboard() {
   const [partRequestData, setPartRequestData] = useState<PartRequest[]>();
   const [loading, setIsLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [requestId, setRequestId] = useState("");
+  type Urgency = "low" | "normal" | "high";
+
+  const urgencyOrder: Record<Urgency, number> = {
+    low: 1,
+    normal: 2,
+    high: 3,
+  };
+
+  const [urgencySortAsc, setUrgencySortAsc] = useState(true);
   const router = useRouter();
 
   const refreshRequests = async () => {
@@ -51,22 +61,6 @@ export default function BuyerDashboard() {
     loadInitialData();
   }, []);
 
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
-  //     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-  //     if (loggedInUser?.access_token) {
-  //       fetchAllBuyerPartRequests(
-  //         loggedInUser?.user?.id,
-  //         loggedInUser.access_token
-  //       ).then((data) => {
-  //         setPartRequestData(data);
-  //         setIsLoading(false);
-  //       });
-  //     }
-  //   }
-  // }, []);
-
   useEffect(() => {}, [partRequestData]);
 
   function handleClick(item: PartRequest) {
@@ -77,6 +71,23 @@ export default function BuyerDashboard() {
     setRequestId(requestId);
     setModalOpen(true);
   }
+
+  const getUrgencyValue = (urgency?: string) => {
+    const key = urgency?.toLowerCase() as Urgency | undefined;
+    return key && key in urgencyOrder ? urgencyOrder[key] : 0;
+  };
+
+  const handleUrgencySort = () => {
+    const sortedData = [...(partRequestData ?? [])].sort((a, b) => {
+      const aUrgency = getUrgencyValue(a.urgency);
+      const bUrgency = getUrgencyValue(b.urgency);
+
+      return urgencySortAsc ? aUrgency - bUrgency : bUrgency - aUrgency;
+    });
+
+    setPartRequestData(sortedData);
+    setUrgencySortAsc(!urgencySortAsc);
+  };
 
   if (loading) {
     return (
@@ -131,8 +142,14 @@ export default function BuyerDashboard() {
                     <th className=" bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">
                       Trim
                     </th>
-                    <th className=" bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">
-                      Urgency
+                    <th className="flex bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">
+                      Urgency{" "}
+                      <span
+                        className="mt-1 pl-2 cursor-pointer"
+                        onClick={handleUrgencySort}
+                      >
+                        <FaSort />
+                      </span>
                     </th>
                     <th className=" bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">
                       Required
@@ -146,7 +163,7 @@ export default function BuyerDashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {partRequestData ? (
+                  {partRequestData && partRequestData.length ? (
                     partRequestData.map((item, index) => (
                       <tr
                         key={index}
@@ -157,7 +174,7 @@ export default function BuyerDashboard() {
                           <div className="bg-white w-[50px] h-[50px] flex items-center justify-center rounded-sm">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
-                              src="/productImage.png"
+                              src={`${imagePath}${item?.attachment}`}
                               alt="product"
                               className="md:w-[28px] md:h-[39px] w-[22px] h-[22px] "
                             />
@@ -179,7 +196,20 @@ export default function BuyerDashboard() {
 
                         {/* Urgency Badge */}
                         <td className="p-[10px]">
-                          <div className="text-[10px] capitalize font-medium leading-[15px] text-center text-white bg-[#52A84E] px-[9px] py-[2px] ms-auto me-auto w-[46px] rounded-[50px]">
+                          {/* <div className="text-[10px] capitalize font-medium leading-[15px] text-center text-white bg-[#52A84E] px-[9px] py-[2px] ms-auto me-auto w-[46px] rounded-[50px]">
+                            {item.urgency}
+                          </div> */}
+                          <div
+                            className={`text-[10px] capitalize font-medium leading-[15px] text-center text-white px-[9px] py-[2px] ms-auto me-auto w-[46px] rounded-[50px]
+                             ${
+                               item.urgency === "high"
+                                 ? "bg-red-500"
+                                 : item.urgency === "normal"
+                                 ? "bg-yellow-500"
+                                 : "bg-green-500"
+                             }
+                          `}
+                          >
                             {item.urgency}
                           </div>
                         </td>

@@ -41,7 +41,7 @@ export default function RequestPartForm() {
     fetchData();
   }, [requestId]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | any>) => {
     const { name, type, files, value } = e.target;
     setFormData((prev: any) => ({
       ...prev,
@@ -62,7 +62,7 @@ export default function RequestPartForm() {
     if (selectedMake) {
       setSelectedMake(selectedMake);
       setModelData(selectedMake?.models);
-      console.log("modelData", selectedMake?.models);
+      // console.log("modelData", selectedMake?.models);
       // const selectedModel = selectedModel?.models.find(
       //   (model: Model) => model.id
       // );
@@ -83,7 +83,7 @@ export default function RequestPartForm() {
     if (selectedModelData) {
       setSelectedModel(selectedModelData);
       setTrimData(selectedModelData?.trims);
-      console.log("Trim data", selectedModelData?.trims);
+      // console.log("Trim data", selectedModelData?.trims);
     } else {
       console.warn("Model not found for ID:", selectedId);
     }
@@ -114,9 +114,15 @@ export default function RequestPartForm() {
     const updatedData: any = {
       ...formData,
       user_id: loggedInUser?.user?.id || "",
-      vehicle_make: formData?.vehicle_make ? formData?.vehicle_make : selectedMake?.make_name || "",
-      vehicle_model: formData?.vehicle_model ? formData?.vehicle_model : selectedModel?.name || "",
-      vehicle_model_trim: formData?.vehicle_model_trim ? formData?.vehicle_model_trim : selectedTrim?.trim || "",
+      vehicle_make: formData?.vehicle_make
+        ? formData?.vehicle_make
+        : selectedMake?.make_name || "",
+      vehicle_model: formData?.vehicle_model
+        ? formData?.vehicle_model
+        : selectedModel?.name || "",
+      vehicle_model_trim: formData?.vehicle_model_trim
+        ? formData?.vehicle_model_trim
+        : selectedTrim?.trim || "",
     };
 
     const multipartData = new FormData();
@@ -131,7 +137,7 @@ export default function RequestPartForm() {
         ? `${buyerPath}/part-request/${requestId}`
         : `${buyerPath}/part-request`;
 
-      const method = requestId ? "PUT" : "POST";
+      const method = requestId ? "PATCH" : "POST";
 
       const response = await fetch(url, {
         method,
@@ -147,9 +153,7 @@ export default function RequestPartForm() {
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Server error:", errorData);
-        toast.error(
-          errorData?.detail?.[0]?.msg || "Failed to save part request"
-        );
+        toast.error(errorData?.detail || "Failed to save part request");
         return;
       }
 
@@ -233,8 +237,16 @@ export default function RequestPartForm() {
                     onChange={(e) => handleSelectModelChange(e.target.value)}
                     className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
                   >
-                    <option value={requestId && !selectedMake ? formData?.vehicle_model : ""}>
-                      {requestId && !selectedMake ? formData?.vehicle_model : "Select Model"}
+                    <option
+                      value={
+                        requestId && !selectedMake
+                          ? formData?.vehicle_model
+                          : ""
+                      }
+                    >
+                      {requestId && !selectedMake
+                        ? formData?.vehicle_model
+                        : "Select Model"}
                     </option>
                     {modelData &&
                       modelData.map((model: Model) => (
@@ -256,9 +268,15 @@ export default function RequestPartForm() {
                     className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
                   >
                     <option
-                      value={requestId && !selectedMake ? formData?.vehicle_model_trim : ""}
+                      value={
+                        requestId && !selectedMake
+                          ? formData?.vehicle_model_trim
+                          : ""
+                      }
                     >
-                      {requestId && !selectedMake ? formData?.vehicle_model_trim : "Select Trim"}
+                      {requestId && !selectedMake
+                        ? formData?.vehicle_model_trim
+                        : "Select Trim"}
                     </option>
                     {trimData &&
                       trimData.map((trim: Trim) => (
@@ -267,21 +285,35 @@ export default function RequestPartForm() {
                         </option>
                       ))}
                   </select>
-                </div>
+                </div> 
 
                 {/* Urgency */}
                 <div>
                   <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                     Urgency*
                   </label>
-                  <input
+                  <select
+                    name="urgency"
+                    value={formData?.urgency || ""}
+                    onChange={handleChange}
+                    className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px] border border-LightNeutral rounded-sm text-Gray outline-none"
+                  >
+                    <option value="" disabled>
+                      Select urgency
+                    </option>
+                    <option value="high">High</option>
+                    <option value="normal">Normal</option>
+                    <option value="low">Low</option>
+                  </select>
+
+                  {/* <input
                     type="text"
                     name="urgency"
                     placeholder="Ex.- High, low, medium"
                     onChange={handleChange}
                     value={formData?.urgency || ""}
                     className="w-full py-[8px] px-[18px] placeholder-Gray bg-white md:text-[19px] text-[15px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
-                  />
+                  /> */}
                 </div>
 
                 {/* Required Date */}
@@ -317,12 +349,12 @@ export default function RequestPartForm() {
                       accept="image/*"
                       onChange={handleChange}
                       placeholder="Browse Image"
-                      className="px-[14px] py-[7px] placeholder-Gray font-sm leading-[29px] w-[138px] rounded-sm border border-autoblue text-autoblue hover:border-hoverblue duration-400 cursor-pointer cursor-pointer"
+                      className="px-[14px] py-[7px] placeholder-Gray font-sm leading-[29px] w-[111px] rounded-sm border border-autoblue text-autoblue hover:border-hoverblue duration-400 cursor-pointer cursor-pointer"
                     />
                     <span className="justify-center break-all p-4">
-                      {requestId && formData?.attachment
-                        ? formData?.attachment
-                        : formData?.attachment?.name || ""}
+                      {formData?.attachment instanceof File
+                        ? formData.attachment.name
+                        : formData?.attachment ?? "No file selected"}
                     </span>
                   </div>
                 </div>
@@ -332,7 +364,7 @@ export default function RequestPartForm() {
                   type="submit"
                   className="bg-autoblue md:text-[22px] text-base leading[14px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
                 >
-                  {requestId ? "Update" : "Save Changes"}
+                  {requestId ? "Update Request" : "Submit Request"}
                 </button>
               </form>
             </div>

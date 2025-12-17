@@ -5,7 +5,7 @@ import { useState } from "react";
 import Header from "../components/Header";
 import { AiFillEye } from "react-icons/ai";
 import { motion } from "framer-motion";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import axios from "axios";
 import { authApiPath } from "@/app/utils/api";
 import { FaEyeSlash } from "react-icons/fa6";
@@ -93,7 +93,11 @@ export default function LoginPage() {
         if (response.data?.user?.role === "buyer") {
           router.push("/buyer-dashboard");
         } else {
-          router.push(response.data?.user?.profile?.kyc_status==="pending" ? "/kyc-page" : "/supplier-dashboard");
+          router.push(
+            response.data?.user?.profile?.kyc_status === "pending"
+              ? "/kyc-page"
+              : "/supplier-dashboard"
+          );
         }
       }
     } catch (err: any) {
@@ -124,7 +128,7 @@ export default function LoginPage() {
     >
       {/* Header */}
       <Header />
-
+      {/* <ToastContainer /> */}
       {/* Login Section */}
       <div
         className="flex-1 flex justify-center bg-cover bg-center bg-black pt-[150px] "
@@ -133,8 +137,6 @@ export default function LoginPage() {
         }}
       >
         <div className="rounded-xl shadow-lg w-full pt-8 px-[20px]">
-          <ToastContainer />
-
           <motion.div
             className="w-[700px] max-w-[100%] ms-[auto] me-[auto] bg-[#1d4aa4]/15 backdrop-blur-xl md:px-10 px-[30px] md:py-[62px] py-[40px] rounded-[20px] shadow-xl flex flex-col items-center border-2 border-borderblue"
             initial={{ opacity: 0, y: 50 }}
@@ -142,7 +144,9 @@ export default function LoginPage() {
             transition={{ duration: 0.9, ease: "easeOut" }}
             viewport={{ once: true }}
           >
-            <h2 className="text-white md:text-4xl text-[25px] font-bold">Login</h2>
+            <h2 className="text-white md:text-4xl text-[25px] font-bold">
+              Login
+            </h2>
 
             <form
               className=" w-[429] max-w-[100%] flex flex-col md:gap-[43px] gap-[30px] md:py-[43px] py-[30px]"

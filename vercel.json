@@ -6,19 +6,37 @@
     },
 
     {
-      "source": "/api/supplier/:path*",
-      "destination": "http://54.80.119.79:8005/v1/supplier/:path*/"
+      "source": "/api/supplier/kyc/view",
+      "destination": "http://54.80.119.79:8005/v1/supplier/kyc/view"
     },
-    
+    {
+      "source": "/api/supplier/quote/:path*",
+      "destination": "http://54.80.119.79:8005/v1/supplier/quote/:path*"
+    },
+    {
+      "source": "/api/supplier/all/:path*",
+      "destination": "http://54.80.119.79:8005/v1/supplier/all/:path*/"
+    },
+    {
+      "source": "/api/supplier/:path*",
+      "destination": "http://54.80.119.79:8005/v1/supplier/:path*"
+    },
 
+    {
+      "source": "/api/buyer/quote/by-request/:path*",
+      "destination": "http://54.80.119.79:8002/v1/buyer/quote/by-request/:path*"
+    },
+    {
+      "source": "/api/buyer/all/:path*",
+      "destination": "http://54.80.119.79:8002/v1/buyer/all/:path*"
+    },
     {
       "source": "/api/buyer/:path*",
-      "destination": "http://54.80.119.79:8002/v1/buyer/:path*/"
+      "destination": "http://54.80.119.79:8002/v1/buyer/:path*"
     },
-    
 
     {
-      "source": "/api/vehicle:path*",
+      "source": "/api/vehicle/:path*",
       "destination": "http://54.80.119.79:8006/v1/vehicle/:path*/"
     }
   ]

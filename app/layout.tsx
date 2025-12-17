@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import CheckSession from "./components/auth/CheckSession";
+import Script from "next/script";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { Inter } from "next/font/google";
 
@@ -31,12 +34,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.className}>
+    <html lang="en" className={inter.className} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <CheckSession />   {/* <-- session checker */}
-        <script
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          pauseOnHover
+          theme="dark"
+        />
+        <CheckSession /> {/* <-- session checker */}
+        {/* <script
           dangerouslySetInnerHTML={{
             __html: `
       if ('scrollRestoration' in history) {
@@ -44,7 +56,14 @@ export default function RootLayout({
       }
     `,
           }}
-        />
+        /> */}
+        <Script id="scroll-restoration" strategy="beforeInteractive">
+          {`
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+  `}
+        </Script>
         {children}
       </body>
     </html>

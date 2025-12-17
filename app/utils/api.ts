@@ -7,6 +7,10 @@ import axios from "axios";
 // export const buyerPath = "http://54.80.119.79:8002/v1/buyer";
 // export const vehicleApiPath = "http://54.80.119.79:8006/v1/vehicle";
 
+//image path
+// export const imagePath = "http://54.80.119.79:8000/image/"; 
+export const imagePath = "/api/image-proxy/" 
+
 // API paths for Vercel
 export const authApiPath = "/api/auth";
 export const supplierPath = "/api/supplier";
@@ -19,17 +23,13 @@ export async function fetchAllBuyerPartRequests(
   user_id: string,
   token: string
 ) {
-  const res = await fetch(`/api/buyer/all/part-request/${user_id}`, {
-  headers: { Authorization: `Bearer ${token}` }
-}); //vercel
-
-  // fetch(`${buyerPath}/all/part-request/${user_id}`, {
-  //   cache: "no-store",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     Authorization: `Bearer ${token}`,
-  //   },
-  // }); //local
+  const res = await fetch(`${buyerPath}/all/part-request/${user_id}`, {
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
   if (!res.ok) throw new Error("Failed to load part requests");
   return res.json();
 }
@@ -139,8 +139,7 @@ export async function getQuoteBySupplier(
   token: string
 ) {
   const res = await fetch(
-    // `${supplierPath}/quote/view?user_id=${userId}&status=${status}&page=${page}&limit=${limit}`,  //for local
-    `/api/supplier/quote/view?user_id=${userId}&status=${status}&page=${page}&limit=${limit}`,  //for vercel
+    `${supplierPath}/quote/view?user_id=${userId}&status=${status}&page=${page}&limit=${limit}`,
     {
       cache: "no-store",
       headers: {
@@ -154,9 +153,6 @@ export async function getQuoteBySupplier(
 }
 
 export async function viewSupplierProfile(user_id: string, token: string) {
-//   const res = await fetch(`/api/supplier/profile/${user_id}`, {
-//   headers: { Authorization: `Bearer ${token}` },
-// }); //vercel
   const res = await fetch(`${supplierPath}/profile/${user_id}`, {
     cache: "no-store",
     headers: {
@@ -205,6 +201,18 @@ export async function uploadKycDoc(
     body: payload,
   });
   if (!res.ok) throw new Error("Failed to load upload doc");
+  return res.json();
+}
+
+export async function fetchKycDocs(user_id: string, token: string) {
+  const res = await fetch(`${supplierPath}/kyc/view?user_id=${user_id}`, {
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  }); //local
+  if (!res.ok) throw new Error("Failed to load kyc doc");
   return res.json();
 }
 

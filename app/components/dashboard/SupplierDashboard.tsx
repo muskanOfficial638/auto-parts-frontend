@@ -5,7 +5,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import BidModal from "@/app/components/supplier/Modal/BidModal";
-import { fetchAllSupplierPartRequests } from "@/app/utils/api";
+import { fetchAllSupplierPartRequests, imagePath } from "@/app/utils/api";
 import { PartRequest } from "../common/interface";
 import Loader from "../common/Loader";
 
@@ -212,7 +212,7 @@ export default function SupplierDashboard() {
                     <div className="bg-white py-[11px] px-[18px] md:mt-[0] mt-[4px] rounded-sm">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src="/productImage.png"
+                        src={`${imagePath}${item?.attachment}`}
                         alt="Filter"
                         className="md:w-[43px] md:h-[59px] w-[30px] h-[46px] object-cover"
                       />

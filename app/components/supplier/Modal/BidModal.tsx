@@ -53,9 +53,7 @@ export default function BidModal({
       if (err.response) {
         // Server responded with a status other than 2xx
         console.error("Server error:", err.response.data);
-        toast.error(
-          err?.response?.data?.detail || "unable to create quote"
-        );
+        toast.error(err?.response?.data?.detail || "unable to create quote");
       } else if (err.request) {
         // Request was made but no response received
         console.error("No response:", err.request);
@@ -81,7 +79,7 @@ export default function BidModal({
             onClick={onClose}
             className="absolute top-[10px] right-[10px] bg-white cursor-pointer h-[40px] w-[40px] rounded-full"
           >
-            <span className=" text-black ">✕</span>
+            <span className="text-black ">✕</span>
           </button>
           <form
             className="w-[429px] max-w-[100%] ms-[auto] me-[auto]"
@@ -90,7 +88,9 @@ export default function BidModal({
             <h2 className="text-white md:text-4xl text-[25px] font-bold md:mb-[58px] mb-[30px]">
               Quote Now{" "}
             </h2>
-
+            <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+              Price Cents
+            </label>
             <input
               type="number"
               placeholder="Price"
@@ -98,7 +98,9 @@ export default function BidModal({
               onChange={handleChange}
               className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] md:mb-[43px] mb-[30px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
             />
-
+            <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+              Estimated Days
+            </label>
             <input
               type="number"
               placeholder="Estimate Days"
@@ -106,7 +108,9 @@ export default function BidModal({
               onChange={handleChange}
               className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] md:mb-[43px] mb-[30px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
             />
-
+            <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+              Description
+            </label>
             <textarea
               placeholder="Description"
               name="terms"

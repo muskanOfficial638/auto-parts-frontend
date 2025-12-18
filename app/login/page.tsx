@@ -17,6 +17,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [error, setError] = useState("");
   const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -40,6 +41,7 @@ export default function LoginPage() {
     const value = e.target.value;
     setEmail(value);
     validateEmail(value);
+    setError("");
   };
 
   //Password
@@ -63,6 +65,7 @@ export default function LoginPage() {
     value.replace(/\s/g, "");
     setPassword(value);
     validatePassword(value);
+    setError("");
   };
 
   async function handleLogin(e: React.FormEvent) {
@@ -105,11 +108,13 @@ export default function LoginPage() {
       if (err.response) {
         // Server responded with a status other than 2xx
         console.error("Server error:", err.response.data);
-        toast.error(err.response.data.detail || "Login failed");
+        setError(err.response.data.detail || "Login failed");
+        // toast.error(err.response.data.detail || "Login failed");
       } else if (err.request) {
         // Request was made but no response received
         console.error("No response:", err.request);
-        toast.error("No response from server");
+        setError("No response from server");
+        // toast.error("No response from server");
       } else {
         // Something else happened
         console.error("Error:", err.message);
@@ -190,7 +195,7 @@ export default function LoginPage() {
               <div className="md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] text-autoblue hover:underline cursor-pointer font-semibold">
                 Forgot Password ?
               </div>
-
+              {error && <p className="text-red-600 text-sm">{error}</p>}
               {/* Login Button */}
               <button className=" bg-autoblue md:text-[22px] text-[15px] leading[14px] rounded-sm text-white md:py-[20px] py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer">
                 Login

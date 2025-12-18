@@ -22,15 +22,45 @@ export default function BidModal({
   }, [userRequest]);
 
   const [formData, setFormData] = useState<Quote>();
+  const [preview, setPreview] = useState<string | null>(null);
 
+  // const handleChange = (
+  //   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  // ) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prev: any) => ({
+  //     ...prev,
+  //     [name]: value,
+  //   }));
+  // };
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
-    const { name, value } = e.target;
-    setFormData((prev: any) => ({
-      ...prev,
-      [name]: value,
-    }));
+    const target = e.target;
+
+    const name = target.name;
+    const value = target.value;
+
+    if (target instanceof HTMLInputElement && target.type === "file") {
+      const file = target.files?.[0];
+
+      if (!file) return;
+
+      setFormData((prev: any) => ({
+        ...prev,
+        [name]: file,
+      }));
+
+      const objectUrl = URL.createObjectURL(file);
+      setPreview(objectUrl);
+    } else {
+      setFormData((prev: any) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   async function handleSave(e: React.FormEvent) {
@@ -117,6 +147,43 @@ export default function BidModal({
               onChange={handleChange}
               className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:mb-[43px] mb-[30px] h-[163px] md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
             />
+            <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block">
+              Upload Image
+            </label>
+            <div className="flex flex-row items-center py-[16px]">
+              <input
+                type="file"
+                name="attachment"
+                accept="image/*"
+                onChange={handleChange}
+                placeholder="Browse Image"
+                className="px-[14px] py-[7px] placeholder-Gray font-sm leading-[29px] w-[111px] rounded-sm border border-autoblue text-autoblue hover:border-hoverblue duration-400 cursor-pointer cursor-pointer"
+              />
+            </div>
+            {preview && (
+              <div className="mt-4 flex items-center gap-4">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={preview}
+                  alt="Selected image"
+                  className="w-[120px] h-[120px] object-cover rounded-md border"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    URL.revokeObjectURL(preview);
+                    setPreview(null);
+                    setFormData((prev: any) => ({
+                      ...prev,
+                      attachment: null,
+                    }));
+                  }}
+                  className="text-sm text-red-500 hover:underline cursor-pointer"
+                >
+                  Remove
+                </button>
+              </div>
+            )}
 
             <button
               className="bg-autoblue w-full md:text-[22px] text-[15px] leading[14px] rounded-sm text-white md:py-[20px] py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"

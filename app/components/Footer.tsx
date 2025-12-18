@@ -15,7 +15,7 @@ export default function Footer() {
   return (
     <footer className="bg-brandBlack text-white pt-[66px] pb-[24px] ">
       <div className="container">
-      {/* Top Section */}      
+        {/* Top Section */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-10 border-b border-[#232A35] pb-[50px]">
           {/* Logo + Socials */}
           <div className="space-y-5">
@@ -31,9 +31,13 @@ export default function Footer() {
 
             <div className="space-y-4">
               <p className="flex items-center text-sm leading-[26px] gap-2 hover:text-white cursor-pointer">
-                <a href="#" className="hover:text-white p-1 rounded-full bg-white">
+                <a
+                  href="#"
+                  className="hover:text-white p-1 rounded-full bg-white"
+                >
                   <FaQuestion className="text-black text-sm" />
-                </a> Help & Support
+                </a>{" "}
+                Help & Support
               </p>
               <p className="flex items-center gap-2 text-sm leading-[26px] hover:text-white cursor-pointer">
                 <MdAccessibility /> Accessibility
@@ -41,19 +45,34 @@ export default function Footer() {
             </div>
 
             <div className="flex flex-wrap items-center gap-3 ">
-              <a href="#" className="hover:text-white text-black hover:bg-hoverblue duration-400 p-2 rounded-full bg-white">
+              <a
+                href="#"
+                className="hover:text-white text-black hover:bg-hoverblue duration-400 p-2 rounded-full bg-white"
+              >
                 <FaFacebookF className="text-sm" />
               </a>
-              <a href="#" className="hover:text-white text-black hover:bg-hoverblue duration-400  p-2 rounded-full bg-white">
+              <a
+                href="#"
+                className="hover:text-white text-black hover:bg-hoverblue duration-400  p-2 rounded-full bg-white"
+              >
                 <FaXTwitter className="text-sm" />
               </a>
-              <a href="#" className="hover:text-white text-black hover:bg-hoverblue duration-400 p-2 rounded-full bg-white">
+              <a
+                href="#"
+                className="hover:text-white text-black hover:bg-hoverblue duration-400 p-2 rounded-full bg-white"
+              >
                 <FaYoutube className="text-sm" />
               </a>
-              <a href="#" className="hover:text-white text-black hover:bg-hoverblue duration-400 p-2 rounded-full bg-white">
+              <a
+                href="#"
+                className="hover:text-white text-black hover:bg-hoverblue duration-400 p-2 rounded-full bg-white"
+              >
                 <FaPinterestP className="text-sm" />
               </a>
-              <a href="#" className="hover:text-white text-black hover:bg-hoverblue duration-400 p-2 rounded-full bg-white">
+              <a
+                href="#"
+                className="hover:text-white text-black hover:bg-hoverblue duration-400 p-2 rounded-full bg-white"
+              >
                 <FaLinkedinIn className="text-sm" />
               </a>
             </div>
@@ -61,45 +80,67 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-semibold text-[18px] text-white mb-[20px]">Quick Links</h3>
+            <h3 className="font-semibold text-[18px] text-white mb-[20px]">
+              Quick Links
+            </h3>
             <ul className="space-y-6 text-sm">
-              {["Home", "About", "Blog", "Contact", "Login", "Sign Up"].map(
-                (link) => (
-                  <li key={link} className="hover:text-hoverblue duration-400 cursor-pointer">
-                    {link}
-                  </li>
-                )
-              )}
+              {[
+                { name: "Home", href: "/" },
+                { name: "About", href: "/about" },
+                { name: "Blog", href: "/blog" },
+                { name: "Contact", href: "/contact" },
+              ].map((link) => (
+                <li
+                  key={link.name}
+                  className="hover:text-hoverblue duration-400 cursor-pointer"
+                >
+                  <a href={link.href}>{link.name}</a>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* About */}
           <div>
-            <h3 className="font-semibold text-[18px] text-white mb-[20px]">About</h3>
+            <h3 className="font-semibold text-[18px] text-white mb-[20px]">
+              About
+            </h3>
             <ul className="space-y-6 text-sm">
-              {["How it Works", "Security", "Investor", "News", "Careers"].map(
-                (link) => (
-                  <li key={link} className="hover:text-hoverblue duration-400 cursor-pointer">
-                    {link}
-                  </li>
-                )
-              )}
+              {[
+                { name: "How it Works", href: "/how-it-works" },
+                { name: "Security", href: "/security" },
+                { name: "Investor", href: "/investor" },
+                { name: "News", href: "/news" },
+                { name: "Careers", href: "/careers" },
+              ].map((link) => (
+                <li
+                  key={link.name}
+                  className="hover:text-hoverblue duration-400 cursor-pointer"
+                >
+                  <a href={link.href}>{link.name}</a>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Legal */}
           <div>
-            <h3 className="font-semibold text-[18px] text-white mb-[20px]">Legal</h3>
+            <h3 className="font-semibold text-[18px] text-white mb-[20px]">
+              Legal
+            </h3>
             <ul className="space-y-6 text-sm">
               {[
-                "Terms of Service",
-                "Privacy Policy",
-                "Copyright Policy",
-                "Fees and Charges",
-                "Code of Conduct",
+                { name: "Terms of Service", href: "/terms-of-service" },
+                { name: "Privacy Policy", href: "/privacy-policy" },
+                { name: "Copyright Policy", href: "/copyright-policy" },
+                { name: "Fees and Charges", href: "/fees-and-charges" },
+                { name: "Code of Conduct", href: "/code-of-conduct" },
               ].map((link) => (
-                <li key={link} className="hover:text-hoverblue duration-400 cursor-pointer">
-                  {link}
+                <li
+                  key={link.name}
+                  className="hover:text-hoverblue duration-400 cursor-pointer"
+                >
+                  <a href={link.href}>{link.name}</a>
                 </li>
               ))}
             </ul>
@@ -107,12 +148,20 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="font-semibold text-[18px] text-white mb-[20px]">Contact Us</h3>
+            <h3 className="font-semibold text-[18px] text-white mb-[20px]">
+              Contact Us
+            </h3>
             <ul className="space-y-6 text-sm">
-              <a href="tel:+91 1414523119" className="flex hover:text-hoverblue duration-400 items-center gap-2">
+              <a
+                href="tel:+91 1414523119"
+                className="flex hover:text-hoverblue duration-400 items-center gap-2"
+              >
                 <MdCall className="text-lg" /> +91 1414523119
               </a>
-              <a href="mailto:autoparts@gmail.com" className="flex break-all hover:text-hoverblue duration-400 items-center gap-2">
+              <a
+                href="mailto:autoparts@gmail.com"
+                className="flex break-all hover:text-hoverblue duration-400 items-center gap-2"
+              >
                 <MdEmail className="text-lg" /> autoparts@gmail.com
               </a>
               <li className="flex items-start gap-2">
@@ -129,10 +178,13 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center text-xs mt-[15px]">
           <p>Copyright 2025 © AutoParts Theme. All rights reserved.</p>
           <div className="mt-3 md:mt-0 text-right">
-            <p className="text-white"><strong className="me-[6px]">25,160,181 Total</strong>AutoParts Posted</p>
+            <p className="text-white">
+              <strong className="me-[6px]">25,160,181 Total</strong>AutoParts
+              Posted
+            </p>
           </div>
         </div>
-       </div>
+      </div>
     </footer>
   );
 }

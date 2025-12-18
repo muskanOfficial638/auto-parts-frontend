@@ -5,11 +5,13 @@ import OTPModal from "@/app/components/supplier/Modal/OtpModal";
 import { getQuoteBySupplier } from "@/app/utils/api";
 import { useEffect, useState } from "react";
 import { Quote } from "../common/interface";
+import TrackingModal from "./Modal/TrackingModal";
 // import Loader from "../common/Loader";
 
 export default function MyBids() {
   const [activeTab, setActiveTab] = useState("pending");
   const [modalOpen, setModalOpen] = useState(false);
+  const [isTrackingModal, setIsTrackingModalOpen] = useState(false);
   const [otpModalOpen, setOtpModalOpen] = useState(false);
   const [quoteData, setQuoteData] = useState<Quote[]>();
   //const [loading, setIsLoading] = useState(true);
@@ -172,33 +174,40 @@ export default function MyBids() {
                   </div>
 
                   {activeTab === "accepted" ? (
-                    <div className="bg-[#011827] p-[10px] border border-[#153C51] rounded-sm text-white flex flex-col w-100">
-                      <span className="font-bold text-xs leading-[22px]">
-                        Price:{" "}
-                        <small className="font-medium ms-[6px] text-xs leading-[22px]">
-                          {data?.price_cents}
-                        </small>
-                      </span>
-                      <span className="font-bold text-xs leading-[22px]">
-                        Date:{" "}
-                        <small className="font-medium ms-[6px] text-xs leading-[22px]">
-                          {data?.created_at}
-                        </small>
-                      </span>
-                      <span className="font-bold flex text-xs leading-[22px]">
-                        Description:{" "}
-                        <small className="text-[10px] ms-[6px] mt-[5px] pb-[7px] font-medium leading-[12px]">
-                          {data?.terms}
-                        </small>
-                      </span>
-                    </div>
+                    <>
+                      <div className="bg-[#011827] p-[10px] border border-[#153C51] rounded-sm text-white flex flex-col w-100">
+                        <span className="font-bold text-xs leading-[22px]">
+                          Price:{" "}
+                          <small className="font-medium ms-[6px] text-xs leading-[22px]">
+                            {data?.price_cents}
+                          </small>
+                        </span>
+                        <span className="font-bold text-xs leading-[22px]">
+                          Date:{" "}
+                          <small className="font-medium ms-[6px] text-xs leading-[22px]">
+                            {data?.created_at}
+                          </small>
+                        </span>
+                        <span className="font-bold flex text-xs leading-[22px]">
+                          Description:{" "}
+                          <small className="text-[10px] ms-[6px] mt-[5px] pb-[7px] font-medium leading-[12px]">
+                            {data?.terms}
+                          </small>
+                        </span>
+                      </div>
+                      <button
+                        className="bg-autoblue md:text-[22px] text-base leading[14px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
+                        onClick={() => setIsTrackingModalOpen(true)}
+                      >
+                        Process now
+                      </button>
+                    </>
                   ) : (
                     <button
                       className="bg-autoblue text-white md:text-base text-sm font-semibold leading-[14px]  md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm"
-                      // onClick={() => setModalOpen(true)}
                       disabled
                     >
-                      {data?.status}
+                      {data?.status==="pending" ? "Pending": data?.status}
                     </button>
                   )}
                 </div>
@@ -218,6 +227,11 @@ export default function MyBids() {
       />
 
       <OTPModal open={otpModalOpen} onClose={() => setOtpModalOpen(false)} />
+
+      <TrackingModal
+        open={isTrackingModal}
+        onClose={() => setIsTrackingModalOpen(false)}
+      />
     </>
   );
 }

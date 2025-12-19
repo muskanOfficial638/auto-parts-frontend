@@ -142,7 +142,7 @@ export default function BuyerDashboard() {
                     <th className=" bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">
                       Trim
                     </th>
-                    <th className="flex bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">
+                    <th className="flex justify-center bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">
                       Urgency{" "}
                       <span
                         className="mt-1 pl-2 cursor-pointer"
@@ -200,7 +200,7 @@ export default function BuyerDashboard() {
                             {item.urgency}
                           </div> */}
                           <div
-                            className={`text-[10px] capitalize font-medium leading-[15px] text-center text-white px-[9px] py-[2px] ms-auto me-auto w-[46px] rounded-[50px]
+                            className={`text-[10px] capitalize font-medium leading-[15px] text-center text-white px-[9px] py-[2px] ms-auto me-auto w-[52px] rounded-[50px]
                              ${
                                item.urgency === "high"
                                  ? "bg-red-500"

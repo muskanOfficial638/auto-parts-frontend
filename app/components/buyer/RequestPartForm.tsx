@@ -198,8 +198,7 @@ export default function RequestPartForm() {
                   <input
                     type="text"
                     name="title"
-                    value={formData?.title || ""}
-                    placeholder="Enter product name"
+                    value={formData?.title || ""}                    
                     onChange={handleChange}
                     className="w-full py-[8px] px-[18px]  bg-white md:text-[19px] text-[15px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
                   />
@@ -349,7 +348,7 @@ export default function RequestPartForm() {
                       accept="image/*"
                       onChange={handleChange}
                       placeholder="Browse Image"
-                      className="px-[14px] py-[7px] placeholder-Gray font-sm leading-[29px] w-[111px] rounded-sm border border-autoblue text-autoblue hover:border-hoverblue duration-400 cursor-pointer cursor-pointer"
+                      className="px-[15px] py-[7px] placeholder-Gray font-sm leading-[29px] w-[111px] rounded-sm border border-autoblue text-autoblue hover:border-hoverblue duration-400 cursor-pointer cursor-pointer"
                     />
                     <span className="justify-center break-all p-4">
                       {formData?.attachment instanceof File

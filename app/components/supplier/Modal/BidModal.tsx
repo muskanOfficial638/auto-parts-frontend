@@ -119,32 +119,41 @@ export default function BidModal({
               Quote Now{" "}
             </h2>
             <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-              Price Cents
+              Price Cents*
             </label>
             <input
-              type="number"
-              placeholder="Price"
+              type="text"
+              placeholder="Price(in numeric format)"
               name="price_cents"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              required
               onChange={handleChange}
               className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] md:mb-[43px] mb-[30px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
             />
             <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-              Estimated Days
+              Estimated Days*
             </label>
             <input
-              type="number"
-              placeholder="Estimate Days"
+              type="text"
+              placeholder="Estimate Days(in numeric format)"
               name="eta_days"
+              inputMode="numeric"
+              pattern="[0-9]*"
               onChange={handleChange}
+              required
               className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] md:mb-[43px] mb-[30px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
             />
             <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-              Description
+              Description*
             </label>
             <textarea
               placeholder="Description"
               name="terms"
               onChange={handleChange}
+              minLength={2}
+              maxLength={280}
+              required
               className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:mb-[43px] mb-[30px] h-[163px] md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
             />
             <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block">

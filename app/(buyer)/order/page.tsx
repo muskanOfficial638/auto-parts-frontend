@@ -13,19 +13,19 @@ export default function RequestPartPage() {
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: "url('/dashboardBg.jpg')" }}
-          />     
-              {/* Gradient Overlay */}
+          />
+          {/* Gradient Overlay */}
           {/* <div className="absolute inset-0 bg-gradient-to-b from-[#003253]/95 to-black/95" /> */}
           {/* Page Content */}
           <div className="relative z-10 flex flex-col">
             <div className="absolute inset-0 bg-gradient-to-b from-[#003253]/95 to-black/95"></div>
-            <div className="flex justify-center items-start pt-36 pb-20 px-4">
-              <div className="w-[600px] relative  max-w-[100%] bg-brandBlack rounded-sm px-[40px] pt-[50px] pb-[60px]">
-                 <button   
-          className="absolute top-[15px] font-bold  right-[15px] bg-white cursor-pointer h-[40px] w-[40px] rounded-full"
-        >
-          <span className="text-black">✕</span>
-        </button>
+            <div className="flex flex-col justify-center items-center pt-36 pb-20 px-4">
+              <div className="w-[700px] relative  max-w-[100%] bg-brandBlack rounded-sm md:px-[40px] px-[20px]  md:py-[50px] py-[30px]">
+                <button
+                  className="absolute top-[15px] font-bold  right-[15px] bg-white cursor-pointer h-[40px] w-[40px] rounded-full"
+                >
+                  <span className="text-black">✕</span>
+                </button>
                 <div className="w-[808px] max-w-[100%] ms-[auto] me-[auto]">
                   <h2 className="md:text-4xl text-lg leading-[44px] font-bold text-white mb-[30px]">
                     Select Delivery Address
@@ -92,6 +92,99 @@ export default function RequestPartPage() {
                   >
                     Proceed to pay
                   </button>
+                </div>
+              </div>
+
+            {/* Add New Address Modal */}  
+              <div className="w-[700px] relative  max-w-[100%] bg-brandBlack rounded-sm md:px-[40px] px-[20px]  md:py-[50px] py-[30px]">
+                <button
+                  className="absolute top-[15px] font-bold  right-[15px] bg-white cursor-pointer h-[40px] w-[40px] rounded-full"
+                >
+                  <span className="text-black">✕</span>
+                </button>
+                <div className="w-[808px] max-w-[100%] ms-[auto] me-[auto]">
+                  <h2 className="md:text-[22px] text-lg leading-[44px] font-semibold text-white mb-[30px]">
+                    Add New Address
+                  </h2>
+                  <form className="space-y-[25px]">
+                    <div>
+                      <label className="text-Gray text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                        Name
+                      </label>
+                      <input
+                        type="text"
+                        name="title"
+                        className="w-full py-[8px] px-[18px]  bg-white text-[14px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-Gray text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                        Address
+                      </label>
+                      <input
+                        type="text"
+                        name="title"
+                        className="w-full py-[8px] px-[18px]  bg-white text-[14px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
+                      />
+                    </div>
+                    <div className="flex justify md:flex-row flex-col between gap-[30px]">
+                      <div className="w-full">
+                        <label className="text-Gray text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                          City
+                        </label>
+                        <input
+                          type="text"
+                          name="title"
+                          className="w-full py-[8px] px-[18px]  bg-white text-[14px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
+                        />
+                      </div>
+                      <div className="w-full">
+                        <label className="text-Gray text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                          Province
+                        </label>
+                        <input
+                          type="text"
+                          name="title"
+                          className="w-full py-[8px] px-[18px]  bg-white text-[14px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex justify md:flex-row flex-col between gap-[30px]">
+                      <div className="w-full">
+                        <label className="text-Gray text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                           Postal Code
+                        </label>
+                        <input
+                          type="text"
+                          name="title"
+                          className="w-full py-[8px] px-[18px]  bg-white text-[14px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
+                        />
+                      </div>
+                      <div className="w-full">
+                        <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                          Country
+                        </label>
+                        <select                       
+                          className="w-full py-[11px] px-[18px] bg-white  text-[14px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
+                        >
+                          <option>
+                            South Africa (ZA)
+                          </option>                        
+                              <option>
+                                 South Africa (ZA)
+                              </option>
+                      
+                        </select>
+                      </div>
+                    </div>
+                    {/* Save Button */}
+                  <button
+                    type="submit"
+                    className="bg-autoblue  md:text-[18px] text-white text-base leading[14px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
+                  >
+                    Save Address
+                  </button>
+                  </form>
                 </div>
               </div>
             </div>

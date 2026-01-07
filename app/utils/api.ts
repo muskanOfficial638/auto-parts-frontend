@@ -7,7 +7,7 @@ import axios from "axios";
 // export const buyerPath = "http://54.80.119.79:8002/v1/buyer";
 // export const vehicleApiPath = "http://54.80.119.79:8006/v1/vehicle";
 //export const imagePath = "http://54.80.119.79:8000/image/";  //image path for local 
-export const imagePath = "/api/image-proxy/" // image path for vercel
+ export const imagePath = "/api/image-proxy/" // image path for vercel
 
 // API paths for Vercel
 export const authApiPath = "/api/auth";

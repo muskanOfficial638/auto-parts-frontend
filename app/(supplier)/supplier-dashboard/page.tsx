@@ -5,9 +5,9 @@ import SupplierDashboard from "@/app/components/dashboard/SupplierDashboard";
 export default function SupplierDashboardPage() {
   return (
     <>
-      <Header></Header>
+      <Header/>
       <SupplierDashboard/>
-      <Footer></Footer>
+      <Footer/>
     </>
   );
 }

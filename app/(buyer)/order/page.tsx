@@ -1,9 +1,8 @@
 import { Suspense } from "react";
-import RequestPartForm from "../../components/buyer/RequestPartForm";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 
-export default function RequestPartPage() {
+export default function Order() {
   return (
     <main className="min-h-screen bg-black text-white">
       <Header />
@@ -192,6 +191,7 @@ export default function RequestPartPage() {
         </div>
       </Suspense>
       <Footer />
+      
     </main>
   );
 }

@@ -7,11 +7,12 @@ import { useEffect, useState } from "react";
 import {
   fetchPartRequestsById,
   getQuoteByRequest,
-  updateQuoteByAction,
+
 } from "@/app/utils/api";
 import { useSearchParams } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 import { PartRequest, Quote } from "../common/interface";
+import OrderCreate from "./OrderCreate";
 
 export default function ViewPartRequest() {
   const searchParams = useSearchParams();
@@ -19,6 +20,7 @@ export default function ViewPartRequest() {
   const [partRequest, setPartRequest] = useState<PartRequest>();
   const [quoteData, setQuoteData] = useState<Quote[]>();
   const [loading, setIsLoading] = useState(true);
+  const [isOpenCreateOrder, setIsOpenCreateOrder] = useState(false);
 
   useEffect(() => {
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
@@ -44,16 +46,20 @@ export default function ViewPartRequest() {
     quoteId: string,
     requestId: string,
     tab: string
-  ) {
+  ) 
+  
+  {
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
     try {
-      const response = await updateQuoteByAction(
-        quoteId,
-        requestId,
-        tab,
-        loggedInUser?.access_token
-      );
+
+      setIsOpenCreateOrder(true);
+      // const response = await updateQuoteByAction(
+      //   quoteId,
+      //   requestId,
+      //   tab,
+      //   loggedInUser?.access_token
+      // );
       // console.log("update:", response);
 
       if (response?.status === 200) {
@@ -232,6 +238,7 @@ export default function ViewPartRequest() {
           </div>
         </div>
       </div>
+      {isOpenCreateOrder && <OrderCreate closeModal={ setIsOpenCreateOrder}   />}
     </div>
   );
 }

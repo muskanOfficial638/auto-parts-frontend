@@ -54,9 +54,9 @@ export default function Header() {
       {/* HEADER */}
       <header
         className="fixed top-0 left-0 w-full z-20
-  md:bg-black/50 md:backdrop-blur-md bg-black
+  lg:bg-black/50 lg:backdrop-blur-md bg-black
   
-   md:py-8 py-[20px] text-white"
+   lg:py-8 py-[20px] text-white"
       >
         <div className="container flex items-center justify-between">
         <div className="flex flex-row space-x-8">
@@ -74,7 +74,7 @@ export default function Header() {
 
           {/* Nav Links */}
           {!autoPartsUserData && (
-            <nav className="hidden md:flex items-center space-x-[25px] text-white text-sm font-medium">
+            <nav className="hidden lg:flex items-center space-x-[25px] text-white text-sm font-medium">
               <div className="relative group">
                 <button className="hover:text-hoverblue text-[17px] duration-400 font-semibold leading-[15px] flex items-center cursor-pointer">
                   Find Auto Parts
@@ -122,7 +122,7 @@ export default function Header() {
 
         {/* Buttons */}
         {!autoPartsUserData ? (
-          <div className="hidden md:flex items-center space-x-[22px] text-[17px]  font-semibold leading-[15px] text-white">
+          <div className="hidden lg:flex items-center space-x-[22px] text-[17px]  font-semibold leading-[15px] text-white">
             <a href="/login" className="hover:text-hoverblue duration-400">
               Login
             </a>
@@ -137,7 +137,7 @@ export default function Header() {
             </button>
           </div>
         ) : (
-          <div className="hidden md:flex items-center space-x-[17px]">
+          <div className="hidden lg:flex items-center space-x-[17px]">
             {autoPartsUserData?.user?.role === "buyer" && (
               <a
                 href="/request-part"
@@ -286,7 +286,7 @@ export default function Header() {
         {/* MOBILE HAMBURGER */}
         <button
           onClick={() => setMobileOpen(true)}
-          className="md:hidden text-white text-3xl"
+          className="lg:hidden text-white text-3xl"
         >
           ☰
         </button>

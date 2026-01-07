@@ -37,8 +37,27 @@ export default function RequestPartPage() {
                   </p>
                   <a href="#" className="bg-[#6BB776] px-[13px] py-[3px] rounded-[3px] text-xs leading-[14px">Accepted</a>
                 </div>
-                <div className="bg-[#011827] p-[10px] rounded-sm">
-                  <a href="#"><img src="" alt="" />@Muikan Supplier</a>
+                <div className="bg-[#011827] p-[10px] rounded-sm mt-[25px] border-[#153C51] border">
+                  <a href="#" className="flex text-[13px] font-semibold leading-[16px] items-center gap-[8px]"><img src="/user-icon.svg" alt="user icon" />@Muikan Supplier</a>
+                  <a href="#" className="flex items-center text-[13px] font-semibold leading-[16px] gap-[8px] mt-[10px]"><img src="/mail-icon.svg" alt="mail icon" />muskan@techbeeps.co.in</a>
+                </div>
+                <div className="mt-[25px]">
+                  <h3 className="text-sm font-bold leading-[22px] text-white">Order Summary</h3>
+                  <div className="bg-[#011827] p-[10px] rounded-sm border-[#153C51] border mt-[15px]">
+                    <div className="">
+                      <div className="flex items-center gap-[10px] border-b pb-[13px] border-[#153C51]">
+                        <div className="bg-white rounded-sm p-[8px]">
+                          <img src="/productImage.png" alt="productImage" className="h-[32px] w-[23px]" />
+                        </div>
+                        <div className="space-y-[3px]">
+                          <p className="text-[13px] leading-sm font-semibold text-white">Sunroof</p>
+                          <p className="text-[10px] leading-xs font-medium text-LightGray">Ordered Date: <span className="text-white">2024-04-24</span></p>
+                          <p className="text-[10px] leading-xs font-medium text-LightGray">Delivery: <span className="text-white">5 Days</span></p>
+                        </div>
+                      </div>
+                      <p className="text-[10px] mt-[10px] text-right leading-xs font-medium text-LightGray">Price: <span className="text-white font-bold">₹12,000</span></p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

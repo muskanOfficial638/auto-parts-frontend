@@ -10,8 +10,8 @@ export default function AddNewAddress({ closeModal }: OrderCreateProps) {
   return (
 
       <Suspense fallback={<div>Loading...</div>}>
-            <div className="absolute inset-0 flex items-center justify-center px-4 z-10">
-          <div className="w-[700px] relative  max-w-[100%] bg-brandBlack rounded-sm md:px-[40px] px-[20px]  md:py-[50px] py-[30px]">
+          <div className="absolute inset-0 flex items-center justify-center px-4 z-10 bg-gradient-to-b from-[#003253]/95 to-black/95">
+          <div className="w-[700px] relative animate-slide  max-w-[100%] bg-brandBlack rounded-sm md:px-[40px] px-[20px]  md:py-[50px] py-[30px]">
                 <button onClick={handleClose}
                   className="absolute top-[15px] font-bold  right-[15px] bg-white cursor-pointer h-[40px] w-[40px] rounded-full"
                 >

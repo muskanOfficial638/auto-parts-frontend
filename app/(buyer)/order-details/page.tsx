@@ -60,7 +60,7 @@ export default function RequestPartPage() {
                       </div>
                       <div className="space-y-[10px] md:ps-[22px] md:p-[0] p-[10px] md:border-l border-t border-[#153C51]">
                         <p className="flex text-[13px] font-semibold leading-[16px] items-center gap-[8px] md:pt-[10px]"><img src="/map-icon.svg" alt="map icon" />Delivery Address</p>
-                        <div className="space-y-[3px]">
+                        <div className="space-y-[3px] ps-[24px]">
                           <p className="text-[10px] leading-xs font-medium text-white">Qasim</p>
                           <p className="text-[10px] leading-xs font-medium text-white">9876543120</p>
                           <p className="text-[10px] leading-xs font-medium text-white">Jaipur, Rajasthan - 30212</p>

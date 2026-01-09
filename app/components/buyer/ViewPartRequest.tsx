@@ -10,10 +10,19 @@ import {
 
 } from "@/app/utils/api";
 import { useSearchParams } from "next/navigation";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { PartRequest, Quote } from "../common/interface";
 import OrderCreate from "./OrderCreate";
 
+
+type SelectedData = {
+  quoteId: string;
+  requestId: string;
+  userName: string;
+  etaDays: string;
+  priceCents: string;
+  productName:string;
+};
 export default function ViewPartRequest() {
   const searchParams = useSearchParams();
   const request = searchParams.get("request") || "";
@@ -21,6 +30,8 @@ export default function ViewPartRequest() {
   const [quoteData, setQuoteData] = useState<Quote[]>();
   const [loading, setIsLoading] = useState(true);
   const [isOpenCreateOrder, setIsOpenCreateOrder] = useState(false);
+
+  const [selectedData, setSelectedData] = useState<SelectedData | null>(null);
 
   useEffect(() => {
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
@@ -45,12 +56,15 @@ export default function ViewPartRequest() {
   async function handleActionChange(
     quoteId: string,
     requestId: string,
-    tab: string
+    userName:string,
+    etaDays:string,
+    priceCents:string                     
   ) 
-  
   {
-    const autoPartsUserData = localStorage.getItem("autoPartsUserData");
-    const loggedInUser = JSON.parse(autoPartsUserData || "{}");
+setSelectedData({quoteId:quoteId,requestId:requestId,userName,etaDays,priceCents,productName:partRequest?.title??''})
+    
+   // const autoPartsUserData = localStorage.getItem("autoPartsUserData");
+   // const loggedInUser = JSON.parse(autoPartsUserData || "{}");
     try {
 
       setIsOpenCreateOrder(true);
@@ -62,13 +76,13 @@ export default function ViewPartRequest() {
       // );
       // console.log("update:", response);
 
-      if (response?.status === 200) {
-        toast("Action updated successfully");
-        setTimeout(() => {
-          // Call the callback function from the parent
-          window.location.reload();
-        }, 2000);
-      }
+      // if (response?.status === 200) {
+      //   toast("Action updated successfully");
+      //   setTimeout(() => {
+      //     // Call the callback function from the parent
+      //     window.location.reload();
+      //   }, 2000);
+      // }
     } catch (err: any) {
       // Handle errors more gracefully
       if (err.response) {
@@ -211,7 +225,10 @@ export default function ViewPartRequest() {
                               handleActionChange(
                                 data?.id,
                                 data?.request_id,
-                                "accepted"
+                                data?.user?.user_name,
+                                data?.eta_days,
+                                data?.price_cents
+
                               )
                             }
                           >
@@ -219,13 +236,13 @@ export default function ViewPartRequest() {
                           </button>
                           <button
                             className="bg-red-600 px-5 py-2 md:text-base text-xs duration-400 leading-[14px] md:px-[38px] md:py-[13px] px-[28px] py-[8px] text-white rounded-sm hover:bg-red-700 cursor-pointer"
-                            onClick={() =>
-                              handleActionChange(
-                                data?.id,
-                                data?.request_id,
-                                "rejected"
-                              )
-                            }
+                            // onClick={() =>
+                            //   handleActionChange(
+                            //     data?.id,
+                            //     data?.request_id,
+                            //     "rejected"
+                            //   )
+                            // }
                           >
                             Reject
                           </button>
@@ -238,7 +255,7 @@ export default function ViewPartRequest() {
           </div>
         </div>
       </div>
-      {isOpenCreateOrder && <OrderCreate closeModal={ setIsOpenCreateOrder}   />}
+      {isOpenCreateOrder && <OrderCreate closeModal={ setIsOpenCreateOrder}  dataSelect={selectedData} />}
     </div>
   );
 }

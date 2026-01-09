@@ -1,33 +1,31 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { deletePartRequest} from "@/app/utils/api";
+import { deleteAddress} from "@/app/utils/api";
 import { toast } from "react-toastify";
 
-export default function DeleteModal({
+type DeleteAddressModal_type = {
+  open: boolean;
+   addressId: string;
+  onClose: React.Dispatch<React.SetStateAction<boolean>>;
+  onDeleted:React.Dispatch<React.SetStateAction<string>>;
+};
+export default function DeleteAddressModal({
   open,
-  requestId,
+  addressId,
   onClose,
   onDeleted
-}: {
-  open: boolean;
-  requestId: string;
-  onClose: () => void;
-  onDeleted: () => void;
-}) {
+}:DeleteAddressModal_type ) {
   if (!open) return null;
-
-  async function handleDeletePartRequest(requestId: string) {
+  async function handleDeletePartRequest(addressId: string) {
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
     try {
-      const response = await deletePartRequest(
-        loggedInUser?.access_token,
-        requestId
-      );
+      const response = await deleteAddress( loggedInUser?.access_token, addressId );
       if (response) {
-        toast.success("Request deleted successfully");
-        onDeleted();
-        onClose();
+       const randomString = Math.random().toString(36).substring(2, 10);
+        toast.success("Addess deleted successfully");
+        onDeleted(randomString);
+        onClose(false);
       }
     } catch (err: any) {
       // Handle errors more gracefully
@@ -52,14 +50,14 @@ export default function DeleteModal({
       {/* Dark Overlay */}
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-        onClick={onClose}
+        onClick={()=>onClose(false)}
       />
 
       {/* Delete Box */}
       <div className="relative bg-modalblue text-white w-xl max-w-full p-12 rounded-md shadow-xl border-2 border-borderblue">
         {/* Close Button */}
         <button
-          onClick={onClose}
+          onClick={()=>onClose(false)}
           className="absolute top-0 right-0 bg-white cursor-pointer h-8 w-8 rounded-full m-2"
         >
           <span className="text-black">✕</span>
@@ -67,18 +65,18 @@ export default function DeleteModal({
         <div className="w-xl max-w-full">
           {/* Title */}
           <h2 className="text-center text-2xl leading-8 font-bold mb-12">
-            Are you sure You want to delete this request?
+            Are you sure You want to delete this address?
           </h2>
 
           <div className="flex justify-center gap-8">
             <button
-              onClick={() => handleDeletePartRequest(requestId)}
+              onClick={() => handleDeletePartRequest(addressId)}
               className="bg-autoblue text-md w-full rounded-sm text-white py-4 font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
             >
               Yes
             </button>
             <button
-              onClick={onClose}
+              onClick={()=>onClose(false)}
               className="bg-red-600 text-md w-full rounded-sm text-white py-4 font-semibold hover:bg-red-700 duration-400 cursor-pointer"
             >
               No

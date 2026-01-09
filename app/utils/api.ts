@@ -2,6 +2,7 @@
 import axios from "axios";
 
 // API paths for LOCAL
+export const profilePath = "http://54.80.119.79:8004/profiles";
 export const authApiPath = "http://54.80.119.79:8001/v1";
 export const supplierPath = "http://54.80.119.79:8005/v1/supplier";
 export const buyerPath = "http://54.80.119.79:8002/v1/buyer";
@@ -15,7 +16,67 @@ export const imagePath = "http://54.80.119.79:8000/image/";  //image path for lo
 // export const buyerPath = "/api/buyer";
 // export const vehicleApiPath = "/api/vehicle";
 
+
+
+
+
 // BUYER
+//  delete address 
+export async function deleteAddress(token: string, addressID: string) {
+  return axios
+    .delete(`${profilePath}/buyer/address/${addressID}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error("unable to delete address", error);
+      throw error;
+    });
+}
+// create New address
+export function AddNewAddressAPI(user_id:any, formdata: any, token: string) {
+ {
+
+    return axios.post(
+    `${profilePath}/buyer/address/${user_id}`,
+    { ...formdata },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+    }
+  )
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error("unable to add address ", error);
+      throw error;
+    });
+  }
+}
+
+// Get buyer address
+export async function fetchBuyerAddress(
+user_id  : string,
+  token: string
+) {
+  const res = await fetch(`${profilePath}/buyer/address/${user_id}`, {
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) throw new Error("Failed to load address data");
+  return res.json();
+}
 // Buyer All part requests
 export async function fetchAllBuyerPartRequests(
   user_id: string,

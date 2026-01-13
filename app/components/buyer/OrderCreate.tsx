@@ -1,6 +1,6 @@
 import { Suspense, useState, useEffect } from "react";
 import AddNewAddress from "./AddNewAddress";
-import { fetchBuyerAddress } from "@/app/utils/api"
+import { fetchBuyerAddress, CreateOrder } from "@/app/utils/api"
 import DeleteAddressModal from "../buyer/modal/DeleteAddressModal";
 import {TrashIcon } from "@heroicons/react/24/outline";
 
@@ -38,6 +38,7 @@ export default function OrderCreate({ closeModal, dataSelect }: OrderCreateProps
   const [deleAddressID, setDeleAddressID] = useState('');
 
   useEffect(() => {
+    console.log("dataSelect", dataSelect);
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
 
@@ -45,14 +46,40 @@ export default function OrderCreate({ closeModal, dataSelect }: OrderCreateProps
       fetchBuyerAddress(loggedInUser.user.id, loggedInUser.access_token).then((data) => {
         const reversed = [...(data?.data || [])].reverse();
         setAddress(reversed);
-        console.log(data)
-
+       
       });
 
 
     }
   }, [changeaddress]);
 
+  function processToPay() {
+
+
+    const autoPartsUserData = localStorage.getItem("autoPartsUserData");
+    const loggedInUser = JSON.parse(autoPartsUserData || "{}");
+
+    const selectedAddress = (document.querySelector('input[name="address"]:checked') as HTMLInputElement)?.value;
+    if (!selectedAddress) {
+      alert("Please select a delivery address.");
+      return;
+    }
+
+  if (loggedInUser?.access_token) {
+      CreateOrder({
+  quote_id: dataSelect?.quoteId || "",
+  buyer_id: loggedInUser.user.id,
+  shipping_to_address_id: selectedAddress
+},loggedInUser?.access_token).then((data) => {
+
+        console.log(data)
+
+      });
+    }
+
+  }
+
+  // Proceed with payment processing using selectedAddress
   function deleteHandeler(addressId: string) {
     setDeleAddressID(addressId)
     setModalOpen(true)
@@ -136,14 +163,52 @@ export default function OrderCreate({ closeModal, dataSelect }: OrderCreateProps
               </div>
             </div>
             <button
-              type="submit"
+           onClick={processToPay}
               className="bg-autoblue mt-[15px] md:text-[18px] text-white text-base leading[14px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
             >
               Proceed to pay
             </button>
+ <div>
+      <h2>Pay with PayFast</h2>
+
+      <form
+        action="https://sandbox.payfast.co.za/eng/process"
+        method="post"
+      >
+
+        <input type="hidden" name="merchant_id" value="10000100" />
+        <input type="hidden" name="merchant_key" value="46f0cd694581a" />
+
+   
+        <input type="hidden" name="amount" value="100.00" />
+        <input type="hidden" name="item_name" value="Test Order" />
+        <input type="hidden" name="m_payment_id" value="ORDER_123" />
+
+ 
+        <input
+          type="hidden"
+          name="return_url"
+          value="http://localhost:3000/success"
+        />
+        <input
+          type="hidden"
+          name="cancel_url"
+          value="http://localhost:3000/cancel"
+        />
+        <input
+          type="hidden"
+          name="notify_url"
+          value="http://localhost:3000/api/payfast/ipn"
+        />
+
+        <button type="submit">Pay Now</button>
+      </form>
+    </div>
+            
           </div>
         </div>
       </div>
+      
       {isOpenAddAddress &&
         <AddNewAddress closeModal={setisOpenAddAddress} Changeaddress={setChangeaddress} />}
       <DeleteAddressModal

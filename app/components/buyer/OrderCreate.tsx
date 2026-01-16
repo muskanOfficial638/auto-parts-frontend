@@ -168,7 +168,7 @@ export default function OrderCreate({ closeModal, dataSelect }: OrderCreateProps
             >
               Proceed to pay
             </button>
- <div>
+ {/* <div>
       <h2>Pay with PayFast</h2>
 
       <form
@@ -203,7 +203,7 @@ export default function OrderCreate({ closeModal, dataSelect }: OrderCreateProps
 
         <button type="submit">Pay Now</button>
       </form>
-    </div>
+    </div> */}
             
           </div>
         </div>

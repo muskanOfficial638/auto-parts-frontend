@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
-import { viewSupplierProfile } from "../utils/api";
+import { viewProfile } from "../utils/api";
 // import { FiChevronDown } from "react-icons/fi";
 
 export default function Header() {
@@ -28,13 +28,16 @@ export default function Header() {
       const data = localStorage.getItem("autoPartsUserData");
       const loggedInUser = data ? JSON.parse(data) : null;
       if (loggedInUser?.user && loggedInUser?.user?.role === "supplier") {
-        viewSupplierProfile(
+
+
+        viewProfile(
           loggedInUser.user.id,
           loggedInUser.access_token
         ).then((data: any) => {
           setProfileData(data);
         });
       }
+      
       Promise.resolve().then(() => {
         setAutoPartsUserData(loggedInUser);
       });
@@ -249,40 +252,29 @@ export default function Header() {
                         Dashboard
                       </Link>
                     </li>
-                    {autoPartsUserData?.user?.role === "supplier" && (
+
+                    <li>
+                      <Link
+                        href="/my-account"
+                        className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue duration-400 border-Dark border-b rounded"
+                      >
+                        My Account
+                      </Link>
+                    </li>
+
+
+                    {autoPartsUserData.user.role === "buyer" && (
                       <li>
                         <Link
-                          href="/my-account"
+                          href="/orders"
                           className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue duration-400 border-Dark border-b rounded"
                         >
-                          My Account
+                          Orders
                         </Link>
                       </li>
                     )}
-                  
-              {autoPartsUserData.user.role === "buyer" && (
-                  <li>
-                <Link
-                  href="/orders"
-                  className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue duration-400 border-Dark border-b rounded"
-                >
-                  Orders
-                </Link>
-                </li>
-              )}
 
 
-                                  {autoPartsUserData?.user?.role === "supplier" && (
-                      <li>
-                        <Link
-                          href="/my-account"
-                          className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue duration-400 border-Dark border-b rounded"
-                        >
-                          My Account
-                        </Link>
-                      </li>
-                    )}
-                  
                     {autoPartsUserData?.user?.role === "supplier" && (
                       <li>
                         <Link
@@ -387,31 +379,30 @@ export default function Header() {
                 </Link>
               )}
 
-          
+
               <hr className="border-gray-700" />
 
+              <Link href="/buyer-dashboard" className="hover:text-hoverblue">
+                Dashboard
+              </Link>
               <Link
-                href={
-                  autoPartsUserData.user.role === "buyer"
-                    ? "/buyer-dashboard"
-                    : "/my-account"
-                }
+                href="/my-account"
+                
                 className="hover:text-hoverblue"
               >
-                {autoPartsUserData.user.role === "buyer"
-                  ? "Dashboard"
-                  : "My Account"}
+                 My Account
               </Link>
 
+
               {autoPartsUserData.user.role === "buyer" && (
-              
+
                 <Link
                   href="/orders"
                   className="hover:text-hoverblue"
                 >
                   Orders
                 </Link>
-          
+
               )}
               {autoPartsUserData.user.role === "supplier" && (
                 <Link href="/my-bids" className="hover:text-hoverblue">

@@ -2,21 +2,24 @@
 import axios from "axios";
 
 // API paths for LOCAL
-export const orderPath = "http://54.80.119.79:8003/v1";
-export const profilePath = "http://54.80.119.79:8004/profiles";
-export const authApiPath = "http://54.80.119.79:8001/v1";
-export const supplierPath = "http://54.80.119.79:8005/v1/supplier";
-export const buyerPath = "http://54.80.119.79:8002/v1/buyer";
-export const vehicleApiPath = "http://54.80.119.79:8006/v1/vehicle";
-export const imagePath = "http://54.80.119.79:8000/image/";  //image path for local 
-//  export const imagePath = "/api/image-proxy/" // image path for vercel
+// export const orderPath = "http://54.80.119.79:8003/v1";
+// export const profilePath = "http://54.80.119.79:8004/profiles";
+// export const authApiPath = "http://54.80.119.79:8001/v1";
+// export const supplierPath = "http://54.80.119.79:8005/v1/supplier";
+// export const buyerPath = "http://54.80.119.79:8002/v1/buyer";
 
-// // API paths for Vercel
-// export const authApiPath = "/api/auth";
-// export const supplierPath = "/api/supplier";
-// export const buyerPath = "/api/buyer";
-// export const vehicleApiPath = "/api/vehicle";
+// export const vehicleApiPath = "http://54.80.119.79:8006/v1/vehicle";
+// export const imagePath = "http://54.80.119.79:8000/image/";  //image path for local 
+  
+export const imagePath = "/api/image-proxy/" // image path for vercel
 
+// API paths for Vercel
+export const authApiPath = "/api/auth";
+export const supplierPath = "/api/supplier";
+export const buyerPath = "/api/buyer";
+export const vehicleApiPath = "/api/vehicle";
+export const orderPath = "/api/order";
+export const profilePath = "/api/profiles";
 
 
 
@@ -27,7 +30,7 @@ export async function fetchOrdersByID(
   orderid: string,
   token: string
 ) {
-  const res = await fetch(`${orderPath}/order/view-orders-list?order_id=${orderid}`, {
+  const res = await fetch(`${orderPath}/order/view-order-details?order_id=${orderid}`, {
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",
@@ -268,8 +271,8 @@ export async function getQuoteBySupplier(
   return res.json();
 }
 
-export async function viewSupplierProfile(user_id: string, token: string) {
-  const res = await fetch(`${supplierPath}/profile/${user_id}`, {
+export async function viewProfile(user_id: string, token: string) {
+  const res = await fetch(`${profilePath}/user?user_id=${user_id}`, {
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",
@@ -281,12 +284,12 @@ export async function viewSupplierProfile(user_id: string, token: string) {
 }
 
 // edit supplier
-export async function updateSupplierProfile(
+export async function updateProfile(
   user_id: string,
   token: string,
   payload: any
 ) {
-  const res = await fetch(`${supplierPath}/profile/edit/${user_id}`, {
+  const res = await fetch(`${profilePath}/profile/edit/${user_id}`, {
     method: "PATCH",
     cache: "no-store",
     headers: {
@@ -296,7 +299,7 @@ export async function updateSupplierProfile(
     body: JSON.stringify(payload),
   });
 
-  if (!res.ok) throw new Error("Failed to update supplier");
+  if (!res.ok) throw new Error("Failed to update ");
 
   return res.json();
 }

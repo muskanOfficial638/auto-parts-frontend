@@ -15,6 +15,7 @@ export default function KycDetailForm() {
 
   // Load on mount
   useEffect(() => {
+    if (typeof window !== "undefined") {
     const loadInitialData = async () => {
       const autoPartsUserData = localStorage.getItem("autoPartsUserData");
       const loggedInUser = JSON.parse(autoPartsUserData || "{}");
@@ -28,6 +29,7 @@ export default function KycDetailForm() {
       // setIsLoading(false);
     };
     loadInitialData();
+  }
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

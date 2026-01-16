@@ -189,7 +189,7 @@ export default function RequestPartForm() {
               <h2 className="md:text-[23px] text-text-lg leading-[36px] font-semibold text-white ">
                 {requestId ? "Edit Part request" : "Request a Part"}
               </h2>
-              {requestId ?  <button className=" bg-white cursor-pointer h-8 w-8 rounded-full flex justify-center items-center text-black "><FaArrowLeft /></button>: ''}
+              {requestId ?  <button onClick={()=>history.back()} className=" bg-white cursor-pointer h-8 w-8 rounded-full flex justify-center items-center text-black "><FaArrowLeft /></button>: ''}
              
             </div>
             <form className="space-y-[28px]" onSubmit={handleSave}>

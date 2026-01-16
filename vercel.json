@@ -38,6 +38,14 @@
     {
       "source": "/api/vehicle/:path*",
       "destination": "http://54.80.119.79:8006/v1/vehicle/:path*/"
+    },
+     {
+      "source": "/api/order/:path*",
+      "destination": "http://54.80.119.79:8003/v1/:path*/"
+    },
+     {
+      "source": "/api/profiles/:path*",
+      "destination": "http://54.80.119.79:8004/profiles/:path*/"
     }
   ]
 }

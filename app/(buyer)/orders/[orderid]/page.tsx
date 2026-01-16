@@ -5,8 +5,6 @@ import { useParams } from 'next/navigation';
 import Footer from "../../../components/Footer";
 import Header from "../../../components/Header";
 import { useEffect } from "react";
-import { fetchOrdersByID, imagePath } from "@/app/utils/api";
-
 
 
 

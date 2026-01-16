@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function PartsGallery() {
   return (
-    <section className="bg-black lg:py-[100px] md:pb-[60px] pb-0 pt-[60px] text-white">
+    <section className="bg-black lg:py-[100px] md:pb-[60px] pb-0 pt-[60px] text-white overflow-hidden">
       <div className="container grid md:grid-cols-3 gap-[15px]">
         {/* Left Large Image */}
         <motion.div

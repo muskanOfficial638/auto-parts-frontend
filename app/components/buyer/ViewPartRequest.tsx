@@ -4,6 +4,7 @@
 import Image from "next/image";
 import Loader from "../common/Loader";
 import { useEffect, useState } from "react";
+import { FaArrowLeft } from "react-icons/fa6";
 import {
   fetchPartRequestsById,
   getQuoteByRequest,
@@ -158,10 +159,12 @@ setSelectedData({quoteId:quoteId,requestId:requestId,userName,etaDays,priceCents
                 </p>
               </div>
             </div>
-
+            <div className="flex flex-col items-end gap-[30px]">
+             <button className=" bg-white cursor-pointer h-8 w-8 rounded-full flex justify-center items-center text-black "><FaArrowLeft /></button>
             <button className="text-autoblue md:w-[auto] w-full cursor-pointer md:text-base text-sm leading-[14px] border border-autoblue py-[13px] px-[20px] duration-400 hover:text-white rounded-sm hover:bg-hoverblue hover:border-hoverblue">             
                 Mark as Completed             
             </button>
+            </div>
           </div>
 
           {/* QUOTES LIST */}

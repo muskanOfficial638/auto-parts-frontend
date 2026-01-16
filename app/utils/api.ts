@@ -27,7 +27,7 @@ export async function fetchOrdersByID(
   orderid: string,
   token: string
 ) {
-  const res = await fetch(`${orderPath}/order/view-orders-list?order_id=${orderid}`, {
+  const res = await fetch(`${orderPath}/order/view-order-details?order_id=${orderid}`, {
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",
@@ -268,8 +268,8 @@ export async function getQuoteBySupplier(
   return res.json();
 }
 
-export async function viewSupplierProfile(user_id: string, token: string) {
-  const res = await fetch(`${supplierPath}/profile/${user_id}`, {
+export async function viewProfile(user_id: string, token: string) {
+  const res = await fetch(`${profilePath}/user?user_id=${user_id}`, {
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",
@@ -281,12 +281,12 @@ export async function viewSupplierProfile(user_id: string, token: string) {
 }
 
 // edit supplier
-export async function updateSupplierProfile(
+export async function updateProfile(
   user_id: string,
   token: string,
   payload: any
 ) {
-  const res = await fetch(`${supplierPath}/profile/edit/${user_id}`, {
+  const res = await fetch(`${profilePath}/profile/edit/${user_id}`, {
     method: "PATCH",
     cache: "no-store",
     headers: {
@@ -296,7 +296,7 @@ export async function updateSupplierProfile(
     body: JSON.stringify(payload),
   });
 
-  if (!res.ok) throw new Error("Failed to update supplier");
+  if (!res.ok) throw new Error("Failed to update ");
 
   return res.json();
 }

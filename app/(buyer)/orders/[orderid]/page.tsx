@@ -6,10 +6,48 @@ import Footer from "@/app/components/Footer";
 import Header from "../../../components/Header";
 import { useEffect } from "react";
 
+import { fetchOrdersByID } from "@/app/utils/api";
 
+interface SupplierData {
+  name: string;
+  email: string;
+}
+
+interface ShippingAddress {
+  name: string;
+  address: string;
+  city: string;
+  province: string;
+  postal_code: string;
+}
+
+interface ProductData {
+  name: string;
+  image: string;
+}
+export interface PaymentDetails {
+  paymentMethod: string;
+  paymentStatus: string;
+  paymentDate: string;   
+  amount: number;
+  transactionId: string;
+  gateway: string;
+  notes?: string;
+}
+interface OrderDetailsType {
+  id: string;
+  orderID: string;
+  status: string; // extend if needed
+  supplierData: SupplierData;
+  shipping_address: ShippingAddress;
+  created_at: string; // or Date if you convert it
+  payment_meta: PaymentDetails;
+  deliveryDate: string;
+  productData: ProductData;
+}
 
 export default function RequestPartPage() {
-  const [OrderDetails, setOrderDetails] = useState('');
+  const [OrderDetails, setOrderDetails] = useState<OrderDetailsType | null>(null);
   const [loading, setLoading] = useState(true);
   const params = useParams();
   const orderid = params.orderid as string;
@@ -26,6 +64,7 @@ export default function RequestPartPage() {
         orderid,
         loggedInUser.access_token
       );
+      console.log("Fetched Order Details:", data);
       setOrderDetails(data);
       setLoading(false);
     };
@@ -60,17 +99,17 @@ export default function RequestPartPage() {
               <div className="bg-brandBlack md:py-[20px] md:px-[28px] p-[20px] rounded-sm mt-[20px]">
                 <div className="flex gap-2">
                   <p className="text-sm leading-[22px] font-bold text-white">Order ID:
-                    <span className=" ms-[5px] font-medium text-[#B9B9B9]">{OrderDetails?.order_id}</span>
+                    <span className=" ms-[5px] font-medium text-[#B9B9B9]">{OrderDetails?.orderID}</span>
                   </p>
-                  <span className="bg-[#6BB776] px-[13px] py-[3px] rounded-[3px] text-xs leading-[14px]">Accepted</span>
+                  <span className="bg-[#6BB776] px-[13px] py-[3px] rounded-[3px] text-xs leading-[14px]">{OrderDetails?.status}</span>
                 </div>
                 <div className="bg-[#011827] p-[10px] rounded-sm mt-[25px] border-[#153C51] border">
                   <a href="#" className="flex text-[13px] font-semibold leading-[16px] items-center gap-[8px]">
                     <Image width={23}
-                      height={32} src="/user-icon.svg" alt="user icon" />@Muikan Supplier</a>
+                      height={32} src="/user-icon.svg" alt="user icon" />@{OrderDetails?.supplierData?.name}</a>
                   <a href="#" className="flex items-center text-[13px] font-semibold leading-[16px] gap-[8px] mt-[10px]">
                     <Image width={23}
-                      height={32} src="/mail-icon.svg" alt="mail icon" />muskan@techbeeps.co.in</a>
+                      height={32} src="/mail-icon.svg" alt="mail icon" />{OrderDetails?.supplierData?.email}</a>
                 </div>
                 <div className="mt-[25px]">
                   <h3 className="text-sm font-bold leading-[22px] text-white">Order Summary</h3>
@@ -89,27 +128,27 @@ export default function RequestPartPage() {
                             />
                           </div>
                           <div className="space-y-[3px]">
-                            <p className="text-[13px] leading-sm font-semibold text-white">Sunroof</p>
-                            <p className="text-[10px] leading-xs font-medium text-LightGray">Ordered Date: <span className="text-white">2024-04-24</span></p>
-                            <p className="text-[10px] leading-xs font-medium text-LightGray">Delivery: <span className="text-white">5 Days</span></p>
+                            <p className="text-[13px] leading-sm font-semibold text-white">{OrderDetails?.productData?.name}</p>
+                            <p className="text-[10px] leading-xs font-medium text-LightGray">Ordered Date: <span className="text-white">{OrderDetails?.created_at}</span></p>
+                            <p className="text-[10px] leading-xs font-medium text-LightGray">Delivery: <span className="text-white">{OrderDetails?.deliveryDate
+}</span></p>
                           </div>
                         </div>
-                        <p className="text-[10px] md:mt-[10px] mt-[3px] md:text-right text-left md:ms-[0] ms-[50px] leading-xs font-medium text-LightGray">Price: <span className="text-white font-bold">₹12,000</span></p>
+                        <p className="text-[10px] md:mt-[10px] mt-[3px] md:text-right text-left md:ms-[0] ms-[50px] leading-xs font-medium text-LightGray">Price: <span className="text-white font-bold">₹{OrderDetails?.payment_meta?.amount}</span></p>
                       </div>
                       <div className="space-y-[10px] md:ps-[22px] md:p-[0] p-[10px] md:border-l border-t border-[#153C51]">
                         <p className="flex text-[13px] font-semibold leading-[16px] items-center gap-[8px] md:pt-[10px]"><Image width={23}
                           height={32} src="/map-icon.svg" alt="map icon" />Delivery Address</p>
                         <div className="space-y-[3px] ps-[24px]">
-                          <p className="text-[10px] leading-xs font-medium text-white">Qasim</p>
-                          <p className="text-[10px] leading-xs font-medium text-white">9876543120</p>
-                          <p className="text-[10px] leading-xs font-medium text-white">Jaipur, Rajasthan - 30212</p>
+                          <p className="text-[10px] leading-xs font-medium text-white">{OrderDetails?.shipping_address?.name}</p>
+                          <p className="text-[10px] leading-xs font-medium text-white">{OrderDetails?.shipping_address?.address}, {OrderDetails?.shipping_address?.city},{OrderDetails?.shipping_address?.province}- {OrderDetails?.shipping_address?.postal_code}</p>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div className="md:text-base text-sm border-b border-[#35373C] pb-[10px] font-bold mt-[15px] leading-sm flex justify-between items-center">
                     <p>Total</p>
-                    <p>₹12,000</p>
+                    <p>₹{OrderDetails?.payment_meta?.amount}</p>
                   </div>
                   <div className="flex justify-end mt-[30px]">
                     {/* <button

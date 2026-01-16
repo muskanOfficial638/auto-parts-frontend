@@ -6,40 +6,40 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
-import { viewSupplierProfile } from "../utils/api";
+
 // import { FiChevronDown } from "react-icons/fi";
 
 export default function Header() {
   const router = useRouter();
-  const [autoPartsUserData, setAutoPartsUserData] = useState<
-    string | null | any
-  >(null);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [profileData, setProfileData] = useState({
-    user_id: "",
-    email: "",
-    user_name: "",
-    company_name: "",
-    kyc_status: "",
-  });
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const data = localStorage.getItem("autoPartsUserData");
-      const loggedInUser = data ? JSON.parse(data) : null;
-      if (loggedInUser?.user && loggedInUser?.user?.role === "supplier") {
-        viewSupplierProfile(
-          loggedInUser.user.id,
-          loggedInUser.access_token
-        ).then((data: any) => {
-          setProfileData(data);
-        });
-      }
-      Promise.resolve().then(() => {
-        setAutoPartsUserData(loggedInUser);
-      });
-    }
-  }, []);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+    const data = localStorage.getItem("autoPartsUserData");
+    const loggedInUser = data ? JSON.parse(data) : null;
+
+const profileData =
+  loggedInUser
+    ? loggedInUser
+    : null;
+  const autoPartsUserData = profileData;
+
+
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     const data = localStorage.getItem("autoPartsUserData");
+  //     const loggedInUser = data ? JSON.parse(data) : null;
+      
+  //     if (loggedInUser?.user && loggedInUser?.user?.role === "supplier") {
+
+  //         setProfileData(loggedInUser);
+ 
+  //     }
+
+  //     Promise.resolve().then(() => {
+  //       setAutoPartsUserData(loggedInUser);
+  //     });
+  //   }
+  // }, []);
 
   function handleLogout() {
     if (autoPartsUserData) {
@@ -249,40 +249,29 @@ export default function Header() {
                         Dashboard
                       </Link>
                     </li>
-                    {autoPartsUserData?.user?.role === "supplier" && (
+
+                    <li>
+                      <Link
+                        href="/my-account"
+                        className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue duration-400 border-Dark border-b rounded"
+                      >
+                        My Account
+                      </Link>
+                    </li>
+
+
+                    {autoPartsUserData.user.role === "buyer" && (
                       <li>
                         <Link
-                          href="/my-account"
+                          href="/orders"
                           className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue duration-400 border-Dark border-b rounded"
                         >
-                          My Account
+                          Orders
                         </Link>
                       </li>
                     )}
-                  
-              {autoPartsUserData.user.role === "buyer" && (
-                  <li>
-                <Link
-                  href="/orders"
-                  className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue duration-400 border-Dark border-b rounded"
-                >
-                  Orders
-                </Link>
-                </li>
-              )}
 
 
-                                  {autoPartsUserData?.user?.role === "supplier" && (
-                      <li>
-                        <Link
-                          href="/my-account"
-                          className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue duration-400 border-Dark border-b rounded"
-                        >
-                          My Account
-                        </Link>
-                      </li>
-                    )}
-                  
                     {autoPartsUserData?.user?.role === "supplier" && (
                       <li>
                         <Link
@@ -387,31 +376,30 @@ export default function Header() {
                 </Link>
               )}
 
-          
+
               <hr className="border-gray-700" />
 
+              <Link href="/buyer-dashboard" className="hover:text-hoverblue">
+                Dashboard
+              </Link>
               <Link
-                href={
-                  autoPartsUserData.user.role === "buyer"
-                    ? "/buyer-dashboard"
-                    : "/my-account"
-                }
+                href="/my-account"
+                
                 className="hover:text-hoverblue"
               >
-                {autoPartsUserData.user.role === "buyer"
-                  ? "Dashboard"
-                  : "My Account"}
+                 My Account
               </Link>
 
+
               {autoPartsUserData.user.role === "buyer" && (
-              
+
                 <Link
                   href="/orders"
                   className="hover:text-hoverblue"
                 >
                   Orders
                 </Link>
-          
+
               )}
               {autoPartsUserData.user.role === "supplier" && (
                 <Link href="/my-bids" className="hover:text-hoverblue">

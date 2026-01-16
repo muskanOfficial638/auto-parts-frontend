@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import RequestPartForm from "../../components/buyer/RequestPartForm";
+
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 

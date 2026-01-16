@@ -1,17 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { updateSupplierProfile, viewSupplierProfile } from "@/app/utils/api";
+import { updateProfile, viewProfile } from "@/app/utils/api";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
+export interface UserProfile {
+  company_name: string;
+  email: string;
+  user_name: string;
+  vat_number?: string;
+}
 
 export default function MyAccountForm() {
-  const [profileData, setProfileData] = useState({
+  const [profileData, setProfileData] = useState<UserProfile>({
     user_name: "",
     email: "",
-    profile: {
-      company_name: "",
-    },
+    company_name: "",
+    vat_number: "",
   });
 
   const [passwords, setPasswords] = useState({
@@ -27,17 +32,17 @@ export default function MyAccountForm() {
       const loggedInUser = JSON.parse(autoPartsUserData || "{}");
 
       if (loggedInUser?.user) {
-        viewSupplierProfile(
+        viewProfile(
           loggedInUser.user.id,
           loggedInUser.access_token
         ).then((data: any) => {
           console.log("data", data);
           setProfileData({
             user_name: data?.user_name || "",
-            email: data?.email || "",
-            profile: {
-              company_name: data?.company_name || "",
-            },
+            email: data?.email || "", 
+            company_name: data?.company_name || "",
+            vat_number: data?.vat_number || "",
+            
           });
         });
       }
@@ -47,15 +52,8 @@ export default function MyAccountForm() {
   // Handle text field changes
   const handleProfileChange = (e: any) => {
     const { name, value } = e.target;
-
-    if (name === "company_name") {
-      setProfileData((prev: any) => ({
-        ...prev,
-        profile: { ...prev.profile, company_name: value },
-      }));
-    } else {
       setProfileData((prev: any) => ({ ...prev, [name]: value }));
-    }
+    
   };
 
   // Handle password inputs
@@ -75,26 +73,32 @@ export default function MyAccountForm() {
     }
 
     try {
+
+  
       const payload = {
         user_name: profileData.user_name,
-        profile: { company_name: profileData.profile.company_name },
-        old_password: passwords.old_password || undefined,
-        password_hash: passwords.password_hash || undefined,
-        confirm_password: passwords.confirm_password || undefined,
+        company_name: profileData.company_name,
+        vat_number: profileData.vat_number || "",
+        old_password: passwords.old_password || "",
+        password_hash: passwords.password_hash || "",
+        confirm_password: passwords.confirm_password || "",
       };
 
-      const res = await updateSupplierProfile(
+      const res = await updateProfile(
         loggedInUser?.user.id,
         loggedInUser?.access_token,
         payload
       );
+       if(res?.success){
+       toast.success("Profile updated successfully!");
+       viewProfile(loggedInUser.user.id, loggedInUser.access_token);
+       }else{
+        toast.error(res?.details);
+       }
 
-      console.log("Update Success:", res);
-      toast.success("Profile updated successfully!");
-      viewSupplierProfile(loggedInUser.user.id, loggedInUser.access_token);
     } catch (error) {
-      console.error("Update error:", error);
-      toast.error("Failed to update profile");
+      console.log("Update Error:", error);
+      toast.error("Failed to update profile.");
     }
   };
 
@@ -142,7 +146,7 @@ export default function MyAccountForm() {
                   <input
                     type="text"
                     name="company_name"
-                    value={profileData?.profile?.company_name || ""}
+                    value={profileData?.company_name || ""}
                     onChange={handleProfileChange}
                     className="w-full py-[8px] px-[18px] bg-white md:text-[19px] text-[15px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
                   />
@@ -172,6 +176,7 @@ export default function MyAccountForm() {
                     type="password"
                     placeholder="***********"
                     name="old_password"
+                     autoComplete="new-password"
                     onChange={handlePasswordChange}
                     className="w-full py-[8px] px-[18px] bg-white md:text-[19px] placeholder-Gray  text-[15px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
                   />

@@ -2,7 +2,7 @@
 import { Suspense, useState } from "react";
 import Image from "next/image";
 import { useParams } from 'next/navigation';
-import Footer from "../../../components/Footer";
+import Footer from "@/app/components/Footer";
 import Header from "../../../components/Header";
 import { useEffect } from "react";
 

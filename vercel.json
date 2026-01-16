@@ -41,7 +41,7 @@
     },
      {
       "source": "/api/order/:path*",
-      "destination": "http://54.80.119.79:8003/v1:path*/"
+      "destination": "http://54.80.119.79:8003/v1/:path*/"
     },
      {
       "source": "/api/profiles/:path*",

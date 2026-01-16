@@ -16,7 +16,6 @@ export default function NotFound() {
       <p className="mt-2 max-w-md text-gray-500">
         Sorry, the page you are looking for doesn’t exist or has been moved.
       </p>
-
       <Link
         href="/"
         className="mt-6 rounded-lg bg-black px-6 py-3 text-white transition hover:bg-gray-800"

@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import RequestPartForm from "../../components/buyer/RequestPartForm";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
+import { MdCancel } from "react-icons/md";
 
 export default function RequestPartPage() {
   return (
@@ -20,10 +21,13 @@ export default function RequestPartPage() {
           {/* Page Content */}
 
           <div className="absolute inset-0 bg-gradient-to-b from-[#003253]/95 to-black/95"></div>
-          <div className="flex flex-col justify-center items-center pt-36 pb-20 px-4">
+          <div className="flex flex-col justify-center items-center pt-50 pb-20 px-4">
             <div className="w-[500px] relative  max-w-[100%] rounded-sm ">
               <div className="space-y-[32px]">
-                <div className="max-w-fit mx-auto relative before:content-[''] before:absolute before:block before:h-full before:w-full before:bg-[#ffa600] before:blur-[36px]"><img src="/payment-cancelled-icon.svg" alt="Payment-Cancelled-icon" className="relative z-1" /></div>
+                <div className="relative max-w-fit mx-auto before:content-[''] before:absolute  before:block before:h-full before:w-full before:bg-[#ffa600] before:blur-[36px]
+               after:content-[''] after:absolute after:w-[40px] after:h-[40px] after:bg-white after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:z-[1]">
+                <MdCancel className="text-[80px] text-[#ffa600] z-[2] relative"/>
+                </div>
                 <h1 className="md:text-[28px] text-2xl leading-[36px] text-white font-semibold text-center">Payment Cancelled</h1>
               </div>
              

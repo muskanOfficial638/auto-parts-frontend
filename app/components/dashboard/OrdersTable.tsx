@@ -162,10 +162,11 @@ return sortConfig.direction === "asc"
         <div className="absolute inset-0 bg-gradient-to-b bg-gradient-to-b from-[#003253]/95 to-black/95" />
         {/* Page Content */}
         <div className="relative z-10 flex justify-center pb-20 px-4">
-          <div className="w-full max-w-[1037px]  py-[30px]">
+          <div className="w-full max-w-[900px]  py-[30px]">
             {/* Search Bar */}
-            <div className="flex justify-center my-8 pt-[5rem]">
-              <div className="relative w-full max-w-[583px]">
+            <div className="flex justify-between items-center  my-8 pt-[9rem]">
+              <h1 className="text-[30px] font-bold leading-[24px] text-white">Orders</h1>
+              <div className="relative w-full max-w-[350px]">
                 <input
                   type="text"
                   placeholder="Search"
@@ -176,7 +177,7 @@ return sortConfig.direction === "asc"
                 <div className="bg-autoblue text-white absolute right-0 flex  rounded-r-sm items-center h-full top-0 py-[10px] px-[13px]">
                   <MagnifyingGlassIcon className="h-[14px] w-[14px]" />
                 </div>
-              </div>
+              </div>              
             </div>
 
             {/* Table Container */}
@@ -262,9 +263,6 @@ return sortConfig.direction === "asc"
                         <td className=" p-[10px] md:text-xs text-[10px] md:leading-[22px] leading-[13px] font-semibold text-center">
                           {item.orderID}
                         </td>
-
-
-             
                         
                         {/* Urgency Badge */}
                         <td className="p-[10px]">
@@ -272,7 +270,7 @@ return sortConfig.direction === "asc"
                             {item.urgency}
                           </div> */}
                           <div
-                            className={`text-[10px] capitalize font-medium leading-[15px] text-center text-white px-[9px] py-[2px] ms-auto me-auto rounded-[50px]`}
+                            className={`md:text-xs text-[10px] font-semibold leading-[15px] text-center text-white px-[9px] py-[2px] rounded-[50px]`}
                           >
                             {item.created_at}
                           </div>

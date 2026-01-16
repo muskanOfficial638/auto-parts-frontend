@@ -104,7 +104,7 @@ export default function BidModal({
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#003253]/95 to-black/95" />
       <div className="p-[20px] h-[100vh] max-h-[742px] scrollbar-none overflow-auto bid-modal-box ">
-        <div className="relative bg-[#061D37] text-white w-[700px] max-w-[100%] bg-[#1d4aa4]/15 backdrop-blur-xl md:px-10 px-[30px] md:py-[62px] py-[40px] rounded-[20px] ms-[auto] me-[auto] p-8 shadow-xl border border-white/10 backdrop-blur">
+        <div className="relative bg-[#061D37] text-white w-[630px] max-w-[100%] bg-[#1d4aa4]/15 backdrop-blur-xl md:px-10 p-[30px]  rounded-[20px] ms-[auto] me-[auto] p-8 shadow-xl border border-white/10 backdrop-blur">
           <button
             onClick={onClose}
             className="absolute top-[10px] right-[10px] bg-white cursor-pointer h-[40px] w-[40px] rounded-full"
@@ -112,10 +112,10 @@ export default function BidModal({
             <span className="text-black ">✕</span>
           </button>
           <form
-            className="w-[429px] max-w-[100%] ms-[auto] me-[auto]"
+            className="w-[500px] max-w-[100%] ms-[auto] me-[auto]"
             onSubmit={handleSave}
           >
-            <h2 className="text-white md:text-4xl text-[25px] font-bold md:mb-[58px] mb-[30px]">
+            <h2 className="text-white md:text-3xl text-[20px] font-bold md:mb-[30px] mb-[20px]">
               Quote Now{" "}
             </h2>
             <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
@@ -129,7 +129,7 @@ export default function BidModal({
               pattern="[0-9]*"
               required
               onChange={handleChange}
-              className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] md:mb-[43px] mb-[30px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
+              className=" px-[20px] py-[13px] md:mb-[30px] mb-[20px] bg-white md:text-base text-sm md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
             />
             <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
               Estimated Days*
@@ -142,7 +142,7 @@ export default function BidModal({
               pattern="[0-9]*"
               onChange={handleChange}
               required
-              className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] md:mb-[43px] mb-[30px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
+              className="px-[20px] py-[12px] md:mb-[30px] mb-[20px] bg-white md:text-base text-sm md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
             />
             <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
               Description*
@@ -154,12 +154,13 @@ export default function BidModal({
               minLength={2}
               maxLength={280}
               required
-              className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:mb-[43px] mb-[30px] h-[163px] md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
+              className=" px-[20px] py-[12px] bg-white md:mb-[30px] mb-[20px] h-[125px] md:text-base text-sm md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
             />
             <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block">
               Upload Image
             </label>
-            <div className="flex flex-row items-center py-[16px]">
+            <div className="flex items-center gap-[15px] md:mb-[30px] mb-[20px] pt-[16px]">
+            <div className="flex flex-row items-center  ">
               <input
                 type="file"
                 name="attachment"
@@ -170,12 +171,12 @@ export default function BidModal({
               />
             </div>
             {preview && (
-              <div className="mt-4 flex items-center gap-4">
+              <div className=" flex items-center gap-4">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={preview}
                   alt="Selected image"
-                  className="w-[120px] h-[120px] object-cover rounded-md border"
+                  className="w-[50px] h-[50px] object-cover rounded-md border"
                 />
                 <button
                   type="button"
@@ -193,9 +194,10 @@ export default function BidModal({
                 </button>
               </div>
             )}
+            </div>
 
             <button
-              className="bg-autoblue w-full md:text-[22px] text-[15px] leading[14px] rounded-sm text-white md:py-[20px] py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
+              className="bg-autoblue w-full md:text-[20px] text-[15px] leading[14px] rounded-sm text-white  py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
               type="submit"
             >
               Submit

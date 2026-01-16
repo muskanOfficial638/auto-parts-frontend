@@ -124,97 +124,87 @@ export default function LoginPage() {
   }
 
   return (
-    <motion.div
-      className="min-h-screen bg-black text-white flex flex-col"
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, ease: "easeOut" }}
-      viewport={{ once: true }}
+    <div
+      className="min-h-screen bg-black text-white flex flex-col overflow-hidden"      
     >
       {/* Header */}
       <Header />
       {/* <ToastContainer /> */}
       {/* Login Section */}
       <div
-        className="flex-1 flex justify-center bg-cover bg-center bg-black pt-[150px] "
+        className="flex-1 flex justify-center bg-cover bg-center bg-black pt-[90px] "
         style={{
           backgroundImage: "url('/signInNewBg.jpg')",
         }}
       >
-        <div className="rounded-xl shadow-lg w-full pt-8 px-[20px]">
-          <motion.div
-            className="w-[700px] max-w-[100%] ms-[auto] me-[auto] bg-[#1d4aa4]/15 backdrop-blur-xl md:px-10 px-[30px] md:py-[62px] py-[40px] rounded-[20px] shadow-xl flex flex-col items-center border-2 border-borderblue"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: "easeOut" }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-white md:text-4xl text-[25px] font-bold">
-              Login
-            </h2>
-
-            <form
-              className=" w-[429] max-w-[100%] flex flex-col md:gap-[43px] gap-[30px] md:py-[43px] py-[30px]"
-              onSubmit={handleLogin}
-            >
-              {/* Email */}
-              <input
-                type="email"
-                name="email"
-                onChange={handleEmailChange}
-                placeholder="Enter email"
-                className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
-              />
-              {emailError && (
-                <p className="text-red-400 text-sm">{emailError}</p>
-              )}
-
-              {/* Password */}
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  onChange={handlePasswordChange}
-                  placeholder="Enter password"
-                  className="md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
-                />
-
-                <span
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute top-1/2 right-[25px] -translate-y-1/2 text-gray-600 cursor-pointer"
-                >
-                  {showPassword ? (
-                    <AiFillEye className="text-autoblue" />
-                  ) : (
-                    <FaEyeSlash className="text-autoblue" />
-                  )}
-                </span>
-              </div>
-
-              {/* Forgot Password */}
-              <div className="md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] text-autoblue hover:underline cursor-pointer font-semibold">
-                Forgot Password ?
-              </div>
-              {error && <p className="text-red-600 text-sm">{error}</p>}
-              {/* Login Button */}
-              <button className=" bg-autoblue md:text-[22px] text-[15px] leading[14px] rounded-sm text-white md:py-[20px] py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer">
+        <div className="rounded-xl shadow-lg w-full lg:pt-0 pt-[30px] px-[20px] pb-[20px] flex items-center">        
+            <div className="w-[700px]  max-w-[100%] ms-[auto] me-[auto] bg-[#1d4aa4]/15 backdrop-blur-xl md:px-10 px-[30px] py-[40px] rounded-[20px] shadow-xl flex flex-col items-center border-2 border-borderblue">
+              <h2 className="text-white md:text-4xl text-[25px] font-bold">
                 Login
-              </button>
-            </form>
+              </h2>
 
-            {/* Signup */}
-            <div className="text-white font-medium md:text-[19px] text-[15px]  md:leading-[23px] leading-[20px]">
-              Are you a new user{" "}
-              <Link
-                href="/sign-up"
-                className="text-autoblue cursor-pointer hover:underline text-md font-bold"
+              <form
+                className=" w-full flex flex-col gap-[30px] py-[30px]"
+                onSubmit={handleLogin}
               >
-                Sign Up
-              </Link>
-            </div>
-          </motion.div>
+                {/* Email */}
+                <input
+                  type="email"
+                  name="email"
+                  onChange={handleEmailChange}
+                  placeholder="Enter email"
+                  className="px-[20px] py-[13px] bg-white md:text-base text-sm md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
+                />
+                {emailError && (
+                  <p className="text-red-400 text-sm">{emailError}</p>
+                )}
+
+                {/* Password */}
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    onChange={handlePasswordChange}
+                    placeholder="Enter password"
+                    className="px-[20px] py-[13px] bg-white md:text-base text-sm md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
+                  />
+
+                  <span
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute top-1/2 right-[25px] -translate-y-1/2 text-gray-600 cursor-pointer"
+                  >
+                    {showPassword ? (
+                      <AiFillEye className="text-autoblue" />
+                    ) : (
+                      <FaEyeSlash className="text-autoblue" />
+                    )}
+                  </span>
+                </div>
+
+                {/* Forgot Password */}
+                <div className="md:text-base text-sm md:leading-[23px] leading-[20px] text-autoblue hover:underline cursor-pointer font-semibold">
+                  Forgot Password ?
+                </div>
+                {error && <p className="text-red-600 text-sm">{error}</p>}
+                {/* Login Button */}
+                <button className=" bg-autoblue md:text-[20px] text-[15px] leading[14px] rounded-sm text-white md:py-[15px] py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer">
+                  Login
+                </button>
+              </form>
+
+              {/* Signup */}
+              <div className="text-white font-medium md:text-base text-sm  md:leading-[23px] leading-[20px]">
+                Are you a new user{" "}
+                <Link
+                  href="/sign-up"
+                  className="text-autoblue cursor-pointer hover:underline text-md font-bold"
+                >
+                  Sign Up
+                </Link>
+              </div>
+            </div>        
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

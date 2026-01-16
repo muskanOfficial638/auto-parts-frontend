@@ -169,12 +169,8 @@ export default function SignUpPage() {
   }
 
   return (
-    <motion.div
-      className="min-h-screen bg-black text-white flex flex-col"
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, ease: "easeOut" }}
-      viewport={{ once: true }}
+    <div
+      className="min-h-screen bg-black text-white flex flex-col overflow-hidden"     
     >
       {/* Header */}
       <Header />
@@ -186,19 +182,19 @@ export default function SignUpPage() {
           backgroundImage: "url('/signUpNewBg.jpg')",
         }}
       >
-        <div className="rounded-xl shadow-lg w-full pt-8 px-[20px] ">
+        <div className="rounded-xl shadow-lg w-full p-[20px] flex items-center ">
           <ToastContainer />
           <motion.div
-            className="w-[1000px] ms-[auto] me-[auto]  max-w-full bg-[#1d4aa4]/15 backdrop-blur-xl md:px-[47px] md:py-[50px] p-[30px] rounded-[20px] shadow-xl flex flex-col items-center border-2 border-borderblue"
+            className="w-[1000px] ms-[auto] me-[auto]  max-w-full bg-[#1d4aa4]/15 backdrop-blur-xl  md:p-[40px] p-[30px] rounded-[20px] shadow-xl flex flex-col items-center border-2 border-borderblue"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: "easeOut" }}
             viewport={{ once: true }}
           >
-            <h2 className="text-white md:text-4xl text-[25px] font-bold md:mb-[58px] mb-[30px]">Sign Up</h2>
+            <h2 className="text-white md:text-4xl text-[25px] font-bold md:mb-[40px] mb-[30px]">Sign Up</h2>
 
             <form
-              className="grid grid-cols-1 md:grid-cols-2 md:gap-[43px] md:gap-[35px] gap-[30px] w-full"
+              className="grid grid-cols-1 md:grid-cols-2 gap-[30px] w-full"
               onSubmit={handleRegister}
             >
               {/* Left Column */}
@@ -212,7 +208,7 @@ export default function SignUpPage() {
                     setNameError("");
                   }}
                   placeholder="Name*"
-                  className=" w-full md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium outline-none"
+                  className=" w-full px-[20px] py-[13px] bg-white md:text-base text-sm md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium outline-none"
                 />
                 {nameError && (
                   <p className="text-red-500 text-sm mt-1">{nameError}</p>
@@ -224,7 +220,7 @@ export default function SignUpPage() {
                 name="company"
                 placeholder="Company"
                 onChange={(e) => setCompanyName(e.target.value)}
-                className="md:col-span-1 col-span-2 md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium outline-none "
+                className="md:col-span-1 col-span-2 px-[20px] py-[13px] bg-white md:text-base text-sm md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium outline-none "
               />
 
               <select
@@ -232,7 +228,7 @@ export default function SignUpPage() {
                 name="role"
                 required
                 onChange={(e) => handleSelectChange(e.target.value)}
-                className="md:col-span-1 col-span-2 cursor-pointer md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm text-grayMedium outline-none
+                className="md:col-span-1 col-span-2 cursor-pointer px-[20px] py-[13px] bg-white md:text-base text-sm md:leading-[23px] leading-[20px] rounded-sm text-grayMedium outline-none
                 "
               >
                 <option value="">Select role*</option>
@@ -251,7 +247,7 @@ export default function SignUpPage() {
                     setVatError("");
                   }}
                   placeholder="VAT Number"
-                  className="w-full md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium outline-none "
+                  className="w-full px-[20px] py-[13px] bg-white md:text-base text-sm md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium outline-none "
                 />
 
                 {vatError && (
@@ -264,7 +260,7 @@ export default function SignUpPage() {
                 required
                 onChange={handleEmailChange}
                 placeholder="Enter email*"
-                className="col-span-2 md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium outline-none"
+                className="col-span-2  px-[20px] py-[13px] bg-white md:text-base text-sm md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium outline-none"
               />
               {emailError && (
                 <p className="text-red-500 text-sm mt-1">{emailError}</p>
@@ -276,7 +272,7 @@ export default function SignUpPage() {
                   required
                   onChange={handlePasswordChange}
                   placeholder="Enter password*"
-                  className="w-full md:px-[25px] md:py-[15px] px-[20px] py-[12px] bg-white md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium outline-none"
+                  className="w-full px-[20px] py-[13px] bg-white md:text-base text-sm md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium outline-none"
                 />
                 <span
                   onClick={() => setShowPassword(!showPassword)}
@@ -356,7 +352,7 @@ export default function SignUpPage() {
                       Terms & Conditions
                     </a>
                   </label>
-                  <div className="text-white md:text-[19px] text-sm leading">
+                  <div className="text-white md:text-base text-sm leading">
                     Are you already a user{" "}
                     <Link
                       href="/login"
@@ -370,7 +366,7 @@ export default function SignUpPage() {
               {error && <span className="text-red-500">{error}</span>}
               <button
                 type="submit"
-                className="col-span-2 bg-autoblue md:text-[22px] text-[15px] leading[14px] rounded-sm text-white md:py-[20px] py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
+                className="col-span-2 bg-autoblue md:text-[20px] text-[15px] leading[14px] rounded-sm text-white md:py-[15px] py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
               >
                 Create Account
               </button>
@@ -378,6 +374,6 @@ export default function SignUpPage() {
           </motion.div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

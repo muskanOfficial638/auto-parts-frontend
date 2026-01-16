@@ -74,7 +74,7 @@ export default function AddNewAddress({ closeModal, Changeaddress }: OrderCreate
   }
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <div className="absolute inset-0 flex items-center justify-center px-4 z-10 bg-gradient-to-b from-[#003253]/95 to-black/95">
+      <div className="absolute inset-0 flex items-center justify-center px-4 z-10 bg-gradient-to-b from-[#003253]/95 to-black/95 z-20">
         <div className="w-[700px] relative animate-slide  max-w-[100%] bg-brandBlack rounded-sm md:px-[40px] px-[20px]  md:py-[50px] py-[30px]">
           <button
             onClick={handleClose}

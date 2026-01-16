@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import Header from "../components/Header";
+import Header from "@/app/components/Header";
 import { AiFillEye } from "react-icons/ai";
 import { motion } from "framer-motion";
 import { toast, ToastContainer } from "react-toastify";

@@ -1,6 +1,6 @@
 import MyAccountForm from "@/app/components/supplier/MyAccountForm";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
+import Footer from "@/app/components/Footer";
+import Header from "@/app/components/Header";
 
 export default function MyAccountPage() {
   return (

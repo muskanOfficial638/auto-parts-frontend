@@ -14,6 +14,18 @@ export interface PartRequest {
   description: string;
 }
 
+export interface OrdersType {
+  id: string;
+  orderID: string;
+  status: string;
+  created_at: string;
+  productTitle: string;
+  productImage: string;
+  quotedPrice: number;
+
+}
+
+
 export interface Quote {
   id: string;
   request_id: string;

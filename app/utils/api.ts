@@ -22,6 +22,38 @@ export const imagePath = "http://54.80.119.79:8000/image/";  //image path for lo
 
 
 // BUYER
+
+export async function fetchOrdersByID(
+  orderid: string,
+  token: string
+) {
+  const res = await fetch(`${orderPath}/order/view-orders-list?order_id=${orderid}`, {
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) throw new Error("Failed to load orders details");
+  return res.json();
+}
+
+// Buyer all Orders
+export async function fetchAllBuyerOrders(
+  user_id: string,
+  token: string
+) {
+  const res = await fetch(`${orderPath}/order/view-orders-list?buyer_id=${user_id}`, {
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) throw new Error("Failed to load orders");
+  return res.json();
+}
+
 // create new Order
 export function CreateOrder(formdata: any, token: string) {
  {

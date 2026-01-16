@@ -1,36 +1,26 @@
 "use client";
 
-import Link from "next/link";
 import {
   EyeIcon,
-  PencilSquareIcon,
-  TrashIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import { useEffect, useMemo, useState } from "react";
-import { fetchAllBuyerPartRequests, imagePath } from "@/app/utils/api";
+import { fetchAllBuyerOrders, imagePath } from "@/app/utils/api";
 import Loader from "../common/Loader";
 import { useRouter } from "next/navigation";
-import { PartRequest } from "../common/interface";
-import DeleteModal from "../buyer/modal/DeleteModal";
+import { OrdersType } from "../common/interface";
+
 import { FaSort } from "react-icons/fa6";
 
-type Urgency = "low" | "normal" | "high";
-const urgencyOrder: Record<Urgency, number> = {
-  low: 1,
-  normal: 2,
-  high: 3,
-};
 
-export default function BuyerDashboard() {
- const [partRequestData, setPartRequestData] = useState<PartRequest[]>([]);
+export default function OrdersTable() {
+ const [OrdersData, setOrdersData] = useState<OrdersType[]>([]);
   const [loading, setIsLoading] = useState(true);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [requestId, setRequestId] = useState("");
+ 
   const [searchTerm, setSearchTerm] = useState("");
 
 
-type SortKey = "title" | "urgency" | "required_by_date";
+type SortKey = "title" | "orderID" | "created_at" | "quotedPrice";
 
 
 
@@ -42,14 +32,16 @@ const [sortConfig, setSortConfig] = useState<{
   direction: "asc",
 });
 
-const columnKeyMap: Record<"Product" | "Urgency" | "Required", SortKey> = {
+const columnKeyMap: Record<"Product" | "OrderID" | "Date" | "Price", SortKey> = {
   Product: "title",
-  Urgency: "urgency",
-  Required: "required_by_date",
+  OrderID: "orderID",
+  Date: "created_at",
+  Price: "quotedPrice",
+  
 };
 
 const handleUrgencySort = (
-  column: "Product" | "Urgency" | "Required"
+  column: "Product" | "OrderID" | "Date" | "Price"
 ) => {
   const key = columnKeyMap[column];
 
@@ -62,22 +54,21 @@ const handleUrgencySort = (
 };
 
 const filteredData = useMemo(() => {
-  if (!searchTerm) return partRequestData;
+  if (!searchTerm) return OrdersData;
 
   const lowerSearch = searchTerm.toLowerCase();
 
-  return partRequestData.filter((item) =>
-    item.title.toLowerCase().includes(lowerSearch) ||
-    item.vehicle_make.toLowerCase().includes(lowerSearch) ||
-    item.vehicle_model.toLowerCase().includes(lowerSearch) ||
-    item.vehicle_model_trim.toLowerCase().includes(lowerSearch) ||
-    item.urgency.toLowerCase().includes(lowerSearch) ||
-    item.required_by_date.toLowerCase().includes(lowerSearch)
+  return OrdersData.filter((item) =>
+    item.productTitle.toLowerCase().includes(lowerSearch) ||
+    item.orderID.toLowerCase().includes(lowerSearch) ||
+    item.status.toLowerCase().includes(lowerSearch) ||
+    item.quotedPrice.toString().includes(lowerSearch) ||
+    item.created_at.toLowerCase().includes(lowerSearch)
   );
-}, [partRequestData, searchTerm]);
+}, [OrdersData, searchTerm]);
 
 
-const sortedData = useMemo((): PartRequest[] => {
+const sortedData = useMemo((): OrdersType[] => {
   const key = sortConfig.key;
 
 
@@ -87,26 +78,30 @@ const sortedData = useMemo((): PartRequest[] => {
   if (!key) return filteredData;
 
   return [...filteredData].sort((a, b) => {
-    if (key === "required_by_date") {
+    if (key === "created_at") {
       return sortConfig.direction === "asc"
-        ? new Date(a.required_by_date).getTime() -
-            new Date(b.required_by_date).getTime()
-        : new Date(b.required_by_date).getTime() -
-            new Date(a.required_by_date).getTime();
+        ? new Date(a.created_at).getTime() -
+            new Date(b.created_at).getTime()
+        : new Date(b.created_at).getTime() -
+            new Date(a.created_at).getTime();
     }
 
- if (key === "urgency") {
-  const aUrgency = a.urgency as Urgency;
-  const bUrgency = b.urgency as Urgency;
+    if (key === "quotedPrice") {
+      return sortConfig.direction === "asc"
+        ? a.quotedPrice - b.quotedPrice
+        : b.quotedPrice - a.quotedPrice;
+    }
 
-  return sortConfig.direction === "asc"
-    ? urgencyOrder[aUrgency] - urgencyOrder[bUrgency]
-    : urgencyOrder[bUrgency] - urgencyOrder[aUrgency];
-}
-
+    if (key === "orderID") {
+      const orderIDA = a.orderID.trim().toLowerCase();
+      const orderIDB = b.orderID.trim().toLowerCase();  
+      return sortConfig.direction === "asc"
+        ? orderIDA.localeCompare(orderIDB)
+        : orderIDB.localeCompare(orderIDA);
+    } 
     // title
-const titleA = a.title.trim().toLowerCase();
-const titleB = b.title.trim().toLowerCase();
+const titleA = a.productTitle.trim().toLowerCase();
+const titleB = b.productTitle.trim().toLowerCase();
 
 return sortConfig.direction === "asc"
   ? titleA.localeCompare(titleB)
@@ -120,18 +115,6 @@ return sortConfig.direction === "asc"
 
   const router = useRouter();
 
-  const refreshRequests = async () => {
-    const autoPartsUserData = localStorage.getItem("autoPartsUserData");
-    const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-    if (loggedInUser?.access_token) {
-      const data = await fetchAllBuyerPartRequests(
-        loggedInUser?.user?.id,
-        loggedInUser?.access_token
-      );
-      setPartRequestData(data);
-      setIsLoading(false);
-    }
-  };
 
   // Load on mount
   useEffect(() => {
@@ -140,25 +123,20 @@ return sortConfig.direction === "asc"
       const loggedInUser = JSON.parse(autoPartsUserData || "{}");
       if (!loggedInUser?.access_token) return;
 
-      const data = await fetchAllBuyerPartRequests(
+      const data = await fetchAllBuyerOrders(
         loggedInUser.user?.id,
         loggedInUser.access_token
       );
-      setPartRequestData(data);
+      setOrdersData(data);
       setIsLoading(false);
     };
     loadInitialData();
   }, []);
 
-  useEffect(() => {}, [partRequestData]);
+  useEffect(() => {}, [OrdersData]);
 
-  function handleClick(item: PartRequest) {
-    router.push(`/view-part-request?request=${item.id}`);
-  }
-
-  function ModalOpen(requestId: string) {
-    setRequestId(requestId);
-    setModalOpen(true);
+  function handleClick(item: OrdersType) {
+    router.push(`orders/${item.id}`);
   }
 
 
@@ -217,18 +195,9 @@ return sortConfig.direction === "asc"
                       </div>
                     </th>
 
-                    <th className=" bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">
-                      Make
-                    </th>
-                    <th className=" bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">
-                      Model
-                    </th>
-                    <th className=" bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">
-                      Trim
-                    </th>
-                    <th className="bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">
-                      <div className="flex justify-center cursor-pointer"  onClick={() => handleUrgencySort('Urgency')} >
-                      Urgency
+                      <th className="bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">
+                      <div className="flex justify-center cursor-pointer"  onClick={() => handleUrgencySort('OrderID')} >
+                      Order ID
                       <span
                         className="mt-1 pl-2"
                       >
@@ -237,9 +206,20 @@ return sortConfig.direction === "asc"
                       </div>
                     </th>
 
+
                                         <th className="bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">
-                      <div className="flex justify-center cursor-pointer"  onClick={() => handleUrgencySort('Required')} >
-                      Required
+                      <div className="flex justify-center cursor-pointer"  onClick={() => handleUrgencySort('Date')} >
+                      Date
+                      <span
+                        className="mt-1 pl-2"
+                      >
+                        <FaSort />
+                      </span>
+                      </div>
+                    </th>
+                    <th className="bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">
+                      <div className="flex justify-center cursor-pointer"  onClick={() => handleUrgencySort('Price')} >
+                      Price
                       <span
                         className="mt-1 pl-2"
                       >
@@ -268,64 +248,54 @@ return sortConfig.direction === "asc"
                           <div className="bg-white w-[50px] h-[50px] flex items-center justify-center rounded-sm">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
-                              src={`${imagePath}${item?.attachment}`}
+                              src={`${imagePath}${item?.productImage}`}
                               alt="product"
                               className="md:w-[28px] md:h-[39px] w-[22px] h-[22px] "
                             />
                           </div>
                           <span className="md:text-xs text-[10px] font-semibold md:leading-[22px] leading-[13px]">
-                            {item.title}
+                            {item.productTitle}
                           </span>
                         </td>
 
+
                         <td className=" p-[10px] md:text-xs text-[10px] md:leading-[22px] leading-[13px] font-semibold text-center">
-                          {item.vehicle_make}
-                        </td>
-                        <td className=" p-[10px] md:text-xs text-[10px] md:leading-[22px] leading-[13px] font-semibold text-center">
-                          {item.vehicle_model}
-                        </td>
-                        <td className=" p-[10px] md:text-xs text-[10px] md:leading-[22px] leading-[13px] font-semibold text-center">
-                          {item.vehicle_model_trim}
+                          {item.orderID}
                         </td>
 
+
+             
+                        
                         {/* Urgency Badge */}
                         <td className="p-[10px]">
                           {/* <div className="text-[10px] capitalize font-medium leading-[15px] text-center text-white bg-[#52A84E] px-[9px] py-[2px] ms-auto me-auto w-[46px] rounded-[50px]">
                             {item.urgency}
                           </div> */}
                           <div
-                            className={`text-[10px] capitalize font-medium leading-[15px] text-center text-white px-[9px] py-[2px] ms-auto me-auto w-[52px] rounded-[50px]
-                             ${
-                               item.urgency === "high"
-                                 ? "bg-red-500"
-                                 : item.urgency === "normal"
-                                 ? "bg-yellow-500"
-                                 : "bg-green-500"
-                             }
-                          `}
+                            className={`text-[10px] capitalize font-medium leading-[15px] text-center text-white px-[9px] py-[2px] ms-auto me-auto rounded-[50px]`}
                           >
-                            {item.urgency}
+                            {item.created_at}
                           </div>
                         </td>
 
-                        <td className="md:text-xs text-[10px] p-[10px] md:leading-[22px] leading-[13px] font-semibold text-center">
-                          {item.required_by_date}
+            <td className="md:text-xs text-[10px] p-[10px] md:leading-[22px] leading-[13px] font-semibold text-center">
+                          {item.quotedPrice}
                         </td>
 
                         {/* Status Color */}
                         <td
                           className={`md:text-xs text-[10px] md:leading-[22px] leading-[13px] p-[10px] font-semibold text-center ${
-                            item.status === 0
+                            item.status === 'PENDING'
                               ? "text-yellow-400"
-                              : item.status === 1
+                              : item.status === 'COMPLETED'
                               ? "text-green-500"
                               : "text-red-500"
                           }`}
                         >
-                          {item.status === 0
-                            ? "Inactive"
-                            : item.status === 1
-                            ? "Active"
+                          {item.status === 'PENDING'
+                            ? "Pending"
+                            : item.status === 'COMPLETED'
+                            ? "Completed"
                             : "Suspend"}
                         </td>
 
@@ -338,18 +308,7 @@ return sortConfig.direction === "asc"
                             >
                               <EyeIcon className="h-[20px] w-[20px]" />
                             </button>
-                            <Link
-                              href={`/request-part?request=${item?.id}`}
-                              className="px-[5px] flex justify-center items-center h-[30px] w-[30px] bg-[#011827] rounded-sm border border-[#153C51] text-autoblue cursor-pointer"
-                            >
-                              <PencilSquareIcon className="h-[20px] w-[20px]" />
-                            </Link>
-                            <button
-                              onClick={() => ModalOpen(item?.id)}
-                              className="px-[5px] flex justify-center items-center h-[30px] w-[30px] bg-[#011827] rounded-sm border border-[#153C51] text-autoblue cursor-pointer"
-                            >
-                              <TrashIcon className="h-[20px] w-[20px]" />
-                            </button>
+                   
                           </div>
                         </td>
                       </tr>
@@ -366,12 +325,7 @@ return sortConfig.direction === "asc"
         </div>
       </div>
 
-      <DeleteModal
-        open={modalOpen}
-        requestId={requestId}
-        onClose={() => setModalOpen(false)}
-        onDeleted={refreshRequests} // <-- notify parent
-      />
+
     </>
   );
 }

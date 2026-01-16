@@ -9,7 +9,7 @@ import {
   getQuoteByRequest,
 
 } from "@/app/utils/api";
-import { useSearchParams } from "next/navigation";
+import {useRouter , useSearchParams } from "next/navigation";
 import { ToastContainer } from "react-toastify";
 import { PartRequest, Quote } from "../common/interface";
 import OrderCreate from "./OrderCreate";
@@ -23,7 +23,11 @@ type SelectedData = {
   priceCents: string;
   productName:string;
 };
+
 export default function ViewPartRequest() {
+  
+const router = useRouter();
+
   const searchParams = useSearchParams();
   const request = searchParams.get("request") || "";
   const [partRequest, setPartRequest] = useState<PartRequest>();
@@ -32,10 +36,16 @@ export default function ViewPartRequest() {
   const [isOpenCreateOrder, setIsOpenCreateOrder] = useState(false);
 
   const [selectedData, setSelectedData] = useState<SelectedData | null>(null);
+  
+  if (!request) {
 
+       router.replace('/buyer-dashboard');
+  }
+  
   useEffect(() => {
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
+    
 
     if (loggedInUser?.access_token && request) {
       fetchPartRequestsById(request, loggedInUser.access_token).then((data) => {
@@ -97,6 +107,8 @@ setSelectedData({quoteId:quoteId,requestId:requestId,userName,etaDays,priceCents
       }
     }
   }
+
+
 
   if (loading) {
     return (

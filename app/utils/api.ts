@@ -2,6 +2,7 @@
 import axios from "axios";
 
 // API paths for LOCAL
+export const orderPath = "http://54.80.119.79:8003/v1";
 export const profilePath = "http://54.80.119.79:8004/profiles";
 export const authApiPath = "http://54.80.119.79:8001/v1";
 export const supplierPath = "http://54.80.119.79:8005/v1/supplier";
@@ -21,6 +22,30 @@ export const imagePath = "http://54.80.119.79:8000/image/";  //image path for lo
 
 
 // BUYER
+// create new Order
+export function CreateOrder(formdata: any, token: string) {
+ {
+
+    return axios.post(
+    `${orderPath}/order/create-order/`,
+    { ...formdata },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+    }
+  )
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error("unable to add address ", error);
+      throw error;
+    });
+  }
+}
+
 //  delete address 
 export async function deleteAddress(token: string, addressID: string) {
   return axios

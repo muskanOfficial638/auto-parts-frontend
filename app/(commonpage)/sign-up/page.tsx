@@ -27,6 +27,7 @@ export default function SignUpPage() {
   const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
   const [showPassword, setShowPassword] = useState(false);
   const [isTermsChecked, setIsTermsChecked] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // Email Validation
   const validateEmail = (value: string) => {
@@ -98,6 +99,7 @@ export default function SignUpPage() {
     e.preventDefault();
 
     try {
+       setLoading(true)
       if (!name || !role || !email || !password) {
         setError("Please fill in all required fields.");
         return;
@@ -109,25 +111,30 @@ export default function SignUpPage() {
       const nameRegex = /^[a-zA-Z]+(?:[\s-'][a-zA-Z]+)*$/;
 
       if (name && !nameRegex.test(name)) {
+         setLoading(false)
         setNameError("Invalid Name Characters");
         return;
       }
 
       if (name?.length > 25) {
+         setLoading(false)
         setNameError("Name cannot be more than 25 character long");
         return;
       }
       if (name?.length < 2) {
+         setLoading(false)
         setNameError("Name cannot be less than 2 character short");
         return;
       }
 
       if (!email || emailError || passwordErrors.length > 0) {
+         setLoading(false)
         setError("Please fix the errors before submitting");
         return;
       }
 
       if (!isTermsChecked) {
+         setLoading(false)
         toast.error("You must accept the Terms of Service.");
         return;
       }
@@ -145,10 +152,12 @@ export default function SignUpPage() {
 
       // console.log("RegisterData:", response.data);
       if (response?.data) {
+         setLoading(false)
         toast.success("Signed-up Successfully");
         router.push("/login");
       }
     } catch (err: any) {
+       setLoading(false)
       // Handle errors more gracefully
       if (err.response) {
         // Server responded with a status other than 2xx
@@ -366,8 +375,9 @@ export default function SignUpPage() {
               {error && <span className="text-red-500">{error}</span>}
               <button
                 type="submit"
-                className="col-span-2 bg-autoblue md:text-[20px] text-[15px] leading[14px] rounded-sm text-white md:py-[15px] py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
+                className="col-span-2 flex justify-center bg-autoblue md:text-[20px] text-[15px] leading[14px] rounded-sm text-white md:py-[15px] py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
               >
+              {loading && (<div className="w-8 h-8 border-4 border-blue-500 border-t-transparent border-white rounded-full animate-spin me-2"></div>)}  
                 Create Account
               </button>
             </form>

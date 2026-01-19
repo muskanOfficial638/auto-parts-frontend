@@ -4,7 +4,6 @@
 import { useState } from "react";
 import Header from "@/app/components/Header";
 import { AiFillEye } from "react-icons/ai";
-import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { authApiPath } from "@/app/utils/api";
@@ -85,38 +84,36 @@ export default function LoginPage() {
         password,
       });
 
-      if (response?.data && response.data.access_token) {
+      if (response?.data && response.data.access_token && response.data?.user?.role !== "admin"){
+
         localStorage.setItem(
           "autoPartsUserData",
           JSON.stringify(response.data)
         );
+        
         localStorage.setItem("loginTime", Date.now().toString());
         localStorage.setItem("lastActivity", Date.now().toString());
         toast.success("Logged-in Successfully");
         if (response.data?.user?.role === "buyer") {
           router.push("/buyer-dashboard");
-        } else {
+        } else if (response.data?.user?.role === "supplier"){
           router.push(
             response.data?.user?.profile?.kyc_status === "pending"
               ? "/kyc-page"
               : "/supplier-dashboard"
           );
         }
+      }else{
+        toast.error("Invalid credentials or unauthorized access");
       }
     } catch (err: any) {
-      // Handle errors more gracefully
       if (err.response) {
-        // Server responded with a status other than 2xx
         console.error("Server error:", err.response.data);
         setError(err.response.data.detail || "Login failed");
-        // toast.error(err.response.data.detail || "Login failed");
       } else if (err.request) {
-        // Request was made but no response received
         console.error("No response:", err.request);
         setError("No response from server");
-        // toast.error("No response from server");
       } else {
-        // Something else happened
         console.error("Error:", err.message);
         toast.error("Unexpected error occurred");
       }
@@ -127,10 +124,7 @@ export default function LoginPage() {
     <div
       className="min-h-screen bg-black text-white flex flex-col overflow-hidden"      
     >
-      {/* Header */}
       <Header />
-      {/* <ToastContainer /> */}
-      {/* Login Section */}
       <div
         className="flex-1 flex justify-center bg-cover bg-center bg-black pt-[90px] "
         style={{

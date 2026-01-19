@@ -28,6 +28,7 @@ export default function BuyerDashboard() {
   const [modalOpen, setModalOpen] = useState(false);
   const [requestId, setRequestId] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+const [selectedStatus, setSelectedStatus] = useState<number | "all">("all");
 
 
 type SortKey = "title" | "urgency" | "required_by_date";
@@ -62,19 +63,29 @@ const handleUrgencySort = (
 };
 
 const filteredData = useMemo(() => {
-  if (!searchTerm) return partRequestData;
+  let result = partRequestData;
 
-  const lowerSearch = searchTerm.toLowerCase();
+  if (searchTerm) {
+    const lowerSearch = searchTerm.toLowerCase();
 
-  return partRequestData.filter((item) =>
-    item.title.toLowerCase().includes(lowerSearch) ||
-    item.vehicle_make.toLowerCase().includes(lowerSearch) ||
-    item.vehicle_model.toLowerCase().includes(lowerSearch) ||
-    item.vehicle_model_trim.toLowerCase().includes(lowerSearch) ||
-    item.urgency.toLowerCase().includes(lowerSearch) ||
-    item.required_by_date.toLowerCase().includes(lowerSearch)
-  );
-}, [partRequestData, searchTerm]);
+    result = result.filter((item) =>
+      item.title.toLowerCase().includes(lowerSearch) ||
+      item.vehicle_make.toLowerCase().includes(lowerSearch) ||
+      item.vehicle_model.toLowerCase().includes(lowerSearch) ||
+      item.vehicle_model_trim.toLowerCase().includes(lowerSearch) ||
+      item.urgency.toLowerCase().includes(lowerSearch) ||
+      item.required_by_date.toLowerCase().includes(lowerSearch)
+    );
+  }
+
+  if (selectedStatus !== "all") {
+    result = result.filter(
+      (item) => item.status === selectedStatus
+    );
+  }
+
+  return result;
+}, [partRequestData, searchTerm, selectedStatus]);
 
 
 const sortedData = useMemo((): PartRequest[] => {
@@ -171,6 +182,12 @@ return sortConfig.direction === "asc"
     );
   }
 
+    const handleSelectChange = (value: string) => {
+    console.log("value",value)
+    setSelectedStatus(value === "all" ? "all" : Number(value));
+
+  
+  };
   return (
     <>
       <div className="min-h-screen w-full relative">
@@ -249,7 +266,18 @@ return sortConfig.direction === "asc"
                     </th>
 
                     <th className=" bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">
-                      Status
+                                     <select
+                
+                name="role"
+                required
+                onChange={(e) => handleSelectChange(e.target.value)}
+               className="text-grayMedium outline-none  md:text-base text-sm"
+              >
+                <option value="all">Status</option>
+                <option value="1">Active</option>
+                <option value="0">Inactive</option>
+                <option value="2">Suspend</option>
+              </select>
                     </th>
                     <th className=" bg-autoblue rounded-tr-sm p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">
                       Action

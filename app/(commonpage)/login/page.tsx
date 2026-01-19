@@ -20,6 +20,8 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading ]= useState(false);
+
 
   // Email Validation
   const validateEmail = (value: string) => {
@@ -69,6 +71,8 @@ export default function LoginPage() {
   };
 
   async function handleLogin(e: React.FormEvent) {
+
+
     e.preventDefault();
     // 🔒 Validate fields before submit
     validateEmail(email);
@@ -78,7 +82,7 @@ export default function LoginPage() {
       toast.error("Please fix the errors before submitting");
       return;
     }
-
+ setLoading(true)
     try {
       const response = await axios.post(`${authApiPath}/auth/login`, {
         email,
@@ -86,6 +90,7 @@ export default function LoginPage() {
       });
 
       if (response?.data && response.data.access_token) {
+       
         localStorage.setItem(
           "autoPartsUserData",
           JSON.stringify(response.data)
@@ -104,6 +109,7 @@ export default function LoginPage() {
         }
       }
     } catch (err: any) {
+       setLoading(false)
       // Handle errors more gracefully
       if (err.response) {
         // Server responded with a status other than 2xx
@@ -187,8 +193,11 @@ export default function LoginPage() {
                 </div>
                 {error && <p className="text-red-600 text-sm">{error}</p>}
                 {/* Login Button */}
-                <button className=" bg-autoblue md:text-[20px] text-[15px] leading[14px] rounded-sm text-white md:py-[15px] py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer">
-                  Login
+           
+                <button className="flex justify-center  bg-autoblue md:text-[20px] text-[15px] leading[14px]  rounded-sm text-white md:py-[15px] py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer">
+                     
+                  { loading && ( <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent border-white rounded-full animate-spin me-2"></div>)} Login
+          
                 </button>
               </form>
 

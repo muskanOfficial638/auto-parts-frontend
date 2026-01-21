@@ -271,12 +271,12 @@ return sortConfig.direction === "asc"
                 name="role"
                 required
                 onChange={(e) => handleSelectChange(e.target.value)}
-               className="text-grayMedium outline-none  md:text-base text-sm"
+               className="text-white outline-none  md:text-base text-sm"
               >
-                <option value="all">Status</option>
-                <option value="1">Active</option>
-                <option value="0">Inactive</option>
-                <option value="2">Suspend</option>
+                <option value="all" className="md:text-sm text-xs text-grayMedium">Status</option>
+                <option value="1" className="md:text-sm text-xs text-grayMedium">Active</option>
+                <option value="0" className="md:text-sm text-xs text-grayMedium">Inactive</option>
+                <option value="2" className="md:text-sm text-xs text-grayMedium">Suspend</option>
               </select>
                     </th>
                     <th className=" bg-autoblue rounded-tr-sm p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">

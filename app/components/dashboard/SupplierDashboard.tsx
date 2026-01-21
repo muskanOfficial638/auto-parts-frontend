@@ -3,7 +3,7 @@
 
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
-import { FiChevronDown } from "react-icons/fi";
+import { FiChevronDown, FiXCircle   } from "react-icons/fi";
 import BidModal from "@/app/components/supplier/Modal/BidModal";
 import { fetchAllSupplierPartRequests, imagePath } from "@/app/utils/api";
 import { PartRequest } from "../common/interface";
@@ -12,14 +12,68 @@ import Loader from "../common/Loader";
 export default function SupplierDashboard() {
   const [modalOpen, setModalOpen] = useState(false);
   const [partRequestData, setPartRequestData] = useState<PartRequest[]>();
+  const [filterpartRequestData, setFilterPartRequestData] = useState<PartRequest[]>();
   const [userRequest, setUserRequest] = useState<PartRequest>();
-  const [filtersOpen, setFiltersOpen] = useState({
+  const [sideBarFilters, setSideBarFilters] = useState("");
+  const [activeTrim, setActiveTrim] = useState<string | number |null>(null);
+
+  interface FiltersOpen {
+    make: boolean;
+    [key: string]: boolean; // <-- allows any string key
+  }
+
+  const [filtersOpen, setFiltersOpen] = useState<FiltersOpen>({
     make: true,
-    bmw: true,
-    a1: true,
+    bmw: false,
+    a1: false
   });
+
+
   const [loading, setIsLoading] = useState(true);
   const [globalSearch, setGlobalSearch] = useState("");
+  const carData = {
+    "cars": [
+      {
+        "brand": "BMW",
+        "models": [
+          {
+            "model": "F-161",
+            "trims": [{"name": "Platinum", id: 1}, {"name": "1.2PSI", id: 2}]
+          },
+          {
+            "model": "X5",
+            "trims": [{"name": "Sport", id: 3}, {"name": "Luxury", id: 4}]
+          }
+        ]
+      },
+      {
+        "brand": "Ford",
+        "models": [
+          {
+            "model": "Micra",
+            "trims": [{"name": "Base", id: 5}, {"name": "Platinum", id: 6}]
+          },
+          {
+            "model": "F-150",
+            "trims": [{"name": "XL", id: 7}, {"name": "XLT", id: 8}]
+          }
+        ]
+      },
+      {
+        "brand": "Honda",
+        "models": [
+          {
+            "model": "Civic",
+            "trims": [{"name": "LX", id: 11}, {"name": "EX", id: 12}]
+          },
+          {
+            "model": "Accord",
+            "trims": [{"name": "Sport", id: 9}, {"name": "Touring", id: 10}]
+          }
+        ]
+      }
+    ]
+  }
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -27,7 +81,7 @@ export default function SupplierDashboard() {
       const loggedInUser = JSON.parse(autoPartsUserData || "{}");
       if (loggedInUser?.access_token) {
         fetchAllSupplierPartRequests(loggedInUser.access_token).then((data) => {
-          setPartRequestData(data);
+          setPartRequestData(data.data);
           setIsLoading(false);
         });
       }
@@ -37,9 +91,21 @@ export default function SupplierDashboard() {
   useEffect(() => {
     const delayFilter = setTimeout(() => {
       const search = globalSearch.toLowerCase();
-      const filtered =
-        partRequestData &&
-        partRequestData.filter((item) => {
+      let filtered1 = [] as any;
+
+      if (sideBarFilters && partRequestData) {
+        filtered1 = partRequestData.filter((item) => {
+          console.log("sideBarFilters", sideBarFilters)
+          return (
+            item.vehicle_model_trim?.toLowerCase().includes(sideBarFilters.toLowerCase())
+          );
+        });
+      } else {
+        filtered1 = partRequestData;
+      }
+
+      if (search && partRequestData) {
+        filtered1 = filtered1.filter((item:any) => {
           return (
             item.title?.toLowerCase().includes(search) ||
             item.description?.toLowerCase().includes(search) ||
@@ -48,24 +114,19 @@ export default function SupplierDashboard() {
             item.vehicle_model?.toLowerCase().includes(search)
           );
         });
-      setPartRequestData(filtered);
+      } else if (!sideBarFilters && !search) {
+        setFilterPartRequestData(partRequestData || []);
+      }
+
+      setFilterPartRequestData(filtered1);
     }, 300);
 
+
     return () => clearTimeout(delayFilter);
-  }, [globalSearch, partRequestData]);
+
+  }, [globalSearch, partRequestData, sideBarFilters]);
 
   const handleGlobalSearch = (e: any) => {
-    if (e.target.value === "") {
-      const autoPartsUserData = localStorage.getItem("autoPartsUserData");
-      const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-      if (loggedInUser?.access_token) {
-        fetchAllSupplierPartRequests(loggedInUser.access_token).then((data) => {
-          setPartRequestData(data);
-          setIsLoading(false);
-        });
-      }
-      return;
-    }
     setGlobalSearch(e.target.value);
   };
 
@@ -75,25 +136,6 @@ export default function SupplierDashboard() {
     setModalOpen(true);
   }
 
-  //   const onSearchPartRequest = debounce(async (event: any) => {
-  //   const value = event.target.value;
-
-  //   const autoPartsUserData = localStorage.getItem("autoPartsUserData");
-  //   const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-
-  //   if (!loggedInUser?.access_token) return;
-
-  //   const data = await fetchAllSupplierPartRequests(
-  //     loggedInUser.access_token,
-  //     value,     // title search
-  //     "",        // urgency
-  //     "",        // description
-  //     "",        // make
-  //     ""         // model
-  //   );
-
-  //   setPartRequestData(data);
-  // }, 400); // 400ms delay
 
   if (loading) {
     return (
@@ -119,66 +161,87 @@ export default function SupplierDashboard() {
               Filters Parts
             </h2>
             {/* MAKE FILTER */}
+
             <div className=" bg-black p-[20px] ">
               <h4 className="md:text-[19px] text-base text-white font-semibold">
                 Make
               </h4>
-              {filtersOpen.make && (
-                <div className="mt-2  space-y-2 text-gray-300">
-                  {/* BMW */}
-                  <button
-                    onClick={() =>
-                      setFiltersOpen({ ...filtersOpen, bmw: !filtersOpen.bmw })
-                    }
-                    className="flex justify-between cursor-pointer w-full text-left items-center text-LightGray border-Dark font-medium text-xs leading-[33px] border-b  "
-                  >
-                    BMW{" "}
-                    <FiChevronDown
-                      className={
-                        filtersOpen.bmw
-                          ? "rotate-180 text-[18px] text-LightGray"
-                          : ""
-                      }
-                    />
-                  </button>
 
-                  {filtersOpen.bmw && (
-                    <div className=" space-y-2 text-gray-400">
+              {filtersOpen.make && (
+                <div className="mt-2 space-y-2 text-gray-300">
+                  {carData.cars.map((car) => (
+                    <div key={car.brand}>
+                      {/* Brand */}
                       <button
                         onClick={() =>
                           setFiltersOpen({
                             ...filtersOpen,
-                            a1: !filtersOpen.a1,
+                            [car.brand]: !filtersOpen[car.brand],
                           })
                         }
-                        className="flex justify-between cursor-pointer w-full text-left ps-[10px] items-center text-grayMedium border-Dark text-xs font-medium leading-[33px] border-b "
+                        className="flex justify-between cursor-pointer w-full text-left items-center text-LightGray border-Dark font-medium text-xs leading-[33px] border-b"
                       >
-                        A1{" "}
+                        {car.brand}
                         <FiChevronDown
                           className={
-                            filtersOpen.a1
+                            filtersOpen[car.brand]
                               ? "rotate-180 text-[18px] text-LightGray"
-                              : "text-[18px] text-LightGray"
+                              : "text-[18px]"
                           }
                         />
                       </button>
 
-                      {filtersOpen.a1 && (
-                        <div className=" space-y-2 text-grayMedium font-medium items-center text-xs leading-[33px]">
-                          <p className="border-b ps-[30px] border-Dark font-medium">
-                            Trim1
-                          </p>
-                          <p className="border-b ps-[30px] border-Dark font-medium">
-                            Trim1a
-                          </p>
-                          <p className="ps-[30px] ">Trim1a</p>
+                      {filtersOpen[car.brand] && (
+                        <div className="space-y-2 text-gray-400">
+                          {car.models.map((model) => (
+                            <div key={model.model}>
+                              {/* Model */}
+                              <button
+                                onClick={() =>
+                                  setFiltersOpen({
+                                    ...filtersOpen,
+                                    [model.model]: !filtersOpen[model.model],
+                                  })
+                                }
+                                className="flex justify-between cursor-pointer w-full text-left ps-[10px] items-center text-grayMedium border-Dark text-xs font-medium leading-[33px] border-b"
+                              >
+                                {model.model}
+                                <FiChevronDown
+                                  className={
+                                    filtersOpen[model.model]
+                                      ? "rotate-180 text-[18px] text-LightGray"
+                                      : "text-[18px] text-LightGray"
+                                  }
+                                />
+                              </button>
+
+                              {filtersOpen[model.model] && (
+                                <div className="space-y-2 text-grayMedium font-medium items-center text-xs leading-[33px]">
+                                  {model.trims.map((trim, index) => (
+                                    <p
+                                     
+                                      key={trim.id}
+                                      className={`flex justify-between items-center ps-[30px] hover:bg-autoblue hover:text-white duration-400 ${index !== model.trims.length - 1
+                                          ? "border-b border-Dark"
+                                          : ""
+                                        } font-medium ` + (activeTrim === trim.id ? "bg-autoblue text-white" : "")}
+                                    >
+                                      <span  className="w-full cursor-pointer" onClick={() => {setSideBarFilters(trim.name); setActiveTrim(trim.id)}}>{trim.name}</span>
+                                  <span className=" mr-[20px] cursor-pointer" onClick={()=>{setActiveTrim(""); setSideBarFilters("")}}><FiXCircle  className="text-[12px] ml-[5px]" /></span>
+                                    </p>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          ))}
                         </div>
                       )}
                     </div>
-                  )}
+                  ))}
                 </div>
               )}
             </div>
+ 
           </div>
         </div>
 
@@ -202,8 +265,8 @@ export default function SupplierDashboard() {
 
           {/* List Items */}
           <div className="space-y-[10px]">
-            {partRequestData ? (
-              partRequestData.map((item) => (
+            {filterpartRequestData ? (
+              filterpartRequestData.map((item) => (
                 <div
                   key={item.id}
                   className="bg-brandBlack p-[20px] rounded-lg flex flex-wrap lg:gap-[0] gap-y-[20px] items-center justify-between"

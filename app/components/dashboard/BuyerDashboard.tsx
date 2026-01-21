@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
+
 import {
   EyeIcon,
-  PencilSquareIcon,
+  // PencilSquareIcon,
   TrashIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
@@ -273,10 +273,11 @@ return sortConfig.direction === "asc"
                 onChange={(e) => handleSelectChange(e.target.value)}
                className="text-white outline-none  md:text-base text-sm"
               >
+
                 <option value="all" className="md:text-sm text-xs text-grayMedium">Status</option>
-                <option value="1" className="md:text-sm text-xs text-grayMedium">Active</option>
-                <option value="0" className="md:text-sm text-xs text-grayMedium">Inactive</option>
-                <option value="2" className="md:text-sm text-xs text-grayMedium">Suspend</option>
+                <option value="1" className="md:text-sm text-xs text-grayMedium">Completed</option>
+                <option value="0" className="md:text-sm text-xs text-grayMedium">Active</option>
+                <option value="2" className="md:text-sm text-xs text-grayMedium">Cancelled</option>
               </select>
                     </th>
                     <th className=" bg-autoblue rounded-tr-sm p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">
@@ -351,10 +352,10 @@ return sortConfig.direction === "asc"
                           }`}
                         >
                           {item.status === 0
-                            ? "Inactive"
-                            : item.status === 1
                             ? "Active"
-                            : "Suspend"}
+                            : item.status === 1
+                            ? "Completed"
+                            : "Cancelled"}
                         </td>
 
                         {/* Actions */}
@@ -366,12 +367,12 @@ return sortConfig.direction === "asc"
                             >
                               <EyeIcon className="h-[20px] w-[20px]" />
                             </button>
-                            <Link
+                            {/* <Link
                               href={`/request-part?request=${item?.id}`}
                               className="px-[5px] flex justify-center items-center h-[30px] w-[30px] bg-[#011827] rounded-sm border border-[#153C51] text-autoblue cursor-pointer"
                             >
                               <PencilSquareIcon className="h-[20px] w-[20px]" />
-                            </Link>
+                            </Link> */}
                             <button
                               onClick={() => ModalOpen(item?.id)}
                               className="px-[5px] flex justify-center items-center h-[30px] w-[30px] bg-[#011827] rounded-sm border border-[#153C51] text-autoblue cursor-pointer"

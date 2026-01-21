@@ -203,7 +203,7 @@ export default function RequestPartForm() {
                   name="title"
                   value={formData?.title || ""}
                   onChange={handleChange}
-                  className="w-full py-[8px] px-[18px]  bg-white md:text-[19px] text-[15px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
+                  className="w-full py-[8px] px-[18px]  bg-white md:text-base text-sm leading-[13px]  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
                 />
               </div>
 
@@ -330,7 +330,7 @@ export default function RequestPartForm() {
                     name="required_by_date"
                     onChange={handleChange}
                     value={formData?.required_by_date}
-                    className="w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
+                    className="w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[13px]  border border-LightNeutral rounded-sm text-Gray outline-none"
                   />
                   {/* <CalendarDays
                       className="absolute right-5 top-4 text-gray-400"

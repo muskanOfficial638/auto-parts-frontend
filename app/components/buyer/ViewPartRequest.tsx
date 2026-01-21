@@ -10,7 +10,7 @@ import {
   getQuoteByRequest,
 
 } from "@/app/utils/api";
-import {useRouter , useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ToastContainer } from "react-toastify";
 import { PartRequest, Quote } from "../common/interface";
 import OrderCreate from "./OrderCreate";
@@ -22,12 +22,12 @@ type SelectedData = {
   userName: string;
   etaDays: string;
   priceCents: string;
-  productName:string;
+  productName: string;
 };
 
 export default function ViewPartRequest() {
-  
-const router = useRouter();
+
+  const router = useRouter();
 
   const searchParams = useSearchParams();
   const request = searchParams.get("request") || "";
@@ -35,18 +35,18 @@ const router = useRouter();
   const [quoteData, setQuoteData] = useState<Quote[]>();
   const [loading, setIsLoading] = useState(true);
   const [isOpenCreateOrder, setIsOpenCreateOrder] = useState(false);
-
+  const [hasAccepted, setHasAccepted] = useState<boolean>(false);
   const [selectedData, setSelectedData] = useState<SelectedData | null>(null);
-  
+
   if (!request) {
 
-       router.replace('/buyer-dashboard');
+    router.replace('/buyer-dashboard');
   }
-  
+
   useEffect(() => {
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-    
+
 
     if (loggedInUser?.access_token && request) {
       fetchPartRequestsById(request, loggedInUser.access_token).then((data) => {
@@ -56,6 +56,8 @@ const router = useRouter();
 
       getQuoteByRequest(request, loggedInUser.access_token).then((data) => {
         setQuoteData(data);
+
+        setHasAccepted(data.some((item : Quote) => item.status === "accepted"));
       });
     }
   }, [request]);
@@ -67,15 +69,14 @@ const router = useRouter();
   async function handleActionChange(
     quoteId: string,
     requestId: string,
-    userName:string,
-    etaDays:string,
-    priceCents:string                     
-  ) 
-  {
-setSelectedData({quoteId:quoteId,requestId:requestId,userName,etaDays,priceCents,productName:partRequest?.title??''})
-    
-   // const autoPartsUserData = localStorage.getItem("autoPartsUserData");
-   // const loggedInUser = JSON.parse(autoPartsUserData || "{}");
+    userName: string,
+    etaDays: string,
+    priceCents: string
+  ) {
+    setSelectedData({ quoteId: quoteId, requestId: requestId, userName, etaDays, priceCents, productName: partRequest?.title ?? '' })
+
+    // const autoPartsUserData = localStorage.getItem("autoPartsUserData");
+    // const loggedInUser = JSON.parse(autoPartsUserData || "{}");
     try {
 
       setIsOpenCreateOrder(true);
@@ -172,10 +173,10 @@ setSelectedData({quoteId:quoteId,requestId:requestId,userName,etaDays,priceCents
               </div>
             </div>
             <div className="flex flex-col items-end gap-[30px]">
-             <button onClick={()=>history.back()} className="bg-white cursor-pointer h-8 w-8 rounded-full flex justify-center items-center text-black "><FaArrowLeft /></button>
-            <button className="text-autoblue md:w-[auto] w-full cursor-pointer md:text-base text-sm leading-[14px] border border-autoblue py-[13px] px-[20px] duration-400 hover:text-white rounded-sm hover:bg-hoverblue hover:border-hoverblue">             
-                Mark as Completed             
-            </button>
+              <button onClick={() => history.back()} className="bg-white cursor-pointer h-8 w-8 rounded-full flex justify-center items-center text-black "><FaArrowLeft /></button>
+              <button className="text-autoblue md:w-[auto] w-full cursor-pointer md:text-base text-sm leading-[14px] border border-autoblue py-[13px] px-[20px] duration-400 hover:text-white rounded-sm hover:bg-hoverblue hover:border-hoverblue">
+                Mark as Completed
+              </button>
             </div>
           </div>
 
@@ -192,9 +193,9 @@ setSelectedData({quoteId:quoteId,requestId:requestId,userName,etaDays,priceCents
                       <p className="text-white md:text-sm text-xs font-bold leading-[22px]">
                         @{data?.user?.user_name}
                       </p>
-                      <p className="leading-[22px] md:text-xs text-[10px]">
+                      {/* <p className="leading-[22px] md:text-xs text-[10px]">
                         {data?.user?.email}
-                      </p>
+                      </p> */}
 
                       <p className="text-neutralLight mt-[5px] text-xs  leading-[15px]">
                         <span className="font-semibold text-neutralLight">
@@ -232,7 +233,7 @@ setSelectedData({quoteId:quoteId,requestId:requestId,userName,etaDays,priceCents
                           Rejected
                         </button>
                       )}
-                       {data?.status == "pending" && (
+                      {data?.status == "pending" && !hasAccepted && (
                         <>
                           <button
                             className="bg-green-600 md:text-base text-xs duration-400 leading-[14px] md:px-[38px] md:py-[13px] px-[28px] py-[8px] text-white rounded-sm hover:bg-green-700 cursor-pointer"
@@ -251,13 +252,13 @@ setSelectedData({quoteId:quoteId,requestId:requestId,userName,etaDays,priceCents
                           </button>
                           <button
                             className="bg-red-600 px-5 py-2 md:text-base text-xs duration-400 leading-[14px] md:px-[38px] md:py-[13px] px-[28px] py-[8px] text-white rounded-sm hover:bg-red-700 cursor-pointer"
-                            // onClick={() =>
-                            //   handleActionChange(
-                            //     data?.id,
-                            //     data?.request_id,
-                            //     "rejected"
-                            //   )
-                            // }
+                          // onClick={() =>
+                          //   handleActionChange(
+                          //     data?.id,
+                          //     data?.request_id,
+                          //     "rejected"
+                          //   )
+                          // }
                           >
                             Reject
                           </button>
@@ -270,7 +271,7 @@ setSelectedData({quoteId:quoteId,requestId:requestId,userName,etaDays,priceCents
           </div>
         </div>
       </div>
-      {isOpenCreateOrder && <OrderCreate closeModal={ setIsOpenCreateOrder}  dataSelect={selectedData} />}
+      {isOpenCreateOrder && <OrderCreate closeModal={setIsOpenCreateOrder} dataSelect={selectedData} />}
     </div>
   );
 }

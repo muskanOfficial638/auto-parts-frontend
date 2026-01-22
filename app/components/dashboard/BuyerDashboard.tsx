@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { PartRequest } from "../common/interface";
 import DeleteModal from "../buyer/modal/DeleteModal";
 import { FaSort } from "react-icons/fa6";
+import Image from "next/image";
 
 type Urgency = "low" | "normal" | "high";
 const urgencyOrder: Record<Urgency, number> = {
@@ -297,11 +298,14 @@ return sortConfig.direction === "asc"
                         <td className="flex p-[10px] items-center gap-[15px]">
                           <div className="bg-white w-[50px] h-[50px] flex items-center justify-center rounded-sm">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
+                            <Image
                               src={`${imagePath}${item?.attachment[0]}`}
                               alt="product"
                               className="md:w-[28px] md:h-[39px] w-[22px] h-[22px] "
+                              height={200}
+                              width={200}
                             />
+                          
                           </div>
                           <span className="md:text-xs text-[10px] font-semibold md:leading-[22px] leading-[13px]">
                             {item.title}

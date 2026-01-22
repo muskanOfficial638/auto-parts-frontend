@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { Make, Model, PartRequest, Trim } from "../common/interface";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
+import { HiOutlineUpload } from "react-icons/hi";
 
 export default function RequestPartForm() {
   const initialFormData: PartRequest = {
@@ -396,7 +397,7 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
               </div>
 
               {/* Image Upload */}
-              <div className="flex flex-col">
+              <div className="flex flex-col gap-[10px]">
                 <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                   Image*
                 </label>
@@ -413,7 +414,7 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                   />
                   <label
                     htmlFor="multiFile"
-                    className="group flex flex-col items-center justify-center w-full rounded-2xl border-2 border-dashed border-gray-300 bg-gradient-to-br from-white to-gray-50 p-8 cursor-pointer transition
+                    className="group flex flex-col items-center justify-center w-full rounded-sm border-2 border-dashed border-gray-300 bg-gradient-to-br from-white to-gray-50 p-5 cursor-pointer transition
       hover:border-blue-500 hover:shadow-md"
                   >
                     {/* Icon */}
@@ -421,7 +422,7 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                       className="flex items-center justify-center w-14 h-14 rounded-full bg-blue-50 text-blue-600 text-2xl transition
         group-hover:bg-blue-100 group-hover:scale-105"
                     >
-                      ⬆️
+                      <HiOutlineUpload />
                     </div>
 
     
@@ -439,9 +440,10 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                   const isImage = file.type.startsWith("image/");
 
                   return (
+                    
                     <li
                       key={index}
-                      className="flex items-center justify-between bg-white px-3 py-2 rounded-lg border"
+                      className="flex items-center justify-between bg-white px-3 py-2 rounded-sm border"
                     >
                       <div className="flex items-center gap-3">
                         {/* ✅ Image Preview */}

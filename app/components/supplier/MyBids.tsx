@@ -84,7 +84,7 @@ export default function MyBids() {
           {/* List Items */}
           <div className="space-y-[25px] w-full max-w-[1037px] rounded-lg shadow-lg ">
             <h2 className="text-2xl leading-[14px] font-bold text-center text-white">
-              My bids
+              My Quote
             </h2>
             <div className="text-xl font-medium items-center flex space-x-[36px]">
               <span

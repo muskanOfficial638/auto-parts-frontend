@@ -202,10 +202,10 @@ function BuyerSupplierMenu({ autoPartsUserData }: { autoPartsUserData: any }) {
               {autoPartsUserData?.user?.role === "supplier" && (
                 <li>
                   <Link
-                    href="/my-bids"
+                    href="/my-quote"
                     className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue duration-400 border-Dark border-b rounded"
                   >
-                    My Bids
+                    My Quote
                   </Link>
                 </li>
               )}

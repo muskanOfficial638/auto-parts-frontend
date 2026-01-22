@@ -119,11 +119,11 @@ export default function RequestPartPage() {
                         <div className="flex items-center gap-[10px] md:border-b md:pb-[13px] border-[#153C51]">
                           <div className="bg-white rounded-sm p-[8px]">
                           { OrderDetails?.productData.image[0] && (
-                            <img
+                            <Image
                               src={imagePath+OrderDetails?.productData.image[0]}
                               alt="productImage"
-                              width={23}
-                              height={32}
+                              width={100}
+                              height={100}
                               className="object-cover md:w-[71px] md:h-[99px] w-[36px] h-[50px]"
                             />)}
                           </div>

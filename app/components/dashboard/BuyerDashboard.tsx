@@ -167,7 +167,8 @@ return sortConfig.direction === "asc"
     router.push(`/view-part-request?request=${item.id}`);
   }
 
-  function ModalOpen(requestId: string) {
+  function ModalOpen(requestId: string | undefined) {
+    if (!requestId) return;
     setRequestId(requestId);
     setModalOpen(true);
   }
@@ -297,7 +298,7 @@ return sortConfig.direction === "asc"
                           <div className="bg-white w-[50px] h-[50px] flex items-center justify-center rounded-sm">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
-                              src={`${imagePath}${item?.attachment}`}
+                              src={`${imagePath}${item?.attachment[0]}`}
                               alt="product"
                               className="md:w-[28px] md:h-[39px] w-[22px] h-[22px] "
                             />
@@ -374,7 +375,7 @@ return sortConfig.direction === "asc"
                               <PencilSquareIcon className="h-[20px] w-[20px]" />
                             </Link> */}
                             <button
-                              onClick={() => ModalOpen(item?.id)}
+                              onClick={() => ModalOpen(item.id)}
                               className="px-[5px] flex justify-center items-center h-[30px] w-[30px] bg-[#011827] rounded-sm border border-[#153C51] text-autoblue cursor-pointer"
                             >
                               <TrashIcon className="h-[20px] w-[20px]" />

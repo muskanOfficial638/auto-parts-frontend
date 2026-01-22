@@ -64,8 +64,9 @@ export default function RequestPartPage() {
         orderid,
         loggedInUser.access_token
       );
-      console.log("Fetched Order Details:", data);
+      console.log("Fetched Order Details:", data.payment_meta.amount);
       setOrderDetails(data);
+
       setLoading(false);
     };
     loadInitialData();
@@ -91,6 +92,7 @@ export default function RequestPartPage() {
                 <h2 className="md:text-[26px] text-[20px] font-bold leading-[14px]">Order Details </h2>
                 <button
                   type="submit"
+                  onClick={() => window.history.back()}
                   className="bg-autoblue text-white md:text-base text-sm leading-[14px] rounded-sm text-white md:py-[13px] md:px-[20px] py-[11px] px-[18px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
                 >
                   Back To Order
@@ -107,9 +109,7 @@ export default function RequestPartPage() {
                   <a href="#" className="flex text-[13px] font-semibold leading-[16px] items-center gap-[8px]">
                     <Image width={23}
                       height={32} src="/user-icon.svg" alt="user icon" />@{OrderDetails?.supplierData?.name}</a>
-                  <a href="#" className="flex items-center text-[13px] font-semibold leading-[16px] gap-[8px] mt-[10px]">
-                    <Image width={23}
-                      height={32} src="/mail-icon.svg" alt="mail icon" />{OrderDetails?.supplierData?.email}</a>
+                
                 </div>
                 <div className="mt-[25px]">
                   <h3 className="text-sm font-bold leading-[22px] text-white">Order Summary</h3>

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 export interface PartRequest {
-  id: string;
+  id?: string;
   title: string;
   urgency: string;
   user_id?: string;
@@ -9,7 +9,7 @@ export interface PartRequest {
   vehicle_model: string;
   vehicle_model_trim: string;
   required_by_date: string;
-  attachment: File | string | any;
+  attachment: (File | string)[]; 
   status: number;
   description: string;
 }

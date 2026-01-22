@@ -10,12 +10,26 @@ import { FaArrowLeft } from "react-icons/fa6";
 import { toast } from "react-toastify";
 import { Make, Model, PartRequest, Trim } from "../common/interface";
 import { useRouter, useSearchParams } from "next/navigation";
+import Image from "next/image";
 
 export default function RequestPartForm() {
+  const initialFormData: PartRequest = {
+
+  title: "",
+  urgency: "",
+  user_id: "",
+  vehicle_make: "",
+  vehicle_model: "",
+  vehicle_model_trim: "",
+  required_by_date: "",
+  attachment: [], 
+  status: 1,
+  description: "",
+}
   const searchParams = useSearchParams();
   const requestId = searchParams.get("request") || "";
   const router = useRouter();
-  const [formData, setFormData] = useState<PartRequest>();
+  const [formData, setFormData] = useState<PartRequest>(initialFormData);
   const [makeData, setMakeData] = useState<Make[]>([]);
   const [modelData, setModelData] = useState<Model[]>([]);
   const [trimData, setTrimData] = useState<Trim[]>([]);
@@ -23,6 +37,11 @@ export default function RequestPartForm() {
   const [selectedModel, setSelectedModel] = useState<Model>();
   const [selectedTrim, setSelectedTrim] = useState<Trim>();
 
+
+  useEffect(() => {
+    
+console.log("dd :", formData);
+  },[formData]);
   useEffect(() => {
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
@@ -58,16 +77,12 @@ export default function RequestPartForm() {
     const selectedMake = vehicleMakeData.find(
       (make: Make) => make.make_id === selectedId
     );
-    // console.log("selected Make", selectedMake);
+
 
     if (selectedMake) {
       setSelectedMake(selectedMake);
       setModelData(selectedMake?.models);
-      // console.log("modelData", selectedMake?.models);
-      // const selectedModel = selectedModel?.models.find(
-      //   (model: Model) => model.id
-      // );
-      // setSelectedModel(selectedModel);
+
     } else {
       console.warn("Make not found for ID:", selectedId);
     }
@@ -100,7 +115,7 @@ export default function RequestPartForm() {
 
     if (selectedTrimData) {
       setSelectedTrim(selectedTrimData);
-      console.log("selectedTrimData", selectedTrimData);
+
     } else {
       console.warn("Trim not found for ID:", selectedId);
     }
@@ -125,13 +140,28 @@ export default function RequestPartForm() {
         ? formData?.vehicle_model_trim
         : selectedTrim?.trim || "",
     };
-
-    const multipartData = new FormData();
-    Object.entries(updatedData).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        multipartData.append(key, value as any);
+   if(!updatedData.title || !updatedData.urgency || !updatedData.vehicle_make || !updatedData.vehicle_model || !updatedData.vehicle_model_trim || !updatedData.required_by_date ){
+      toast.error("Please fill all required fields");
+      return;
+    } 
+    if(updatedData.attachment.length === 0  ){
+      toast.error("Please upload at least one image");
+      return;
+    }
+ 
+    const multipartData = new FormData()
+Object.entries(updatedData).forEach(([key, value]) => {
+  if (value === undefined || value === null) return;
+  if (key === "attachment" && Array.isArray(value)) {
+    value.forEach((file) => {
+      if (file instanceof File) {
+        multipartData.append("attachment", file); 
       }
     });
+    return;
+  }
+  multipartData.append(key, String(value));
+});
 
     try {
       const url = requestId
@@ -170,6 +200,32 @@ export default function RequestPartForm() {
     }
   }
 
+
+
+
+
+
+
+const [files, setFiles] = useState<File[]>([]);
+
+
+const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const selectedFiles = Array.from(e.target.files ?? []) as File[];
+
+  setFiles((prev: File[]) => [...prev, ...selectedFiles]);
+  setFormData((prev) => ({
+    ...prev,
+    attachment: [...(prev.attachment || []), ...selectedFiles],
+  }));
+
+
+};
+
+  const removeFile = (index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+
   return (
     <div className="min-h-screen w-full relative">
       {/* Background Image */}
@@ -189,8 +245,8 @@ export default function RequestPartForm() {
               <h2 className="md:text-[23px] text-text-lg leading-[36px] font-semibold text-white ">
                 {requestId ? "Edit Part request" : "Request a Part"}
               </h2>
-              {requestId ?  <button onClick={()=>history.back()} className=" bg-white cursor-pointer h-8 w-8 rounded-full flex justify-center items-center text-black "><FaArrowLeft /></button>: ''}
-             
+              {requestId ? <button onClick={() => history.back()} className=" bg-white cursor-pointer h-8 w-8 rounded-full flex justify-center items-center text-black "><FaArrowLeft /></button> : ''}
+
             </div>
             <form className="space-y-[28px]" onSubmit={handleSave}>
               {/* Product Name */}
@@ -349,17 +405,82 @@ export default function RequestPartForm() {
                     type="file"
                     name="attachment"
                     accept="image/*"
-                    onChange={handleChange}
+                    multiple
+                    onChange={handleFileChange}
+                    id="multiFile"
                     placeholder="Browse Image"
-                    className="px-[15px] py-[7px] placeholder-Gray md:text-base text-sm leading-[29px] w-[111px] rounded-sm border border-autoblue text-autoblue hover:border-hoverblue duration-400 cursor-pointer cursor-pointer"
+                    className="hidden"
                   />
-                  <span className="justify-center break-all p-4">
-                    {formData?.attachment instanceof File
-                      ? formData.attachment.name
-                      : formData?.attachment ?? "No file selected"}
-                  </span>
+                  <label
+                    htmlFor="multiFile"
+                    className="group flex flex-col items-center justify-center w-full rounded-2xl border-2 border-dashed border-gray-300 bg-gradient-to-br from-white to-gray-50 p-8 cursor-pointer transition
+      hover:border-blue-500 hover:shadow-md"
+                  >
+                    {/* Icon */}
+                    <div
+                      className="flex items-center justify-center w-14 h-14 rounded-full bg-blue-50 text-blue-600 text-2xl transition
+        group-hover:bg-blue-100 group-hover:scale-105"
+                    >
+                      ⬆️
+                    </div>
+
+    
+                    <p className="mt-4 text-base font-semibold text-gray-800">
+                      Click to upload files
+                    </p>
+
+    
+     
+                  </label>
                 </div>
+
+                {/* Selected Files Preview */}
+                {files.map((file, index) => {
+                  const isImage = file.type.startsWith("image/");
+
+                  return (
+                    <li
+                      key={index}
+                      className="flex items-center justify-between bg-white px-3 py-2 rounded-lg border"
+                    >
+                      <div className="flex items-center gap-3">
+                        {/* ✅ Image Preview */}
+                        {isImage ? (
+                          <Image
+                            src={URL.createObjectURL(file)}
+                            alt="preview"
+                            width={48}
+                            height={48}
+                            className="h-12 w-12 rounded-lg object-cover border"
+                          />
+                        ) : (
+                          <div className="h-12 w-12 rounded-lg bg-gray-100 flex items-center justify-center border text-sm">
+                            📄
+                          </div>
+                        )}
+
+                        <div className="flex flex-col">
+                          <span className="text-sm text-gray-800 font-medium">{file.name}</span>
+                          <span className="text-xs text-gray-500">
+                            {(file.size / 1024).toFixed(2)} KB
+                          </span>
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => removeFile(index)}
+                        className="text-red-500 text-sm font-semibold hover:text-red-600"
+                      >
+                        Remove ✖
+                      </button>
+                    </li>
+                  );
+                })}
+
               </div>
+
+
 
               {/* Save Button */}
               <button
@@ -369,6 +490,7 @@ export default function RequestPartForm() {
                 {requestId ? "Update Request" : "Submit Request"}
               </button>
             </form>
+
           </div>
         </div>
       </div>

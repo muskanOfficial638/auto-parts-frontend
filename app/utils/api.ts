@@ -238,8 +238,8 @@ export async function updateQuoteByAction(
 
 // SUPPLIER
 // Supplier All part requests
-export async function fetchAllSupplierPartRequests(token: string) {
-  const res = await fetch(`${supplierPath}/all/part-request`, {
+export async function fetchAllSupplierPartRequests(token: string, page:number) {
+  const res = await fetch(`${supplierPath}/all/part-request/?page=${page}&limit=10`, {
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",

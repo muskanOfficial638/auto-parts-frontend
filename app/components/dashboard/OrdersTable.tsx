@@ -312,9 +312,9 @@ return sortConfig.direction === "asc"
                       </tr>
                     ))
                   ) : (
-                    <h1 className="text-center text-gray-900">
+                    <td colSpan={8} className="text-center p-3">
                       No Users found.
-                    </h1>
+                    </td>
                   )}
                 </tbody>
               </table>

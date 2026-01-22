@@ -287,7 +287,7 @@ return sortConfig.direction === "asc"
                   </tr>
                 </thead>
                 <tbody>
-                  {sortedData && sortedData.length ? (
+                  {sortedData && sortedData.length > 0 ? (
                     sortedData.map((item, index) => (
                       <tr
                         key={index}
@@ -385,9 +385,9 @@ return sortConfig.direction === "asc"
                       </tr>
                     ))
                   ) : (
-                    <h1 className="text-center text-gray-900">
-                      No Users found.
-                    </h1>
+                    <td colSpan={8} className="text-center p-3">
+                      Part Request Not Found
+                    </td>
                   )}
                 </tbody>
               </table>

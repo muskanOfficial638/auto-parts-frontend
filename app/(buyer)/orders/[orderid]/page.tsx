@@ -6,7 +6,7 @@ import Footer from "@/app/components/Footer";
 import Header from "../../../components/Header";
 import { useEffect } from "react";
 
-import { fetchOrdersByID } from "@/app/utils/api";
+import { fetchOrdersByID, imagePath } from "@/app/utils/api";
 
 interface SupplierData {
   name: string;
@@ -23,7 +23,7 @@ interface ShippingAddress {
 
 interface ProductData {
   name: string;
-  image: string;
+  image: string[];
 }
 export interface PaymentDetails {
   paymentMethod: string;
@@ -118,14 +118,14 @@ export default function RequestPartPage() {
                       <div className="p-[10px] md:w-[465px] w-full max-w-full">
                         <div className="flex items-center gap-[10px] md:border-b md:pb-[13px] border-[#153C51]">
                           <div className="bg-white rounded-sm p-[8px]">
-
-                            <Image
-                              src="/productImage.png"
+                          { OrderDetails?.productData.image[0] && (
+                            <img
+                              src={imagePath+OrderDetails?.productData.image[0]}
                               alt="productImage"
                               width={23}
                               height={32}
                               className="object-cover md:w-[71px] md:h-[99px] w-[36px] h-[50px]"
-                            />
+                            />)}
                           </div>
                           <div className="space-y-[3px]">
                             <p className="text-[13px] leading-sm font-semibold text-white">{OrderDetails?.productData?.name}</p>

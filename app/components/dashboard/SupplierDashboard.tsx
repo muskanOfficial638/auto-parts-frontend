@@ -3,11 +3,12 @@
 
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
-import { FiChevronDown, FiXCircle   } from "react-icons/fi";
+import { FiChevronDown, FiXCircle } from "react-icons/fi";
 import BidModal from "@/app/components/supplier/Modal/BidModal";
 import { fetchAllSupplierPartRequests, imagePath } from "@/app/utils/api";
 import { PartRequest } from "../common/interface";
 import Loader from "../common/Loader";
+import { ImSpinner6 } from "react-icons/im";
 
 export default function SupplierDashboard() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -15,7 +16,13 @@ export default function SupplierDashboard() {
   const [filterpartRequestData, setFilterPartRequestData] = useState<PartRequest[]>();
   const [userRequest, setUserRequest] = useState<PartRequest>();
   const [sideBarFilters, setSideBarFilters] = useState("");
-  const [activeTrim, setActiveTrim] = useState<string | number |null>(null);
+  const [activeTrim, setActiveTrim] = useState<string | number | null>(null);
+  const [metaPage, setMetaPage] = useState({ page: 1, total_pages: 1 });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setIsLoading] = useState(true);
+  const [loadingPage, setIsLoadingPage] = useState(true);
+  const [globalSearch, setGlobalSearch] = useState("");
+
 
   interface FiltersOpen {
     make: boolean;
@@ -28,9 +35,6 @@ export default function SupplierDashboard() {
     a1: false
   });
 
-
-  const [loading, setIsLoading] = useState(true);
-  const [globalSearch, setGlobalSearch] = useState("");
   const carData = {
     "cars": [
       {
@@ -38,11 +42,11 @@ export default function SupplierDashboard() {
         "models": [
           {
             "model": "F-161",
-            "trims": [{"name": "Platinum", id: 1}, {"name": "1.2PSI", id: 2}]
+            "trims": [{ "name": "Platinum", id: 1 }, { "name": "1.2PSI", id: 2 }]
           },
           {
             "model": "X5",
-            "trims": [{"name": "Sport", id: 3}, {"name": "Luxury", id: 4}]
+            "trims": [{ "name": "Sport", id: 3 }, { "name": "Luxury", id: 4 }]
           }
         ]
       },
@@ -51,11 +55,11 @@ export default function SupplierDashboard() {
         "models": [
           {
             "model": "Micra",
-            "trims": [{"name": "Base", id: 5}, {"name": "Platinum", id: 6}]
+            "trims": [{ "name": "Base", id: 5 }, { "name": "Platinum", id: 6 }]
           },
           {
             "model": "F-150",
-            "trims": [{"name": "XL", id: 7}, {"name": "XLT", id: 8}]
+            "trims": [{ "name": "XL", id: 7 }, { "name": "XLT", id: 8 }]
           }
         ]
       },
@@ -64,11 +68,11 @@ export default function SupplierDashboard() {
         "models": [
           {
             "model": "Civic",
-            "trims": [{"name": "LX", id: 11}, {"name": "EX", id: 12}]
+            "trims": [{ "name": "LX", id: 11 }, { "name": "EX", id: 12 }]
           },
           {
             "model": "Accord",
-            "trims": [{"name": "Sport", id: 9}, {"name": "Touring", id: 10}]
+            "trims": [{ "name": "Sport", id: 9 }, { "name": "Touring", id: 10 }]
           }
         ]
       }
@@ -80,13 +84,19 @@ export default function SupplierDashboard() {
       const autoPartsUserData = localStorage.getItem("autoPartsUserData");
       const loggedInUser = JSON.parse(autoPartsUserData || "{}");
       if (loggedInUser?.access_token) {
-        fetchAllSupplierPartRequests(loggedInUser.access_token).then((data) => {
+        fetchAllSupplierPartRequests(loggedInUser.access_token, currentPage).then((data) => {
+
           setPartRequestData(data.data);
           setIsLoading(false);
+          setIsLoadingPage(false);
+          setMetaPage({
+            page: data.page,
+            total_pages: data.total_pages,
+          });
         });
       }
     }
-  }, []);
+  }, [currentPage]);
 
   useEffect(() => {
     const delayFilter = setTimeout(() => {
@@ -105,7 +115,7 @@ export default function SupplierDashboard() {
       }
 
       if (search && partRequestData) {
-        filtered1 = filtered1.filter((item:any) => {
+        filtered1 = filtered1.filter((item: any) => {
           return (
             item.title?.toLowerCase().includes(search) ||
             item.description?.toLowerCase().includes(search) ||
@@ -219,15 +229,15 @@ export default function SupplierDashboard() {
                                 <div className="space-y-2 text-grayMedium font-medium items-center text-xs leading-[33px]">
                                   {model.trims.map((trim, index) => (
                                     <p
-                                     
+
                                       key={trim.id}
                                       className={`flex justify-between items-center ps-[30px] hover:bg-autoblue hover:text-white duration-400 ${index !== model.trims.length - 1
-                                          ? "border-b border-Dark"
-                                          : ""
+                                        ? "border-b border-Dark"
+                                        : ""
                                         } font-medium ` + (activeTrim === trim.id ? "bg-autoblue text-white" : "")}
                                     >
-                                      <span  className="w-full cursor-pointer" onClick={() => {setSideBarFilters(trim.name); setActiveTrim(trim.id)}}>{trim.name}</span>
-                                  <span className=" mr-[20px] cursor-pointer" onClick={()=>{setActiveTrim(""); setSideBarFilters("")}}><FiXCircle  className="text-[12px] ml-[5px]" /></span>
+                                      <span className="w-full cursor-pointer" onClick={() => { setSideBarFilters(trim.name); setActiveTrim(trim.id) }}>{trim.name}</span>
+                                      <span className=" mr-[20px] cursor-pointer" onClick={() => { setActiveTrim(""); setSideBarFilters("") }}><FiXCircle className="text-[12px] ml-[5px]" /></span>
                                     </p>
                                   ))}
                                 </div>
@@ -241,7 +251,7 @@ export default function SupplierDashboard() {
                 </div>
               )}
             </div>
- 
+
           </div>
         </div>
 
@@ -275,7 +285,7 @@ export default function SupplierDashboard() {
                     <div className="bg-white py-[11px] px-[18px] md:mt-[0] mt-[4px] rounded-sm">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src={`${imagePath}${item?.attachment}`}
+                        src={`${imagePath}${item?.attachment[0]}`}
                         alt="Filter"
                         className="md:w-[43px] md:h-[59px] w-[30px] h-[46px] object-cover"
                       />
@@ -312,9 +322,38 @@ export default function SupplierDashboard() {
                 </div>
               ))
             ) : (
-              <h1 className="text-center text-gray-900">No Users found.</h1>
+              <h1 className="text-center text-gray-900">No Users found.</h1> 
             )}
           </div>
+        </div>
+
+
+      </div>
+      <div className="p-6">
+        {loadingPage && (<div role="status " className="flex justify-center mb-4">
+    <ImSpinner6 className="w-8 h-8  animate-spin"/>
+    <span className="sr-only">Loading...</span>
+</div>)}
+        <div className="mt-8 flex items-center justify-center gap-3">
+          <button
+            onClick={() => { setIsLoadingPage(true); setCurrentPage((prev) => prev - 1)}}
+            disabled={currentPage <= 1 || loadingPage}
+            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            ⬅ Prev
+          </button>
+
+          <span className="text-sm font-medium text-gray-700">
+            Page <b>{metaPage.page}</b> / <b>{metaPage.total_pages}</b>
+          </span>
+
+          <button
+            onClick={() => {            setIsLoadingPage(true); setCurrentPage((prev) => prev + 1) } }
+            disabled={currentPage >= metaPage.total_pages || loadingPage}
+            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Next ➡
+          </button>
         </div>
       </div>
 

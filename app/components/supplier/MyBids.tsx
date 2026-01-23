@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Quote } from "../common/interface";
 import Loader from "../common/Loader";
 import { MdDelete } from "react-icons/md";
+import DeleteQuoteModal from "../buyer/modal/DeleteQuoteModal";
 // import TrackingModal from "./Modal/TrackingModal";
 // import Loader from "../common/Loader";
 
@@ -14,6 +15,8 @@ export default function MyBids() {
   const [activeTab, setActiveTab] = useState("pending");
   const [quoteData, setQuoteData] = useState<Quote[]>();
   const [loading, setIsLoading] = useState(true);
+  const [delmodalOpen, setdelModalOpen] = useState(false);
+  const [deleteQuoteId, setDeleteQuoteId] = useState("");
   //const [modalOpen, setModalOpen] = useState(false);
   //const [isTrackingModal, setIsTrackingModalOpen] = useState(false);
   //const [otpModalOpen, setOtpModalOpen] = useState();
@@ -63,7 +66,11 @@ export default function MyBids() {
     }
   }
 
-   
+     function ModalOpendelete(requestId: string | undefined) {
+    if (!requestId) return;
+    setDeleteQuoteId(requestId);
+    setdelModalOpen(true);  
+  }
 
   return (
     <>
@@ -205,7 +212,7 @@ export default function MyBids() {
                     </>
                   ) : (
                     <button
-                      className={`${data?.status === "pending" ? "bg-gray-500 text-white" : data?.status === "completed" ? "bg-[#52A84E] text-gray-300" : "bg-red-500 text-gray-300"} md:text-base text-sm font-semibold leading-[14px]  md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm`}
+                      className={`${data?.status === "pending" ? "bg-gray-500 " : data?.status === "completed" ? "bg-[#52A84E] " : "bg-red-500 "} text-white md:text-base text-sm font-semibold leading-[14px]  md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm`}
                       disabled
                     >
                       {data?.status.charAt(0).toUpperCase() + data?.status.slice(1)}
@@ -215,6 +222,7 @@ export default function MyBids() {
                   { activeTab === "pending" && (
                    <button
                       className={`cursor-pointer hover:text-red-300 text-red-500 bg-white text-[25px] px-[10px] py-[8px] rounded-[5px]`}
+                    onClick={() => ModalOpendelete(data?.id)}
                     >
                     <MdDelete/>
                     </button>
@@ -228,11 +236,16 @@ export default function MyBids() {
               </div>
             )}
             </>)  }
-
-
           </div>
         </div>
       </div>
+      <DeleteQuoteModal
+        open={delmodalOpen}
+        requestId={deleteQuoteId}
+        onClose={() => setdelModalOpen(false)}
+        onDeleted={onTabClick} // <-- notify parent
+      />
+
       {/* <BidModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}

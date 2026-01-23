@@ -293,7 +293,7 @@ export default function SupplierDashboard() {
                     <div>
                       <h3 className="text-base leading-[22px] font-bold flex items-center gap-[8px]">
                         {item.title}{" "}
-                        <span className="text-[8px] font-medium leading-[10px] text-white bg-[#52A84E] px-[9px] py-[1px] rounded-[50px]">
+                        <span className={`text-[8px] font-medium leading-[10px] text-white px-[9px] py-[1px] rounded-[50px] ${item.urgency === "high" ? "bg-red-500" : item.urgency === "normal" ? "bg-yellow-500" : "bg-[#52A84E]"}`}>
                           {item.urgency}
                         </span>
                       </h3>

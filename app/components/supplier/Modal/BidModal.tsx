@@ -3,9 +3,11 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { PartRequest, Quote } from "../../common/interface";
+import { PartRequest, QuoteCreate } from "../../common/interface";
 import { supplierPath } from "@/app/utils/api";
 import { toast } from "react-toastify";
+import { HiOutlineUpload } from "react-icons/hi";
+import Image from "next/image";
 
 export default function BidModal({
   open,
@@ -21,61 +23,63 @@ export default function BidModal({
     // console.log("userRequest=>", userRequest);
   }, [userRequest]);
 
-  const [formData, setFormData] = useState<Quote>();
-  const [preview, setPreview] = useState<string | null>(null);
+  const [formData, setFormData] = useState<QuoteCreate>({
+  price_cents: "",
+  currency: "ZAR",
+  eta_days: "",
+  terms: "",
+  attachment: [],
+});
 
-  // const handleChange = (
-  //   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  // ) => {
-  //   const { name, value } = e.target;
-  //   setFormData((prev: any) => ({
-  //     ...prev,
-  //     [name]: value,
-  //   }));
-  // };
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
-  ) => {
+  const [files, setFiles] = useState<File[]>([]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement >) => {
     const target = e.target;
-
     const name = target.name;
     const value = target.value;
 
-    if (target instanceof HTMLInputElement && target.type === "file") {
-      const file = target.files?.[0];
-
-      if (!file) return;
-
-      setFormData((prev: any) => ({
-        ...prev,
-        [name]: file,
-      }));
-
-      const objectUrl = URL.createObjectURL(file);
-      setPreview(objectUrl);
-    } else {
       setFormData((prev: any) => ({
         ...prev,
         [name]: value,
       }));
-    }
+    console.log(formData)
   };
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
+
+   
+  if( userRequest?.id && formData?.price_cents && formData.eta_days && formData.terms){
+    const formDataPayload = new FormData();
+    formDataPayload.append("request_id", userRequest?.id);
+    formDataPayload.append("user_id", loggedInUser.user.id);
+    formDataPayload.append("price_cents", formData.price_cents);
+    formDataPayload.append("currency", formData.currency || "ZAR");
+    formDataPayload.append("eta_days", formData.eta_days);
+    formDataPayload.append("terms", formData.terms);
+
+    if ( formData?.attachment &&  formData.attachment.length > 0 ) {
+      formData.attachment.forEach((file) => {
+        formDataPayload.append("attachments", file);
+      });
+    }else{
+      toast.error("Please upload at least one image")
+    }
     try {
-      const response = await axios.post(`${supplierPath}/quote`, {
-        request_id: userRequest?.id,
-        user_id: loggedInUser?.user?.id,
-        ...formData,
+
+      console.log(formDataPayload)
+
+      const response = await axios.post(`${supplierPath}/quote`, formDataPayload, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
 
       if (response?.status === 200) {
         toast.success("Quote Submitted Successfully!");
+        setFiles([])
         onClose();
       }
     } catch (err: any) {
@@ -94,7 +98,27 @@ export default function BidModal({
         toast.error("No response from server");
       }
     }
+  }else{
+    toast.error("Please fill all required fields ")
   }
+  }
+
+const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const selectedFiles = Array.from(e.target.files ?? []) as File[];
+  setFiles((prev: File[]) => [...prev, ...selectedFiles]);
+  setFormData((prev) => ({
+    ...prev,
+    attachment: [...(prev.attachment || []), ...selectedFiles],
+  }));
+
+
+};
+
+  const removeFile = (index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+    setFormData((prev) =>({ ...prev, attachment:[ ...prev.attachment.filter((_, i) => i !== index)]}));
+  };
+
 
   if (!open) return null;
 
@@ -156,45 +180,91 @@ export default function BidModal({
               required
               className=" px-[20px] py-[12px] bg-white md:mb-[30px] mb-[20px] h-[125px] md:text-base text-sm md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
             />
-            <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block">
-              Upload Image
-            </label>
-            <div className="flex items-center gap-[15px] md:mb-[30px] mb-[20px] pt-[16px]">
-            <div className="flex flex-row items-center  ">
-              <input
-                type="file"
-                name="attachment"
-                accept="image/*"
-                onChange={handleChange}
-                placeholder="Browse Image"
-                className="px-[14px] py-[7px] placeholder-Gray font-sm leading-[29px] w-[111px] rounded-sm border border-autoblue text-autoblue hover:border-hoverblue duration-400 cursor-pointer cursor-pointer"
-              />
-            </div>
-            {preview && (
-              <div className=" flex items-center gap-4">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={preview}
-                  alt="Selected image"
-                  className="w-[50px] h-[50px] object-cover rounded-md border"
-                />
-                <button
-                  type="button"
-                  onClick={() => {
-                    URL.revokeObjectURL(preview);
-                    setPreview(null);
-                    setFormData((prev: any) => ({
-                      ...prev,
-                      attachment: null,
-                    }));
-                  }}
-                  className="text-sm text-red-500 hover:underline cursor-pointer"
-                >
-                  Remove
-                </button>
+        <div className="flex flex-col gap-[10px]">
+                <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                  Image*
+                </label>
+                <div className="flex flex-row items-center">
+                  <input
+                    type="file"
+                    name="attachment"
+                    accept="image/*"
+                    multiple
+                    onChange={handleFileChange}
+                    id="multiFile"
+                    placeholder="Browse Image"
+                    className="hidden"
+                  />
+                  <label
+                    htmlFor="multiFile"
+                    className="group flex flex-col items-center justify-center w-full rounded-sm border-2 border-dashed border-gray-300 bg-gradient-to-br from-white to-gray-50 p-5 cursor-pointer transition
+      hover:border-blue-500 hover:shadow-md"
+                  >
+                    {/* Icon */}
+                    <div
+                      className="flex items-center justify-center w-14 h-14 rounded-full bg-blue-50 text-blue-600 text-2xl transition
+        group-hover:bg-blue-100 group-hover:scale-105"
+                    >
+                      <HiOutlineUpload />
+                    </div>
+
+    
+                    <p className="mt-4 text-base font-semibold text-gray-800">
+                      Click to upload files
+                    </p>
+
+    
+     
+                  </label>
+                </div>
+
+                {/* Selected Files Preview */}
+                {files.map((file, index) => {
+                  const isImage = file.type.startsWith("image/");
+
+                  return (
+                    
+                    <li
+                      key={index}
+                      className="flex items-center justify-between bg-white px-3 py-2 rounded-sm border"
+                    >
+                      <div className="flex items-center gap-3">
+                        {/* ✅ Image Preview */}
+                        {isImage ? (
+                          <Image
+                            src={URL.createObjectURL(file)}
+                            alt="preview"
+                            width={48}
+                            height={48}
+                            className="h-12 w-12 rounded-lg object-cover border"
+                          />
+                        ) : (
+                          <div className="h-12 w-12 rounded-lg bg-gray-100 flex items-center justify-center border text-sm">
+                            📄
+                          </div>
+                        )}
+
+                        <div className="flex flex-col">
+                          <span className="text-sm text-gray-800 font-medium">{file.name}</span>
+                          <span className="text-xs text-gray-500">
+                            {(file.size / 1024).toFixed(2)} KB
+                          </span>
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => removeFile(index)}
+                        className="text-red-500 text-sm font-semibold hover:text-red-600"
+                      >
+                        Remove ✖
+                      </button>
+                    </li>
+                  );
+                })}
+
               </div>
-            )}
-            </div>
+
 
             <button
               className="bg-autoblue w-full md:text-[20px] text-[15px] leading[14px] rounded-sm text-white  py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"

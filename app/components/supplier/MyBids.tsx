@@ -1,19 +1,22 @@
 "use client";
 
-import BidModal from "@/app/components/supplier/Modal/BidModal";
-import OTPModal from "@/app/components/supplier/Modal/OtpModal";
+// import BidModal from "@/app/components/supplier/Modal/BidModal";
+// import OTPModal from "@/app/components/supplier/Modal/OtpModal";
 import { getQuoteBySupplier } from "@/app/utils/api";
 import { useEffect, useState } from "react";
 import { Quote } from "../common/interface";
-import TrackingModal from "./Modal/TrackingModal";
+import Loader from "../common/Loader";
+// import TrackingModal from "./Modal/TrackingModal";
 // import Loader from "../common/Loader";
 
 export default function MyBids() {
   const [activeTab, setActiveTab] = useState("pending");
-  const [modalOpen, setModalOpen] = useState(false);
-  const [isTrackingModal, setIsTrackingModalOpen] = useState(false);
-  const [otpModalOpen, setOtpModalOpen] = useState(false);
   const [quoteData, setQuoteData] = useState<Quote[]>();
+  const [loading, setIsLoading] = useState(true);
+  //const [modalOpen, setModalOpen] = useState(false);
+  //const [isTrackingModal, setIsTrackingModalOpen] = useState(false);
+  //const [otpModalOpen, setOtpModalOpen] = useState();
+
   //const [loading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -29,7 +32,7 @@ export default function MyBids() {
           loggedInUser.access_token
         ).then((data) => {
           setQuoteData(data?.quotes);
-          // setIsLoading(false)
+          setIsLoading(false)
         });
       }
     }
@@ -59,13 +62,13 @@ export default function MyBids() {
     }
   }
 
-  //   if (loading) {
-  //     return (
-  //       <div className="h-screen">
-  //         <Loader />
-  //       </div>
-  //     );
-  //   }
+    if (loading) {
+      return (
+        <div className="h-screen">
+          <Loader />
+        </div>
+      );
+    }
 
   return (
     <>
@@ -111,6 +114,16 @@ export default function MyBids() {
 
               <span
                 className={`cursor-pointer text-xl leading-[14px] ${
+                  activeTab === "completed"
+                    ? "font-bold text-xl leading-[14px] text-white"
+                    : "text-[#6C6C6C]"
+                }`}
+                onClick={() => onTabClick("completed")}
+              >
+                Completed
+              </span>
+              <span
+                className={`cursor-pointer text-xl leading-[14px] ${
                   activeTab === "cancelled"
                     ? "font-bold text-xl leading-[14px] text-white"
                     : "text-[#6C6C6C]"
@@ -120,16 +133,7 @@ export default function MyBids() {
                 Cancelled
               </span>
 
-              <span
-                className={`cursor-pointer text-xl leading-[14px] ${
-                  activeTab === "completed"
-                    ? "font-bold text-xl leading-[14px] text-white"
-                    : "text-[#6C6C6C]"
-                }`}
-                onClick={() => onTabClick("completed")}
-              >
-                Completed
-              </span>
+
             </div>
 
             {quoteData && quoteData?.length ? (
@@ -151,7 +155,7 @@ export default function MyBids() {
                     <div>
                       <h3 className="text-base leading-[22px] text-white font-bold flex items-center gap-[8px]">
                         {data?.part_request?.title}{" "}
-                        <span className="text-[8px] font-medium leading-[10px] text-white bg-[#52A84E] px-[9px] py-[1px] rounded-[50px]">
+                        <span className={`text-[8px] font-medium leading-[10px] text-white px-[9px] py-[1px] rounded-[50px] ${data?.part_request?.urgency === "high" ? "bg-red-500" : data?.part_request?.urgency === "normal" ? "bg-yellow-500" : "bg-[#52A84E]"}`}>
                           {data?.part_request?.urgency}
                         </span>
                       </h3>
@@ -195,43 +199,43 @@ export default function MyBids() {
                           </small>
                         </span>
                       </div>
-                      <button
+                      {/* <button
                         className="bg-autoblue md:text-[22px] text-base leading[14px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
-                        onClick={() => setIsTrackingModalOpen(true)}
+                        //onClick={() => setIsTrackingModalOpen(true)}
                       >
                         Process now
-                      </button>
+                      </button> */}
                     </>
                   ) : (
                     <button
-                      className="bg-autoblue text-white md:text-base text-sm font-semibold leading-[14px]  md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm"
+                      className={`${data?.status === "pending" ? "bg-yellow-500 text-white" : data?.status === "completed" ? "bg-[#52A84E] text-gray-300" : "bg-red-500 text-gray-300"} md:text-base text-sm font-semibold leading-[14px]  md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm`}
                       disabled
                     >
-                      {data?.status==="pending" ? "Pending": data?.status}
+                      {data?.status.charAt(0).toUpperCase() + data?.status.slice(1)}
                     </button>
                   )}
                 </div>
               ))
             ) : (
               <div className="font-bold flex items-center text-white">
-                No quotes {}found for this user.
+                No quotes found
               </div>
             )}
           </div>
         </div>
       </div>
-      <BidModal
+      {/* <BidModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         openOTP={() => setOtpModalOpen(true)}
-      />
+      /> */}
 
-      <OTPModal open={otpModalOpen} onClose={() => setOtpModalOpen(false)} />
+      {/* <OTPModal open={otpModalOpen} onClose={() => setOtpModalOpen(false)} /> */}
 
-      <TrackingModal
+      {/* <TrackingModal
         open={isTrackingModal}
         onClose={() => setIsTrackingModalOpen(false)}
-      />
+      /> */}
     </>
   );
 }

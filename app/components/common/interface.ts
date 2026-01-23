@@ -38,7 +38,15 @@ export interface Quote {
   created_at: string;
   user?: object | any;
   part_request?: PartRequest
-  attachment?: File | string | any;
+   attachment: (File | string)[]; 
+}
+
+export interface QuoteCreate {
+  price_cents: string;
+  currency: string;
+  eta_days: string;
+  terms: string;
+   attachment: (File | string)[]; 
 }
 
 export interface Trim {

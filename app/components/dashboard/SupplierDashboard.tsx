@@ -231,7 +231,7 @@ export default function SupplierDashboard() {
                                     <p
 
                                       key={trim.id}
-                                      className={`flex justify-between items-center ps-[30px] hover:bg-autoblue hover:text-white duration-400 ${index !== model.trims.length - 1
+                                      className={`flex justify-between items-center ps-[30px] hover:bg-gray-500 hover:text-white duration-400 ${index !== model.trims.length - 1
                                         ? "border-b border-Dark"
                                         : ""
                                         } font-medium ` + (activeTrim === trim.id ? "bg-autoblue text-white" : "")}

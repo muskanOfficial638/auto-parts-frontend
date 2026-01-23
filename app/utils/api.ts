@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 
-// //API paths for LOCAL
+
+//API paths for LOCAL
 // export const orderPath = "http://54.80.119.79:8003/v1";
 // export const profilePath = "http://54.80.119.79:8004/profiles";
 // export const authApiPath = "http://54.80.119.79:8001/v1";

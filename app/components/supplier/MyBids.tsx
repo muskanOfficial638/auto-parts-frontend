@@ -1,7 +1,7 @@
 "use client";
 
-// import BidModal from "@/app/components/supplier/Modal/BidModal";
-// import OTPModal from "@/app/components/supplier/Modal/OtpModal";
+import BidModal from "@/app/components/supplier/Modal/BidModal";
+ import OTPModal from "@/app/components/supplier/Modal/OtpModal";
 import { getQuoteBySupplier, imagePath } from "@/app/utils/api";
 import { useEffect, useState } from "react";
 import { Quote } from "../common/interface";
@@ -9,8 +9,8 @@ import Loader from "../common/Loader";
 import { MdDelete } from "react-icons/md";
 import DeleteQuoteModal from "../buyer/modal/DeleteQuoteModal";
 import Image from "next/image";
-// import TrackingModal from "./Modal/TrackingModal";
-// import Loader from "../common/Loader";
+import TrackingModal from "./Modal/TrackingModal";
+//import Loader from "../common/Loader";
 
 export default function MyBids() {
   const [activeTab, setActiveTab] = useState("pending");
@@ -18,11 +18,11 @@ export default function MyBids() {
   const [loading, setIsLoading] = useState(true);
   const [delmodalOpen, setdelModalOpen] = useState(false);
   const [deleteQuoteId, setDeleteQuoteId] = useState("");
-  //const [modalOpen, setModalOpen] = useState(false);
-  //const [isTrackingModal, setIsTrackingModalOpen] = useState(false);
-  //const [otpModalOpen, setOtpModalOpen] = useState();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [isTrackingModal, setIsTrackingModalOpen] = useState(false);
+  const [otpModalOpen, setOtpModalOpen] = useState<boolean>(false);
 
-  //const [loading, setIsLoading] = useState(true);
+ // const [loading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -70,7 +70,7 @@ export default function MyBids() {
      function ModalOpendelete(requestId: string | undefined) {
     if (!requestId) return;
     setDeleteQuoteId(requestId);
-    setdelModalOpen(true);  
+    setdelModalOpen(true);
   }
 
   return (
@@ -206,12 +206,12 @@ export default function MyBids() {
                           </small>
                         </span>
                       </div>
-                      {/* <button
+                      <button
                         className="bg-autoblue md:text-[22px] text-base leading[14px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
-                        //onClick={() => setIsTrackingModalOpen(true)}
+                        onClick={() => setIsTrackingModalOpen(true)}
                       >
                         Process now
-                      </button> */}
+                      </button>
                     </>
                   ) : (
                     <button
@@ -249,18 +249,18 @@ export default function MyBids() {
         onDeleted={onTabClick} // <-- notify parent
       />
 
-      {/* <BidModal
+      <BidModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         openOTP={() => setOtpModalOpen(true)}
-      /> */}
+      />
 
       {/* <OTPModal open={otpModalOpen} onClose={() => setOtpModalOpen(false)} /> */}
 
-      {/* <TrackingModal
+      <TrackingModal
         open={isTrackingModal}
         onClose={() => setIsTrackingModalOpen(false)}
-      /> */}
+      />
     </>
   );
 }

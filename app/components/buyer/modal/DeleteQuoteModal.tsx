@@ -71,7 +71,7 @@ export default function DeleteQuoteModal({
         <div className="w-xl max-w-full">
           {/* Title */}
           <h2 className="text-center text-2xl leading-8 font-bold mb-12">
-            Are you sure You want to delete this request?
+            Are you sure You want to delete this Quote?
           </h2>
 
           <div className="flex justify-center gap-8">

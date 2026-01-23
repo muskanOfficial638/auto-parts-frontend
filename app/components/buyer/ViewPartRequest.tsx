@@ -8,6 +8,7 @@ import { FaArrowLeft } from "react-icons/fa6";
 import {
   fetchPartRequestsById,
   getQuoteByRequest,
+  imagePath,
 
 } from "@/app/utils/api";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -138,13 +139,13 @@ export default function ViewPartRequest() {
           {/* Header (Image + Title + Button) */}
           <div className="flex justify-between flex-wrap gap-y-[20px] items-center">
             <div className="flex items-start gap-[15px]">
-              <div className="bg-white md:py-[10px] md:px-[24px] py-[5px] px-[10px] rounded-sm flex items-center justify-center overflow-hidden">
+              <div className="bg-white  py-[7px] px-[7px] rounded-sm flex items-center justify-center overflow-hidden">
                 <Image
-                  src="/productImage.png"
+                  src={imagePath + partRequest?.attachment[0]}
                   alt="Filter"
-                  width={120}
-                  height={120}
-                  className="object-cover md:w-[71px] md:h-[99px] w-[36px] h-[50px]"
+                  width={150}
+                  height={150}
+                  className="object-cover md:w-[90px] md:h-[100px] w-[36px] h-[50px]"
                 />
               </div>
 

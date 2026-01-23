@@ -2,12 +2,13 @@
 
 // import BidModal from "@/app/components/supplier/Modal/BidModal";
 // import OTPModal from "@/app/components/supplier/Modal/OtpModal";
-import { getQuoteBySupplier } from "@/app/utils/api";
+import { getQuoteBySupplier, imagePath } from "@/app/utils/api";
 import { useEffect, useState } from "react";
 import { Quote } from "../common/interface";
 import Loader from "../common/Loader";
 import { MdDelete } from "react-icons/md";
 import DeleteQuoteModal from "../buyer/modal/DeleteQuoteModal";
+import Image from "next/image";
 // import TrackingModal from "./Modal/TrackingModal";
 // import Loader from "../common/Loader";
 
@@ -147,12 +148,14 @@ export default function MyBids() {
                   className="bg-brandBlack p-[20px] rounded-lg flex flex-wrap lg:gap-[0] gap-y-[20px] items-center justify-between"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="bg-white py-[11px] px-[18px] md:mt-[0] mt-[4px] rounded-sm">
+                    <div className="bg-white py-[5px] px-[5px] md:mt-[0] mt-[4px] rounded-sm">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src="/productImage.png"
+                      <Image
+                      width={100}
+                      height={100}
+                        src={imagePath + data?.part_request?.attachment[0]}
                         alt="Filter"
-                        className="md:w-[43px] md:h-[59px] w-[30px] h-[46px] object-cover"
+                        className="md:w-[60px] md:h-[70px] w-[45px] h-[50px] object-cover"
                       />
                     </div>
 

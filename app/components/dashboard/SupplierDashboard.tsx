@@ -9,6 +9,7 @@ import { fetchAllSupplierPartRequests, imagePath } from "@/app/utils/api";
 import { PartRequest } from "../common/interface";
 import Loader from "../common/Loader";
 import { ImSpinner6 } from "react-icons/im";
+import Image from "next/image";
 
 export default function SupplierDashboard() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -282,12 +283,14 @@ export default function SupplierDashboard() {
                   className="bg-brandBlack p-[20px] rounded-lg flex flex-wrap lg:gap-[0] gap-y-[20px] items-center justify-between"
                 >
                   <div className="flex md:items-center items-start gap-4">
-                    <div className="bg-white py-[11px] px-[18px] md:mt-[0] mt-[4px] rounded-sm">
+                    <div className="bg-white py-[5px] px-[5px] md:mt-[0] mt-[4px] rounded-sm">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
+                      <Image
+                      width={120}
+                      height={120}
                         src={`${imagePath}${item?.attachment[0]}`}
                         alt="Filter"
-                        className="md:w-[43px] md:h-[59px] w-[30px] h-[46px] object-cover"
+                        className="md:w-[70px] md:h-[75px] w-[45px] h-[50px] object-cover"
                       />
                     </div>
                     <div>

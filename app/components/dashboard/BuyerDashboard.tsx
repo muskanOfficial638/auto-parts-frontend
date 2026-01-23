@@ -301,9 +301,9 @@ return sortConfig.direction === "asc"
                             <Image
                               src={`${imagePath}${item?.attachment[0]}`}
                               alt="product"
-                              className="md:w-[28px] md:h-[39px] w-[22px] h-[22px] "
-                              height={200}
-                              width={200}
+                              className="md:w-[45px] md:h-[50px] w-[35px] h-[45px] "
+                              height={120}
+                              width={120}
                             />
                           
                           </div>

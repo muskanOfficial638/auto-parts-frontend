@@ -117,14 +117,14 @@ export default function RequestPartPage() {
                     <div className="md:flex block gap-[12px]">
                       <div className="p-[10px] md:w-[465px] w-full max-w-full">
                         <div className="flex items-center gap-[10px] md:border-b md:pb-[13px] border-[#153C51]">
-                          <div className="bg-white rounded-sm p-[8px]">
+                          <div className="bg-white rounded-sm px-[10px] py-[7px]">
                           { OrderDetails?.productData.image[0] && (
                             <Image
                               src={imagePath+OrderDetails?.productData.image[0]}
                               alt="productImage"
-                              width={100}
-                              height={100}
-                              className="object-cover md:w-[71px] md:h-[99px] w-[36px] h-[50px]"
+                              width={150}
+                              height={150}
+                              className="object-cover md:w-[90px] md:h-[100px] w-[36px] h-[50px]"
                             />)}
                           </div>
                           <div className="space-y-[3px]">

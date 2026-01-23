@@ -6,6 +6,7 @@ import { getQuoteBySupplier } from "@/app/utils/api";
 import { useEffect, useState } from "react";
 import { Quote } from "../common/interface";
 import Loader from "../common/Loader";
+import { MdDelete } from "react-icons/md";
 // import TrackingModal from "./Modal/TrackingModal";
 // import Loader from "../common/Loader";
 
@@ -32,16 +33,16 @@ export default function MyBids() {
           loggedInUser.access_token
         ).then((data) => {
           setQuoteData(data?.quotes);
-          setIsLoading(false)
+         setIsLoading(false)
         });
       }
     }
   }, []);
 
-  useEffect(() => {}, [quoteData]);
 
   function onTabClick(tabName: string) {
     setActiveTab(tabName);
+     setIsLoading(true);
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
     if (loggedInUser?.access_token) {
@@ -54,7 +55,7 @@ export default function MyBids() {
       )
         .then((data) => {
           setQuoteData(data?.quotes);
-          // setIsLoading(false)
+          setIsLoading(false)
         })
         .catch(() => {
           setQuoteData([]);
@@ -62,13 +63,7 @@ export default function MyBids() {
     }
   }
 
-    if (loading) {
-      return (
-        <div className="h-screen">
-          <Loader />
-        </div>
-      );
-    }
+   
 
   return (
     <>
@@ -135,7 +130,9 @@ export default function MyBids() {
 
 
             </div>
-
+            {loading ? (
+              <Loader />
+            ) :   (<>
             {quoteData && quoteData?.length ? (
               quoteData.map((data: Quote) => (
                 <div
@@ -176,7 +173,7 @@ export default function MyBids() {
                       </p>
                     </div>
                   </div>
-
+                  <div className="flex md:items-end md:gap-[10px] gap-[8px]">
                   {activeTab === "accepted" ? (
                     <>
                       <div className="bg-[#011827] p-[10px] border border-[#153C51] rounded-sm text-white flex flex-col w-100">
@@ -208,12 +205,21 @@ export default function MyBids() {
                     </>
                   ) : (
                     <button
-                      className={`${data?.status === "pending" ? "bg-yellow-500 text-white" : data?.status === "completed" ? "bg-[#52A84E] text-gray-300" : "bg-red-500 text-gray-300"} md:text-base text-sm font-semibold leading-[14px]  md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm`}
+                      className={`${data?.status === "pending" ? "bg-gray-500 text-white" : data?.status === "completed" ? "bg-[#52A84E] text-gray-300" : "bg-red-500 text-gray-300"} md:text-base text-sm font-semibold leading-[14px]  md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm`}
                       disabled
                     >
                       {data?.status.charAt(0).toUpperCase() + data?.status.slice(1)}
                     </button>
                   )}
+
+                  { activeTab === "pending" && (
+                   <button
+                      className={`cursor-pointer hover:text-red-300 text-red-500 bg-white text-[25px] px-[10px] py-[8px] rounded-[5px]`}
+                    >
+                    <MdDelete/>
+                    </button>
+                  )}
+                    </div>
                 </div>
               ))
             ) : (
@@ -221,6 +227,9 @@ export default function MyBids() {
                 No quotes found
               </div>
             )}
+            </>)  }
+
+
           </div>
         </div>
       </div>

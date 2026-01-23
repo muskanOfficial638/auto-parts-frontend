@@ -128,7 +128,7 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#003253]/95 to-black/95" />
       <div className="p-[20px] h-[100vh] max-h-[742px] scrollbar-none overflow-auto bid-modal-box ">
-        <div className="relative bg-[#061D37] text-white w-[630px] max-w-[100%] bg-[#1d4aa4]/15 backdrop-blur-xl md:px-10 p-[30px]  rounded-[20px] ms-[auto] me-[auto] p-8 shadow-xl border border-white/10 backdrop-blur">
+        <div className="relative bg-[#061D37] text-white bg-[#1d4aa4]/15 backdrop-blur-xl  p-[30px]  rounded-[20px] ms-[auto] me-[auto] shadow-xl border border-white/10 backdrop-blur">
           <button
             onClick={onClose}
             className="absolute top-[10px] right-[10px] bg-white cursor-pointer h-[40px] w-[40px] rounded-full"
@@ -197,7 +197,7 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                   />
                   <label
                     htmlFor="multiFile"
-                    className="group flex flex-col items-center justify-center w-full rounded-sm border-2 border-dashed border-gray-300 bg-gradient-to-br from-white to-gray-50 p-5 cursor-pointer transition
+                    className="group flex flex-col items-center justify-center w-full rounded-sm border-2 border-dashed border-gray-300 bg-gradient-to-br from-white to-gray-50 p-4 cursor-pointer transition
       hover:border-blue-500 hover:shadow-md"
                   >
                     {/* Icon */}
@@ -267,7 +267,7 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
 
             <button
-              className="bg-autoblue w-full md:text-[20px] text-[15px] leading[14px] rounded-sm text-white  py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
+              className="bg-autoblue md:mt-[30px] mt-[20px] w-full md:text-[20px] text-[15px] leading[14px] rounded-sm text-white  py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
               type="submit"
             >
               Submit

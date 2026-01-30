@@ -11,22 +11,22 @@ export default function GalleryLoader({ onClose, open, images }: { onClose: (ope
     <>
       {open && (
         <div className="fixed inset-0 z-50  flex items-center justify-center">
-
-          <div className="relative bg-white rounded-xl p-4 w-[90%] md:w-[700px]">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#003253]/95 to-black/95"></div>
+          <div className="relative bg-[#061D37] rounded-xl p-4 w-[90%] md:w-[700px]">
 
             <div className="flex flex-col items-center space-y-4">
               <button
                 onClick={() => onClose(false)}
-                className="absolute top-2 right-3 text-2xl font-bold"
+                className="absolute top-[10px] right-[10px] bg-hoverblue cursor-pointer h-[40px] w-[40px] rounded-full font-bold"
               >
                 ✕
               </button>
               <div className="w-full max-w-3xl">
-                <img id="main-image" src={imagePath + selectedImage} className="w-full rounded-lg h-96 object-cover" alt="Main Image" />
+                <img id="main-image" src={imagePath + selectedImage} className="w-full bg-white rounded-lg h-96 object-cover" alt="Main Image" />
               </div>
               <div className="grid grid-cols-5 max-w-3xl gap-4" id="thumbnail-container">
                 {(images.map((src, index) => (
-                  <img onClick={() => setSelectedImage(src)} key={index} src={imagePath + src} className="w-full thumb rounded-lg md:h-24 h-14 object-cover cursor-pointer hover:opacity-80" alt={`Thumb ${index + 1}`} />
+                  <img onClick={() => setSelectedImage(src)} key={index} src={imagePath + src} className="w-full bg-white shadow-[0px_1px_15px_#e9e9e975] thumb rounded-lg md:h-24 h-14 object-cover cursor-pointer hover:opacity-80" alt={`Thumb ${index + 1}`} />
                 )))}
 
               </div>

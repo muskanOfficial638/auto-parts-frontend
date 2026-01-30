@@ -9,7 +9,7 @@ export interface PartRequest {
   vehicle_model: string;
   vehicle_model_trim: string;
   required_by_date: string;
-  attachment: (File | string)[]; 
+  attachment: string[]; 
   status: number;
   description: string;
 }

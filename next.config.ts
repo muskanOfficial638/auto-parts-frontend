@@ -3,10 +3,9 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'http',
-        hostname: '54.80.119.79',
-        port: '8000',
-        pathname: '/image/**',
+        protocol: 'https',
+        hostname: 'api.autopartsxchange.co.za',
+      
       },
     ],
   },

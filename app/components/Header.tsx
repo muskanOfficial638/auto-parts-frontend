@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState } from "react";
+import {  useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -72,6 +72,10 @@ function MainNav() {
         <Link href="/login" className="bg-autoblue leading-[19px] font-semibold text-base hover:bg-hoverblue text-white px-[18px] py-[12px] cursor-pointer rounded-sm duration-400">
           Request Auto Parts
         </Link>
+           <Link href="/login" className=" leading-[19px] font-semibold text-base hover:text-hoverblue text-white px-[18px] py-[12px] cursor-pointer rounded-sm duration-400">
+          Login
+        </Link>
+
       </div>
     </>
 
@@ -229,6 +233,7 @@ function BuyerSupplierMenu({ autoPartsUserData }: { autoPartsUserData: any }) {
 
 }
 export default function Header() {
+
 
 const [autoPartsUserData] = useState(() => {
   if (typeof window === "undefined") return null;

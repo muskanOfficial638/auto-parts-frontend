@@ -5,6 +5,8 @@ import Image from "next/image";
 import Loader from "../common/Loader";
 import { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa6";
+import GalleryLoader from "../common/GalleryLoader";
+import { ImEnlarge2 } from "react-icons/im";
 import {
   fetchPartRequestsById,
   getQuoteByRequest,
@@ -29,7 +31,7 @@ type SelectedData = {
 export default function ViewPartRequest() {
 
   const router = useRouter();
-
+  const [galleryOpen, setGalleryOpen] = useState(false);;
   const searchParams = useSearchParams();
   const request = searchParams.get("request") || "";
   const [partRequest, setPartRequest] = useState<PartRequest>();
@@ -51,8 +53,14 @@ export default function ViewPartRequest() {
 
     if (loggedInUser?.access_token && request) {
       fetchPartRequestsById(request, loggedInUser.access_token).then((data) => {
+
         setPartRequest(data);
+        
         setIsLoading(false);
+        if(data.attachment && data.attachment.length > 0){ 
+      setIsLoading(false);
+        }
+      
       });
 
       getQuoteByRequest(request, loggedInUser.access_token).then((data) => {
@@ -139,14 +147,15 @@ export default function ViewPartRequest() {
           {/* Header (Image + Title + Button) */}
           <div className="flex justify-between flex-wrap gap-y-[20px] items-center">
             <div className="flex items-start gap-[15px]">
-              <div className="bg-white  py-[7px] px-[7px] rounded-sm flex items-center justify-center overflow-hidden">
+              <div className="relative bg-white  py-[7px] px-[7px] rounded-sm flex items-center justify-center overflow-hidden">
                 <Image
                   src={imagePath + partRequest?.attachment[0]}
                   alt="Filter"
                   width={150}
                   height={150}
-                  className="object-cover md:w-[90px] md:h-[100px] w-[36px] h-[50px]"
+                  className="object-cover md:w-[140px] md:h-[140px] w-[36px] h-[50px]"
                 />
+                <ImEnlarge2 onClick={() => setGalleryOpen(true)} className="absolute bottom-1 right-1 shadow-[0_1px_5px_#817f7f] cursor-pointer hover:bg-[#000] duration-600 bg-[#040404c7] text-white text-[33px] p-[4px] rounded-[5px]" /  >
               </div>
 
               <div className="flex flex-col justify-start">
@@ -156,12 +165,7 @@ export default function ViewPartRequest() {
                     {partRequest?.urgency}
                   </span>
                 </h1>
-
-                <p className="md:text-sm text-xs leading-[22px] font-medium text-white mt-[5px]">
-                  {partRequest?.description}
-                </p>
-
-                <p className="md:text-xs text-[10px] leading-[15px] font-medium text-neutralLight md:mt-[15px] mt-[5px]">
+                <p className="md:text-xs text-[10px] leading-[15px] font-medium text-neutralLight md:mt-[10px] mt-[5px]">
                   {partRequest?.vehicle_make} {partRequest?.vehicle_model} •{" "}
                   {partRequest?.vehicle_model_trim}
                 </p>
@@ -179,6 +183,11 @@ export default function ViewPartRequest() {
                 Mark as Completed
               </button>
             </div>
+          </div>
+          <div>
+             <p className="pt-3 md:text-sm text-xs leading-[22px] font-medium text-white mt-[5px]">
+                  {partRequest?.description}
+                </p>
           </div>
 
           {/* QUOTES LIST */}
@@ -273,6 +282,9 @@ export default function ViewPartRequest() {
         </div>
       </div>
       {isOpenCreateOrder && <OrderCreate closeModal={setIsOpenCreateOrder} dataSelect={selectedData} />}
+      <GalleryLoader onClose={setGalleryOpen} open={galleryOpen} images={partRequest?.attachment ? partRequest?.attachment : []}  />
+       
     </div>
+    
   );
 }

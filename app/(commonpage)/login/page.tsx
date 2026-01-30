@@ -91,12 +91,11 @@ export default function LoginPage() {
 
       if (response?.data && response.data.access_token && response.data?.user?.role !== "admin"){
 
-
-
         localStorage.setItem(
           "autoPartsUserData",
           JSON.stringify(response.data)
         );
+        document.cookie = `token=${response.data.access_token}; path=/`;
         
         localStorage.setItem("loginTime", Date.now().toString());
         localStorage.setItem("lastActivity", Date.now().toString());

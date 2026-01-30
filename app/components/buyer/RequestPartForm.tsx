@@ -318,56 +318,56 @@ export default function RequestPartForm() {
                 </div>
               </div>
               <div className="flex justify-between items-center gap-[15px]">
-              {/* Trim */}
-              <div className="w-full">
-                <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-                  Trim*
-                </label>
-                <select
-                  name="vehicle_model"
-                  onChange={(e) => handleSelectTrimChange(e.target.value)}
-                  className="w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
-                >
-                  <option
-                    value={
-                      requestId && !selectedMake
-                        ? formData?.vehicle_model_trim
-                        : ""
-                    }
+                {/* Trim */}
+                <div className="w-full">
+                  <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                    Trim*
+                  </label>
+                  <select
+                    name="vehicle_model"
+                    onChange={(e) => handleSelectTrimChange(e.target.value)}
+                    className="w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
                   >
-                    {requestId && !selectedMake
-                      ? formData?.vehicle_model_trim
-                      : "Select Trim"}
-                  </option>
-                  {trimData &&
-                    trimData.map((trim: Trim) => (
-                      <option key={trim?.id} value={trim?.id}>
-                        {trim?.trim}
-                      </option>
-                    ))}
-                </select>
-              </div>
+                    <option
+                      value={
+                        requestId && !selectedMake
+                          ? formData?.vehicle_model_trim
+                          : ""
+                      }
+                    >
+                      {requestId && !selectedMake
+                        ? formData?.vehicle_model_trim
+                        : "Select Trim"}
+                    </option>
+                    {trimData &&
+                      trimData.map((trim: Trim) => (
+                        <option key={trim?.id} value={trim?.id}>
+                          {trim?.trim}
+                        </option>
+                      ))}
+                  </select>
+                </div>
 
-              {/* Urgency */}
-              <div className="w-full">
-                <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-                  Urgency*
-                </label>
-                <select
-                  name="urgency"
-                  value={formData?.urgency || ""}
-                  onChange={handleChange}
-                  className="w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[29px] border border-LightNeutral rounded-sm text-Gray outline-none"
-                >
-                  <option value="" disabled>
-                    Select urgency
-                  </option>
-                  <option value="high">High</option>
-                  <option value="normal">Normal</option>
-                  <option value="low">Low</option>
-                </select>
+                {/* Urgency */}
+                <div className="w-full">
+                  <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                    Urgency*
+                  </label>
+                  <select
+                    name="urgency"
+                    value={formData?.urgency || ""}
+                    onChange={handleChange}
+                    className="w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[29px] border border-LightNeutral rounded-sm text-Gray outline-none"
+                  >
+                    <option value="" disabled>
+                      Select urgency
+                    </option>
+                    <option value="high">High</option>
+                    <option value="normal">Normal</option>
+                    <option value="low">Low</option>
+                  </select>
 
-                {/* <input
+                  {/* <input
                     type="text"
                     name="urgency"
                     placeholder="Ex.- High, low, medium"
@@ -375,129 +375,149 @@ export default function RequestPartForm() {
                     value={formData?.urgency || ""}
                     className="w-full py-[8px] px-[18px] placeholder-Gray bg-white md:text-[19px] text-[15px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
                   /> */}
+                </div>
               </div>
-          </div>
 
-          {/* Required Date */}
-          <div>
-            <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-              Required
-            </label>
+               {/* Required Date */}
+              <div>
+                <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                  Required
+                </label>
 
-            <div className="relative">
-              <input
-                type="date"
-                name="required_by_date"
-                onChange={handleChange}
-                value={formData?.required_by_date}
-                className="w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[13px]  border border-LightNeutral rounded-sm text-Gray outline-none"
-              />
-              {/* <CalendarDays
+                <div className="relative">
+                  <input
+                    type="date"
+                    name="required_by_date"
+                    onChange={handleChange}
+                    value={formData?.required_by_date}
+                    className="w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[13px]  border border-LightNeutral rounded-sm text-Gray outline-none"
+                  />
+                  {/* <CalendarDays
                       className="absolute right-5 top-4 text-gray-400"
                       size={18}
                     /> */}
-            </div>
-          </div>
+                </div>
+              </div>
 
-          {/* Image Upload */}
-          <div className="flex flex-col gap-[10px]">
-            <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-              Image*
-            </label>
-            <div className="flex flex-row items-center">
-              <input
-                type="file"
-                name="attachment"
-                accept="image/*"
-                multiple
-                onChange={handleFileChange}
-                id="multiFile"
-                placeholder="Browse Image"
-                className="hidden"
-              />
-              <label
-                htmlFor="multiFile"
-                className="group flex flex-col items-center justify-center w-full rounded-sm border-2 border-dashed border-gray-300 bg-gradient-to-br from-white to-gray-50 p-5 cursor-pointer transition
+              {/* discription */}
+              <div>
+                <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                  Description
+                </label>
+
+                <div className="relative">
+                  <textarea
+                    name="description"
+                    onChange={handleChange} 
+                    value={formData?.description || ""}
+                    className="h-32 w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[13px]  border border-LightNeutral rounded-sm text-Gray outline-none"
+                  />
+                  {/* <CalendarDays
+                      className="absolute right-5 top-4 text-gray-400"
+                      size={18}
+                    /> */}
+                </div>
+              </div>
+
+              {/* Image Upload */}
+              <div className="flex flex-col gap-[10px]">
+                <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                  Image*
+                </label>
+                <div className="flex flex-row items-center">
+                  <input
+                    type="file"
+                    name="attachment"
+                    accept="image/*"
+                    multiple
+                    onChange={handleFileChange}
+                    id="multiFile"
+                    placeholder="Browse Image"
+                    className="hidden"
+                  />
+                  <label
+                    htmlFor="multiFile"
+                    className="group flex flex-col items-center justify-center w-full rounded-sm border-2 border-dashed border-gray-300 bg-gradient-to-br from-white to-gray-50 p-5 cursor-pointer transition
       hover:border-blue-500 hover:shadow-md"
-              >
-                {/* Icon */}
-                <div
-                  className="flex items-center justify-center w-14 h-14 rounded-full bg-blue-50 text-blue-600 text-2xl transition
+                  >
+                    {/* Icon */}
+                    <div
+                      className="flex items-center justify-center w-14 h-14 rounded-full bg-blue-50 text-blue-600 text-2xl transition
         group-hover:bg-blue-100 group-hover:scale-105"
-                >
-                  <HiOutlineUpload />
+                    >
+                      <HiOutlineUpload />
+                    </div>
+
+
+                    <p className="mt-4 text-base font-semibold text-gray-800">
+                      Click to upload files
+                    </p>
+
+
+
+                  </label>
                 </div>
 
+                {/* Selected Files Preview */}
+                {files.map((file, index) => {
+                  const isImage = file.type.startsWith("image/");
 
-                <p className="mt-4 text-base font-semibold text-gray-800">
-                  Click to upload files
-                </p>
+                  return (
 
+                    <li
+                      key={index}
+                      className="flex items-center justify-between bg-white px-3 py-2 rounded-sm border"
+                    >
+                      <div className="flex items-center gap-3">
+                        {/* ✅ Image Preview */}
+                        {isImage ? (
+                          <Image
+                            src={URL.createObjectURL(file)}
+                            alt="preview"
+                            width={48}
+                            height={48}
+                            className="h-12 w-12 rounded-lg object-cover border"
+                          />
+                        ) : (
+                          <div className="h-12 w-12 rounded-lg bg-gray-100 flex items-center justify-center border text-sm">
+                            📄
+                          </div>
+                        )}
 
-
-              </label>
-            </div>
-
-            {/* Selected Files Preview */}
-            {files.map((file, index) => {
-              const isImage = file.type.startsWith("image/");
-
-              return (
-
-                <li
-                  key={index}
-                  className="flex items-center justify-between bg-white px-3 py-2 rounded-sm border"
-                >
-                  <div className="flex items-center gap-3">
-                    {/* ✅ Image Preview */}
-                    {isImage ? (
-                      <Image
-                        src={URL.createObjectURL(file)}
-                        alt="preview"
-                        width={48}
-                        height={48}
-                        className="h-12 w-12 rounded-lg object-cover border"
-                      />
-                    ) : (
-                      <div className="h-12 w-12 rounded-lg bg-gray-100 flex items-center justify-center border text-sm">
-                        📄
+                        <div className="flex flex-col">
+                          <span className="text-sm text-gray-800 font-medium">{file.name}</span>
+                          <span className="text-xs text-gray-500">
+                            {(file.size / 1024).toFixed(2)} KB
+                          </span>
+                        </div>
                       </div>
-                    )}
 
-                    <div className="flex flex-col">
-                      <span className="text-sm text-gray-800 font-medium">{file.name}</span>
-                      <span className="text-xs text-gray-500">
-                        {(file.size / 1024).toFixed(2)} KB
-                      </span>
-                    </div>
-                  </div>
+                      <button
+                        type="button"
+                        onClick={() => removeFile(index)}
+                        className="text-red-500 cursor-pointer text-sm font-semibold hover:text-red-600"
+                      >
+                        Remove ✖
+                      </button>
+                    </li>
+                  );
+                })}
 
-                  <button
-                    type="button"
-                    onClick={() => removeFile(index)}
-                    className="text-red-500 cursor-pointer text-sm font-semibold hover:text-red-600"
-                  >
-                    Remove ✖
-                  </button>
-                </li>
-              );
-            })}
+              </div>
+
+
+
+              {/* Save Button */}
+              <button
+                type="submit"
+                className="bg-autoblue md:text-[22px] text-base leading[14px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
+              >
+                {requestId ? "Update Request" : "Submit Request"}
+              </button>
+            </form>
 
           </div>
-
-
-
-          {/* Save Button */}
-          <button
-            type="submit"
-            className="bg-autoblue md:text-[22px] text-base leading[14px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
-          >
-            {requestId ? "Update Request" : "Submit Request"}
-          </button>
-        </form>
-
-      </div>
-    </div>
+        </div>
       </div >
     </div >
   );

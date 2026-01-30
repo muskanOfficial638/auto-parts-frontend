@@ -16,7 +16,7 @@ import {
 } from "@/app/utils/api";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ToastContainer } from "react-toastify";
-import { PartRequest, Quote } from "../common/interface";
+import { PartRequestview, Quoteview } from "../common/interface";
 import OrderCreate from "./OrderCreate";
 
 
@@ -35,8 +35,8 @@ export default function ViewPartRequest() {
   const [galleryOpen, setGalleryOpen] = useState(false);;
   const searchParams = useSearchParams();
   const request = searchParams.get("request") || "";
-  const [partRequest, setPartRequest] = useState<PartRequest>();
-  const [quoteData, setQuoteData] = useState<Quote[]>();
+  const [partRequest, setPartRequest] = useState<PartRequestview>();
+  const [quoteData, setQuoteData] = useState<Quoteview[]>();
   const [loading, setIsLoading] = useState(true);
   const [isOpenCreateOrder, setIsOpenCreateOrder] = useState(false);
   const [hasAccepted, setHasAccepted] = useState<boolean>(false);
@@ -65,7 +65,7 @@ export default function ViewPartRequest() {
       getQuoteByRequest(request, loggedInUser.access_token).then((data) => {
         setQuoteData(data);
 
-        setHasAccepted(data.some((item : Quote) => item.status === "accepted"));
+        setHasAccepted(data.some((item : Quoteview) => item.status === "accepted"));
       });
     }
   }, [request]);
@@ -181,7 +181,7 @@ export default function ViewPartRequest() {
           {/* QUOTES LIST */}
           <div className="space-y-[10px] mt-[16px]">
             {quoteData?.length &&
-              quoteData?.map((data: Quote) => (
+              quoteData?.map((data: Quoteview) => (
                 <div
                   key={data.id}
                   className="bg-[#011827] border border-[#153C51] rounded-sm pt-[5px] pb-[15px] ps-[12px] pe-[22px]"

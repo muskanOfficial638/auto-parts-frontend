@@ -38,7 +38,7 @@ export interface Quote {
   created_at: string;
   user?: object | any;
   part_request?: PartRequest
-   attachment: (File | string)[]; 
+   attachment: ( string)[]; 
 }
 
 export interface QuoteCreate {

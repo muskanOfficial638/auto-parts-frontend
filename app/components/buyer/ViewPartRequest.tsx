@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa6";
 import GalleryLoader from "../common/GalleryLoader";
 import { ImEnlarge2 } from "react-icons/im";
+import { IoIosImages } from "react-icons/io";
 import {
   fetchPartRequestsById,
   getQuoteByRequest,
@@ -40,6 +41,7 @@ export default function ViewPartRequest() {
   const [isOpenCreateOrder, setIsOpenCreateOrder] = useState(false);
   const [hasAccepted, setHasAccepted] = useState<boolean>(false);
   const [selectedData, setSelectedData] = useState<SelectedData | null>(null);
+  const [selectGallery, setSelectedGallery] = useState<string[]>([]);
 
   if (!request) {
 
@@ -53,16 +55,13 @@ export default function ViewPartRequest() {
 
     if (loggedInUser?.access_token && request) {
       fetchPartRequestsById(request, loggedInUser.access_token).then((data) => {
-
         setPartRequest(data);
-        
         setIsLoading(false);
         if(data.attachment && data.attachment.length > 0){ 
       setIsLoading(false);
         }
       
       });
-
       getQuoteByRequest(request, loggedInUser.access_token).then((data) => {
         setQuoteData(data);
 
@@ -75,6 +74,11 @@ export default function ViewPartRequest() {
     // console.log("quoteData:", quoteData);
   }, [partRequest, quoteData]);
 
+
+  function openGallery(data: string[]) {
+    setSelectedGallery(data);
+    setGalleryOpen(true);
+  }
   async function handleActionChange(
     quoteId: string,
     requestId: string,
@@ -84,26 +88,10 @@ export default function ViewPartRequest() {
   ) {
     setSelectedData({ quoteId: quoteId, requestId: requestId, userName, etaDays, priceCents, productName: partRequest?.title ?? '' })
 
-    // const autoPartsUserData = localStorage.getItem("autoPartsUserData");
-    // const loggedInUser = JSON.parse(autoPartsUserData || "{}");
     try {
 
       setIsOpenCreateOrder(true);
-      // const response = await updateQuoteByAction(
-      //   quoteId,
-      //   requestId,
-      //   tab,
-      //   loggedInUser?.access_token
-      // );
-      // console.log("update:", response);
 
-      // if (response?.status === 200) {
-      //   toast("Action updated successfully");
-      //   setTimeout(() => {
-      //     // Call the callback function from the parent
-      //     window.location.reload();
-      //   }, 2000);
-      // }
     } catch (err: any) {
       // Handle errors more gracefully
       if (err.response) {
@@ -155,7 +143,7 @@ export default function ViewPartRequest() {
                   height={150}
                   className="object-cover md:w-[140px] md:h-[140px] w-[36px] h-[50px]"
                 />
-                <ImEnlarge2 onClick={() => setGalleryOpen(true)} className="absolute bottom-1 right-1 shadow-[0_1px_5px_#817f7f] cursor-pointer hover:bg-[#000] duration-600 bg-[#040404c7] text-white text-[33px] p-[4px] rounded-[5px]" /  >
+                <ImEnlarge2 onClick={() => openGallery(partRequest?.attachment || [])} className="absolute bottom-1 right-1 shadow-[0_1px_5px_#817f7f] cursor-pointer hover:bg-[#000] duration-600 bg-[#040404c7] text-white text-[33px] p-[4px] rounded-[5px]" /  >
               </div>
 
               <div className="flex flex-col justify-start">
@@ -243,9 +231,19 @@ export default function ViewPartRequest() {
                           Rejected
                         </button>
                       )}
+
+                                                <button title="view images"
+                            className="bg-gray-600  md:text-base text-xs duration-400 leading-[14px] md:px-[12px] md:py-[6px] px-[0px] py-[8px] text-white rounded-sm hover:bg-gray-700 cursor-pointer"
+                            onClick={() =>
+                              openGallery(data?.attachment || [])
+                         
+                            }
+                          >
+                            <IoIosImages className="text-[30px]" />
+                          </button>
                       {data?.status == "pending" && !hasAccepted && (
                         <>
-                          <button
+                          <button 
                             className="bg-green-600 md:text-base text-xs duration-400 leading-[14px] md:px-[38px] md:py-[13px] px-[28px] py-[8px] text-white rounded-sm hover:bg-green-700 cursor-pointer"
                             onClick={() =>
                               handleActionChange(
@@ -282,7 +280,7 @@ export default function ViewPartRequest() {
         </div>
       </div>
       {isOpenCreateOrder && <OrderCreate closeModal={setIsOpenCreateOrder} dataSelect={selectedData} />}
-      <GalleryLoader onClose={setGalleryOpen} open={galleryOpen} images={partRequest?.attachment ? partRequest?.attachment : []}  />
+      <GalleryLoader onClose={setGalleryOpen} open={galleryOpen} images={selectGallery}  />
        
     </div>
     

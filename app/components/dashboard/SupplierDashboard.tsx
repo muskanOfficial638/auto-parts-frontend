@@ -425,7 +425,7 @@ export default function SupplierDashboard() {
                      <p className="text-[10px] leading-[22px] font-medium text-[#F8F8F8] mt-[5px]">
                     Delivery Address:{" "}
                     <span className="font-bold">
-                    {partRequest?.address?.address}, {partRequest?.address?.city}, {partRequest?.address?.province} ( {partRequest?.address?.postal_code} )
+                    {partRequest?.address?.city}, {partRequest?.address?.province} ( {partRequest?.address?.postal_code} )
                     </span>
                   </p>
                  )}

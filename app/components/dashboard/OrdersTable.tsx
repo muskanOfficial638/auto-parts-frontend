@@ -310,7 +310,7 @@ return sortConfig.direction === "asc"
                     ))
                   ) : (
                     <td colSpan={8} className="text-center p-3">
-                      No Users found.
+                      No Orders found.
                     </td>
                   )}
                 </tbody>

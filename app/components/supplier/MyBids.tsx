@@ -22,6 +22,13 @@ export default function MyBids() {
   const [isTrackingModal, setIsTrackingModalOpen] = useState(false);
   const [otpModalOpen, setOtpModalOpen] = useState<boolean>(false);
 
+  const statusCode ={
+  "pending": { name: "Active", color: "bg-gray-500" },
+  "in_process": { name: "In Process", color: "bg-yellow-500" },
+  "in_transit": { name: "In Transit", color: "bg-blue-500" },
+  "completed": { name: "Completed", color: "bg-green-500" },
+  "cancelled": { name: "Cancelled", color: "bg-red-500" }
+}
  // const [loading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -212,7 +219,7 @@ export default function MyBids() {
                   {activeTab === "in_process" ? (
                     <>
                       <button
-                        className="bg-autoblue hover:bg-hoverblue text-white md:text-base text-sm font-semibold leading-[14px]  md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm"
+                        className="cursor-pointer bg-autoblue hover:bg-hoverblue text-white md:text-base text-sm font-semibold leading-[14px]  md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm"
                         onClick={() => setIsTrackingModalOpen(true)}
                       >
                         Process now
@@ -220,10 +227,10 @@ export default function MyBids() {
                     </>
                   ) : (
                     <button
-                      className={`${data?.status === "pending" ? "bg-gray-500 " : data?.status === "completed" ? "bg-[#52A84E] " : "bg-red-500 "} text-white md:text-base text-sm font-semibold leading-[14px]  md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm`}
+                      className={`${statusCode[data?.status as keyof typeof statusCode]?.color || ""} text-white md:text-base text-sm font-semibold leading-[14px]  md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm`}
                       disabled
                     >
-                      {data?.status.charAt(0).toUpperCase() + data?.status.slice(1)}
+                      {statusCode[data?.status as keyof typeof statusCode]?.name || data?.status}
                     </button>
                   )}
 

@@ -23,6 +23,14 @@ const urgencyOrder: Record<Urgency, number> = {
   high: 3,
 };
 
+const statusCode ={
+  0: { name: "Active", color: "text-white-500" },
+  1: { name: "In Process", color: "text-yellow-500" },
+  2: { name: "In Transit", color: "text-blue-500" },
+  3: { name: "Completed", color: "text-green-500" },
+  4: { name: "Cancelled", color: "text-red-500" }
+}
+
 export default function BuyerDashboard() {
  const [partRequestData, setPartRequestData] = useState<PartRequest[]>([]);
   const [loading, setIsLoading] = useState(true);
@@ -277,9 +285,11 @@ return sortConfig.direction === "asc"
               >
 
                 <option value="all" className="md:text-sm text-xs text-grayMedium">Status</option>
-                <option value="1" className="md:text-sm text-xs text-grayMedium">Completed</option>
                 <option value="0" className="md:text-sm text-xs text-grayMedium">Active</option>
-                <option value="2" className="md:text-sm text-xs text-grayMedium">Cancelled</option>
+                <option value="1" className="md:text-sm text-xs text-grayMedium">In Process</option>
+                <option value="2" className="md:text-sm text-xs text-grayMedium">In Transit</option>
+                <option value="3" className="md:text-sm text-xs text-grayMedium">Completed</option>          
+                <option value="4" className="md:text-sm text-xs text-grayMedium">Cancelled</option>
               </select>
                     </th>
                     <th className=" bg-autoblue rounded-tr-sm p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">
@@ -297,7 +307,7 @@ return sortConfig.direction === "asc"
                         {/* Product */}
                         <td className="flex p-[10px] items-center gap-[15px]">
                           <div className="bg-white w-[50px] h-[50px] flex items-center justify-center rounded-sm">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            
                             <Image
                               src={`${imagePath}${item?.attachment[0]}`}
                               alt="product"
@@ -324,6 +334,7 @@ return sortConfig.direction === "asc"
 
                         {/* Urgency Badge */}
                         <td className="p-[10px]">
+
                           {/* <div className="text-[10px] capitalize font-medium leading-[15px] text-center text-white bg-[#52A84E] px-[9px] py-[2px] ms-auto me-auto w-[46px] rounded-[50px]">
                             {item.urgency}
                           </div> */}
@@ -346,21 +357,13 @@ return sortConfig.direction === "asc"
                           {item.required_by_date}
                         </td>
 
-                        {/* Status Color */}
+                    
+                      
                         <td
-                          className={`md:text-xs text-[10px] md:leading-[22px] leading-[13px] p-[10px] font-semibold text-center ${
-                            item.status === 0
-                              ? "text-yellow-400"
-                              : item.status === 1
-                              ? "text-green-500"
-                              : "text-red-500"
-                          }`}
+                          className={`md:text-xs text-[10px] md:leading-[22px] leading-[13px] p-[10px] font-semibold text-center ${ statusCode[item.status as keyof typeof statusCode]?.color || "bg-gray-500"}
+                           `}
                         >
-                          {item.status === 0
-                            ? "Active"
-                            : item.status === 1
-                            ? "Completed"
-                            : "Cancelled"}
+                          {statusCode[item.status as keyof typeof statusCode]?.name || "Unknown"}
                         </td>
 
                         {/* Actions */}

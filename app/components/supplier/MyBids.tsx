@@ -58,11 +58,14 @@ export default function MyBids() {
         loggedInUser.access_token
       )
         .then((data) => {
+
           setQuoteData(data?.quotes);
           setIsLoading(false)
         })
         .catch(() => {
+          
           setQuoteData([]);
+          setIsLoading(false)
         });
     }
   }
@@ -101,18 +104,28 @@ export default function MyBids() {
                 }`}
                 onClick={() => onTabClick("pending")}
               >
-                Active
+                Pending 
               </span>
 
               <span
                 className={`cursor-pointer text-xl leading-[14px] ${
-                  activeTab === "accepted"
+                  activeTab === "in_process"
                     ? "font-bold text-xl leading-[14px] text-white"
                     : "text-[#6C6C6C]"
                 }`}
-                onClick={() => onTabClick("accepted")}
+                onClick={() => onTabClick("in_process")}
               >
-                Accepted
+               In Process 
+              </span>
+                <span
+                className={`cursor-pointer text-xl leading-[14px] ${
+                  activeTab === "in_transit"
+                    ? "font-bold text-xl leading-[14px] text-white"
+                    : "text-[#6C6C6C]"
+                }`}
+                onClick={() => onTabClick("in_transit")}
+              >
+                In Transit
               </span>
 
               <span
@@ -167,10 +180,7 @@ export default function MyBids() {
                         </span>
                       </h3>
 
-                      <p className="md:text-sm text-xs leading-[22px] font-medium text-white mt-[5px]">
-                        {data?.part_request?.description}
-                      </p>
-
+                 
                       <p className="text-xs leading-[15px] font-medium text-neutralLight mt-[5px]">
                         {data?.part_request?.vehicle_make}{" "}
                         {data?.part_request?.vehicle_model}{" "}
@@ -182,11 +192,7 @@ export default function MyBids() {
                         <span>{data?.part_request?.required_by_date}</span>
                       </p>
                     </div>
-                  </div>
-                  <div className="flex md:items-end md:gap-[10px] gap-[8px]">
-                  {activeTab === "accepted" ? (
-                    <>
-                      <div className="bg-[#011827] p-[10px] border border-[#153C51] rounded-sm text-white flex flex-col w-100">
+                          <div className="bg-[#011827] p-[10px] border border-[#153C51] rounded-sm text-white flex flex-col w-50">
                         <span className="font-bold text-xs leading-[22px]">
                           Price:{" "}
                           <small className="font-medium ms-[6px] text-xs leading-[22px]">
@@ -199,15 +205,14 @@ export default function MyBids() {
                             {data?.created_at}
                           </small>
                         </span>
-                        <span className="font-bold flex text-xs leading-[22px]">
-                          Description:{" "}
-                          <small className="text-[10px] ms-[6px] mt-[5px] pb-[7px] font-medium leading-[12px]">
-                            {data?.terms}
-                          </small>
-                        </span>
+          
                       </div>
+                  </div>
+                  <div className="flex md:items-center md:gap-[10px] gap-[8px]">
+                  {activeTab === "in_process" ? (
+                    <>
                       <button
-                        className="bg-autoblue md:text-[22px] text-base leading[14px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
+                        className="bg-autoblue hover:bg-hoverblue text-white md:text-base text-sm font-semibold leading-[14px]  md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm"
                         onClick={() => setIsTrackingModalOpen(true)}
                       >
                         Process now

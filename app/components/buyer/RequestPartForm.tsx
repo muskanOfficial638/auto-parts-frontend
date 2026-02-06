@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import {
   buyerPath,
   fetchPartRequestsById,
@@ -12,10 +12,15 @@ import { Make, Model, PartRequest, Trim } from "../common/interface";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { HiOutlineUpload } from "react-icons/hi";
+import { TrashIcon } from "@heroicons/react/24/outline";
+import AddNewAddress from "./AddNewAddress";
+import DeleteAddressModal from "./modal/DeleteAddressModal";
+import { fetchBuyerAddress } from "@/app/utils/api";
+import { IoIosAddCircle } from "react-icons/io";
+import { IoArrowBack } from "react-icons/io5";
 
 export default function RequestPartForm() {
   const initialFormData: PartRequest = {
-
     title: "",
     urgency: "",
     user_id: "",
@@ -26,6 +31,25 @@ export default function RequestPartForm() {
     attachment: [],
     status: 1,
     description: "",
+  };
+
+  interface AddressType {
+    address: string;
+    name: string;
+    city: string;
+    province: string;
+    postal_code: string;
+    country: string;
+     id?: string;
+  }
+  interface AddressTypeWithID {
+    address: string;
+    name: string;
+    city: string;
+    province: string;
+    postal_code: string;
+    country: string;
+     id: string;
   }
   const searchParams = useSearchParams();
   const requestId = searchParams.get("request") || "";
@@ -37,12 +61,53 @@ export default function RequestPartForm() {
   const [selectedMake, setSelectedMake] = useState<Make>();
   const [selectedModel, setSelectedModel] = useState<Model>();
   const [selectedTrim, setSelectedTrim] = useState<Trim>();
+  const [deleAddressID, setDeleAddressID] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [changeaddress, setChangeaddress] = useState("");
+  const [selectedAddressData, setSelectedAddressData] = useState<AddressType | null>(null);
+  const [address, setAddress] = useState<AddressTypeWithID[]>();
+  const [formStep, setFormStep] = useState<number>(1);
+
+  useEffect(() => {
+ console.log("dsd",selectedAddressData);
+  },[selectedAddressData])
+  function selectAddrsss() {
+    const selectedAddress = (
+      document.querySelector(
+        'input[name="address"]:checked',
+      ) as HTMLInputElement
+    )?.value;
+
+    if (!selectedAddress) {
+      alert("Please select a delivery address.");
+      return;
+    }
+    setFormStep(2);
+    setSelectedAddressData(address?.filter((addr) => addr.id === selectedAddress)[0] || null);
+   
+    
+  }
 
 
   useEffect(() => {
+    const autoPartsUserData = localStorage.getItem("autoPartsUserData");
+    const loggedInUser = JSON.parse(autoPartsUserData || "{}");
+    if (loggedInUser?.access_token) {
+      fetchBuyerAddress(loggedInUser.user.id, loggedInUser.access_token).then(
+        (data) => {
+          const reversed = [...(data?.data || [])].reverse();
+          setAddress(reversed);
+        },
+      );
+    }
+  }, [changeaddress]);
 
+
+  useEffect(() => {
     console.log("dd :", formData);
   }, [formData]);
+
+
   useEffect(() => {
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
@@ -52,7 +117,7 @@ export default function RequestPartForm() {
         (data: PartRequest) => {
           // console.log("data",data);
           setFormData(data);
-        }
+        },
       );
     }
     const fetchData = async () => {
@@ -62,7 +127,11 @@ export default function RequestPartForm() {
     fetchData();
   }, [requestId]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | any>) => {
+
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | any>,
+  ) => {
     const { name, type, files, value } = e.target;
     setFormData((prev: any) => ({
       ...prev,
@@ -74,16 +143,13 @@ export default function RequestPartForm() {
     console.log("make id", makeId);
     const selectedId = makeId;
     const vehicleMakeData = await viewVehicleMake();
-    // Find the corresponding make name from your makes array
     const selectedMake = vehicleMakeData.find(
-      (make: Make) => make.make_id === selectedId
+      (make: Make) => make.make_id === selectedId,
     );
-
 
     if (selectedMake) {
       setSelectedMake(selectedMake);
       setModelData(selectedMake?.models);
-
     } else {
       console.warn("Make not found for ID:", selectedId);
     }
@@ -92,15 +158,12 @@ export default function RequestPartForm() {
   const handleSelectModelChange = async (modelId: string) => {
     const selectedId = modelId;
     const vehicleModelData = modelData;
-    // Find the corresponding make name from your makes array
     const selectedModelData = vehicleModelData.find(
-      (model: Model) => model?.id === selectedId
+      (model: Model) => model?.id === selectedId,
     );
-
     if (selectedModelData) {
       setSelectedModel(selectedModelData);
       setTrimData(selectedModelData?.trims);
-      // console.log("Trim data", selectedModelData?.trims);
     } else {
       console.warn("Model not found for ID:", selectedId);
     }
@@ -111,12 +174,11 @@ export default function RequestPartForm() {
     const vehicleModelData = trimData;
     // Find the corresponding make name from your makes array
     const selectedTrimData = vehicleModelData.find(
-      (trim: Trim) => trim?.id === selectedId
+      (trim: Trim) => trim?.id === selectedId,
     );
 
     if (selectedTrimData) {
       setSelectedTrim(selectedTrimData);
-
     } else {
       console.warn("Trim not found for ID:", selectedId);
     }
@@ -127,7 +189,9 @@ export default function RequestPartForm() {
 
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-
+   
+   delete selectedAddressData?.id;
+ const addressjson = JSON.stringify(selectedAddressData);
     const updatedData: any = {
       ...formData,
       user_id: loggedInUser?.user?.id || "",
@@ -140,8 +204,17 @@ export default function RequestPartForm() {
       vehicle_model_trim: formData?.vehicle_model_trim
         ? formData?.vehicle_model_trim
         : selectedTrim?.trim || "",
+      address: addressjson,
     };
-    if (!updatedData.title || !updatedData.urgency || !updatedData.vehicle_make || !updatedData.vehicle_model || !updatedData.vehicle_model_trim || !updatedData.required_by_date) {
+    
+    if (
+      !updatedData.title ||
+      !updatedData.urgency ||
+      !updatedData.vehicle_make ||
+      !updatedData.vehicle_model ||
+      !updatedData.vehicle_model_trim ||
+      !updatedData.required_by_date
+    ) {
       toast.error("Please fill all required fields");
       return;
     }
@@ -150,7 +223,7 @@ export default function RequestPartForm() {
       return;
     }
 
-    const multipartData = new FormData()
+    const multipartData = new FormData();
     Object.entries(updatedData).forEach(([key, value]) => {
       if (value === undefined || value === null) return;
       if (key === "attachment" && Array.isArray(value)) {
@@ -170,14 +243,14 @@ export default function RequestPartForm() {
         : `${buyerPath}/part-request`;
 
       const method = requestId ? "PATCH" : "POST";
-
+console.log("url", multipartData);
       const response = await fetch(url, {
         method,
         body: multipartData,
         headers: {
           // Add Authorization if your API requires it
           ...(loggedInUser?.access_token && {
-            Authorization: `Bearer ${loggedInUser.access_token}`,
+           Authorization: `Bearer ${loggedInUser.access_token}`,
           }),
         },
       });
@@ -192,7 +265,7 @@ export default function RequestPartForm() {
       const data = await response.json();
       console.log("Success:", data);
       toast.success(
-        requestId ? "Part request updated" : "Part request created"
+        requestId ? "Part request updated" : "Part request created",
       );
       router.push("/buyer-dashboard");
     } catch (err) {
@@ -201,14 +274,7 @@ export default function RequestPartForm() {
     }
   }
 
-
-
-
-
-
-
   const [files, setFiles] = useState<File[]>([]);
-
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files ?? []) as File[];
@@ -218,156 +284,256 @@ export default function RequestPartForm() {
       ...prev,
       attachment: [...(prev.attachment || []), ...selectedFiles],
     }));
-
-
   };
 
   const removeFile = (index: number) => {
     setFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
+  function deleteHandeler(addressId: string) {
+    setDeleAddressID(addressId);
+    setModalOpen(true);
+  }
+  const [isOpenAddAddress, setisOpenAddAddress] = useState(false);
+  function handleAddressModalClose() {
+    setisOpenAddAddress(true);
+  }
 
   return (
-    <div className="min-h-screen w-full relative">
-      {/* Background Image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/dashboardBg.jpg')" }}
-      />
+    <>
+      <div className="min-h-screen w-full relative">
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/dashboardBg.jpg')" }}
+        />
 
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#003253]/95 to-black/95" />
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#003253]/95 to-black/95" />
 
-      {/* Page Content */}
-      <div className="relative z-10 flex flex-col">
-        <div className="flex justify-center items-start pt-36 pb-20 px-4">
-          <div className="w-[850px] max-w-[100%] bg-brandBlack rounded-sm p-[30px] ">
-            <div className="flex items-center justify-between mb-[27px]">
-              <h2 className="md:text-[23px] text-text-lg leading-[36px] font-semibold text-white ">
-                {requestId ? "Edit Part request" : "Request a Part"}
-              </h2>
-              {requestId ? <button onClick={() => history.back()} className=" bg-white cursor-pointer h-8 w-8 rounded-full flex justify-center items-center text-black "><FaArrowLeft /></button> : ''}
-
-            </div>
-            <form className="space-y-[28px]" onSubmit={handleSave}>
-              {/* Product Name */}
-              <div>
-                <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-                  Product Name*
-                </label>
-                <input
-                  type="text"
-                  name="title"
-                  value={formData?.title || ""}
-                  onChange={handleChange}
-                  className="w-full py-[8px] px-[18px]  bg-white md:text-base text-sm leading-[13px]  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
-                />
+        {/* Page Content */}
+        <div className="relative z-10 flex flex-col">
+          <div className="flex justify-center items-start pt-36 pb-20 px-4">
+            <div className="w-[850px] max-w-[100%] bg-brandBlack rounded-sm p-[30px] ">
+              <div className="flex items-center justify-between mb-[27px]">
+                <h2 className="md:text-[23px] text-text-lg leading-[36px] font-semibold text-white ">
+                  {requestId ? "Edit Part request" : "Request a Part"}
+                </h2>
+                {requestId ? (
+                  <button
+                    onClick={() => history.back()}
+                    className=" bg-white cursor-pointer h-8 w-8 rounded-full flex justify-center items-center text-black "
+                  >
+                    <FaArrowLeft />
+                  </button>
+                ) : (
+                  ""
+                )}
               </div>
+              <form className="space-y-[28px]" onSubmit={handleSave}>
+                {/* Product Name */}
+                {formStep === 1 ? (
+                  <div>
+                    <div className="flex justify-between items-center mb-[27px]">
+                      <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                        Select Delivery Address
+                      </label>
+                      <button
+                        title="Add Address"
+                        type="button"
+                        onClick={() => handleAddressModalClose()}
+                      >
+                        <IoIosAddCircle className="cursor-pointer h-10 w-10" />
+                      </button>
+                    </div>
+                    <div className="space-y-[25px]">
+                      {!address ? (
+                        <div className="flex justify-center items-center h-24">
+                          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                        </div>
+                      ) : address.length === 0 ? (
+                        <p className="text-white text-center py-10">
+                          No address found, please add your address
+                        </p>
+                      ) : (
+                        address.map((data, index) => (
+                          <label
+                            key={index}
+                            className="flex items-start gap-[10px] p-[10px] rounded-sm border border-[#153C51] bg-[#011827] cursor-pointer"
+                          >
+                            <input
+                              type="radio"
+                              name="address"
+                              value={data.id}
+                              defaultChecked={index === 0}
+                              className="mt-1 h-[16px] w-[16px] autoblue"
+                            />
+                            <div>
+                              <p className="text-white font-semibold leading-[16px] text-[13px]">
+                                {data?.name}:
+                              </p>
+                              <p className="mt-[5px] text-white text-xs">
+                                {data?.address}, {data?.city}, {data?.province},{" "}
+                                {data?.postal_code}, {data?.country}
+                              </p>
+                            </div>
+                            <div
+                              className="ml-auto my-auto"
+                              onClick={() => deleteHandeler(data?.id)}
+                            >
+                              {" "}
+                              <TrashIcon className="h-[20px] w-[20px] text-red-500" />
+                            </div>
+                          </label>
+                        ))
+                      )}
+                    </div>
 
-              {/* Make */}
-              <div className="flex justify-between items-center gap-[15px]">
-                <div className="w-full">
-                  <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-                    Make*
-                  </label>
-                  <select
-                    onChange={(e) => handleSelectMakeChange(e.target.value)}
-                    name="vehicle_make"
-                    className="w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
-                  >
-                    <option value={requestId ? formData?.vehicle_make : ""}>
-                      {requestId ? formData?.vehicle_make : "Select Make"}
-                    </option>
-                    {makeData &&
-                      makeData.map((make: Make) => (
-                        <option key={make?.make_id} value={make?.make_id}>
-                          {make?.make_name}
-                        </option>
-                      ))}
-                  </select>
-                </div>
+                    <div className="flex justify-end mt-[20px]">
+                      {address && address.length > 0 ? (
+                        <button
+                          onClick={selectAddrsss}
+                          type="button"
+                          className="bg-autoblue md:text-[22px] text-base leading[14px] w-50 rounded-sm text-white md:py-[12px] p-[13px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
+                        >
+                          Next
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          className="bg-gray-500 md:text-[22px] text-base leading[14px] w-50 rounded-sm text-white md:py-[12px] p-[13px] font-semibold cursor-not-allowed"
+                        >
+                          Next
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div>
+                      <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                        Product Name*
+                      </label>
+                      <input
+                        type="text"
+                        name="title"
+                        value={formData?.title || ""}
+                        onChange={handleChange}
+                        className="w-full py-[8px] px-[18px]  bg-white md:text-base text-sm leading-[13px]  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
+                      />
+                    </div>
+                    {/* Make */}
+                    <div className="flex justify-between items-center gap-[15px]">
+                      <div className="w-full">
+                        <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                          Make*
+                        </label>
+                        <select
+                          onChange={(e) =>
+                            handleSelectMakeChange(e.target.value)
+                          }
+                          name="vehicle_make"
+                          className="w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
+                        >
+                          <option
+                            value={requestId ? formData?.vehicle_make : ""}
+                          >
+                            {requestId ? formData?.vehicle_make : "Select Make"}
+                          </option>
+                          {makeData &&
+                            makeData.map((make: Make) => (
+                              <option key={make?.make_id} value={make?.make_id}>
+                                {make?.make_name}
+                              </option>
+                            ))}
+                        </select>
+                      </div>
 
-                {/* Model */}
-                <div className="w-full">
-                  <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-                    Model*
-                  </label>
-                  <select
-                    name="vehicle_model"
-                    onChange={(e) => handleSelectModelChange(e.target.value)}
-                    className="w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
-                  >
-                    <option
-                      value={
-                        requestId && !selectedMake
-                          ? formData?.vehicle_model
-                          : ""
-                      }
-                    >
-                      {requestId && !selectedMake
-                        ? formData?.vehicle_model
-                        : "Select Model"}
-                    </option>
-                    {modelData &&
-                      modelData.map((model: Model) => (
-                        <option key={model?.id} value={model?.id}>
-                          {model?.name}
-                        </option>
-                      ))}
-                  </select>
-                </div>
-              </div>
-              <div className="flex justify-between items-center gap-[15px]">
-                {/* Trim */}
-                <div className="w-full">
-                  <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-                    Trim*
-                  </label>
-                  <select
-                    name="vehicle_model"
-                    onChange={(e) => handleSelectTrimChange(e.target.value)}
-                    className="w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
-                  >
-                    <option
-                      value={
-                        requestId && !selectedMake
-                          ? formData?.vehicle_model_trim
-                          : ""
-                      }
-                    >
-                      {requestId && !selectedMake
-                        ? formData?.vehicle_model_trim
-                        : "Select Trim"}
-                    </option>
-                    {trimData &&
-                      trimData.map((trim: Trim) => (
-                        <option key={trim?.id} value={trim?.id}>
-                          {trim?.trim}
-                        </option>
-                      ))}
-                  </select>
-                </div>
+                      {/* Model */}
+                      <div className="w-full">
+                        <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                          Model*
+                        </label>
+                        <select
+                          name="vehicle_model"
+                          onChange={(e) =>
+                            handleSelectModelChange(e.target.value)
+                          }
+                          className="w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
+                        >
+                          <option
+                            value={
+                              requestId && !selectedMake
+                                ? formData?.vehicle_model
+                                : ""
+                            }
+                          >
+                            {requestId && !selectedMake
+                              ? formData?.vehicle_model
+                              : "Select Model"}
+                          </option>
+                          {modelData &&
+                            modelData.map((model: Model) => (
+                              <option key={model?.id} value={model?.id}>
+                                {model?.name}
+                              </option>
+                            ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center gap-[15px]">
+                      {/* Trim */}
+                      <div className="w-full">
+                        <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                          Trim*
+                        </label>
+                        <select
+                          name="vehicle_model"
+                          onChange={(e) =>
+                            handleSelectTrimChange(e.target.value)
+                          }
+                          className="w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
+                        >
+                          <option
+                            value={
+                              requestId && !selectedMake
+                                ? formData?.vehicle_model_trim
+                                : ""
+                            }
+                          >
+                            {requestId && !selectedMake
+                              ? formData?.vehicle_model_trim
+                              : "Select Trim"}
+                          </option>
+                          {trimData &&
+                            trimData.map((trim: Trim) => (
+                              <option key={trim?.id} value={trim?.id}>
+                                {trim?.trim}
+                              </option>
+                            ))}
+                        </select>
+                      </div>
 
-                {/* Urgency */}
-                <div className="w-full">
-                  <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-                    Urgency*
-                  </label>
-                  <select
-                    name="urgency"
-                    value={formData?.urgency || ""}
-                    onChange={handleChange}
-                    className="w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[29px] border border-LightNeutral rounded-sm text-Gray outline-none"
-                  >
-                    <option value="" disabled>
-                      Select urgency
-                    </option>
-                    <option value="high">High</option>
-                    <option value="normal">Normal</option>
-                    <option value="low">Low</option>
-                  </select>
+                      {/* Urgency */}
+                      <div className="w-full">
+                        <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                          Urgency*
+                        </label>
+                        <select
+                          name="urgency"
+                          value={formData?.urgency || ""}
+                          onChange={handleChange}
+                          className="w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[29px] border border-LightNeutral rounded-sm text-Gray outline-none"
+                        >
+                          <option value="" disabled>
+                            Select urgency
+                          </option>
+                          <option value="high">High</option>
+                          <option value="normal">Normal</option>
+                          <option value="low">Low</option>
+                        </select>
 
-                  {/* <input
+                        {/* <input
                     type="text"
                     name="urgency"
                     placeholder="Ex.- High, low, medium"
@@ -375,150 +541,165 @@ export default function RequestPartForm() {
                     value={formData?.urgency || ""}
                     className="w-full py-[8px] px-[18px] placeholder-Gray bg-white md:text-[19px] text-[15px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray outline-none"
                   /> */}
-                </div>
-              </div>
+                      </div>
+                    </div>
+                    {/* Required Date */}
+                    <div>
+                      <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                        Required
+                      </label>
 
-               {/* Required Date */}
-              <div>
-                <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-                  Required
-                </label>
-
-                <div className="relative">
-                  <input
-                    type="date"
-                    name="required_by_date"
-                    onChange={handleChange}
-                    value={formData?.required_by_date}
-                    className="w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[13px]  border border-LightNeutral rounded-sm text-Gray outline-none"
-                  />
-                  {/* <CalendarDays
+                      <div className="relative">
+                        <input
+                          type="date"
+                          name="required_by_date"
+                          onChange={handleChange}
+                          value={formData?.required_by_date}
+                          className="w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[13px]  border border-LightNeutral rounded-sm text-Gray outline-none"
+                        />
+                        {/* <CalendarDays
                       className="absolute right-5 top-4 text-gray-400"
                       size={18}
                     /> */}
-                </div>
-              </div>
+                      </div>
+                    </div>
+                    {/* discription */}
+                    <div>
+                      <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                        Description
+                      </label>
 
-              {/* discription */}
-              <div>
-                <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-                  Description
-                </label>
-
-                <div className="relative">
-                  <textarea
-                    name="description"
-                    onChange={handleChange} 
-                    value={formData?.description || ""}
-                    className="h-32 w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[13px]  border border-LightNeutral rounded-sm text-Gray outline-none"
-                  />
-                  {/* <CalendarDays
+                      <div className="relative">
+                        <textarea
+                          name="description"
+                          onChange={handleChange}
+                          value={formData?.description || ""}
+                          className="h-32 w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[13px]  border border-LightNeutral rounded-sm text-Gray outline-none"
+                        />
+                        {/* <CalendarDays
                       className="absolute right-5 top-4 text-gray-400"
                       size={18}
                     /> */}
-                </div>
-              </div>
-
-              {/* Image Upload */}
-              <div className="flex flex-col gap-[10px]">
-                <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-                  Image*
-                </label>
-                <div className="flex flex-row items-center">
-                  <input
-                    type="file"
-                    name="attachment"
-                    accept="image/*"
-                    multiple
-                    onChange={handleFileChange}
-                    id="multiFile"
-                    placeholder="Browse Image"
-                    className="hidden"
-                  />
-                  <label
-                    htmlFor="multiFile"
-                    className="group flex flex-col items-center justify-center w-full rounded-sm border-2 border-dashed border-gray-300 bg-gradient-to-br from-white to-gray-50 p-5 cursor-pointer transition
-      hover:border-blue-500 hover:shadow-md"
-                  >
-                    {/* Icon */}
-                    <div
-                      className="flex items-center justify-center w-14 h-14 rounded-full bg-blue-50 text-blue-600 text-2xl transition
-        group-hover:bg-blue-100 group-hover:scale-105"
-                    >
-                      <HiOutlineUpload />
+                      </div>
                     </div>
 
-
-                    <p className="mt-4 text-base font-semibold text-gray-800">
-                      Click to upload files
-                    </p>
-
-
-
-                  </label>
-                </div>
-
-                {/* Selected Files Preview */}
-                {files.map((file, index) => {
-                  const isImage = file.type.startsWith("image/");
-
-                  return (
-
-                    <li
-                      key={index}
-                      className="flex items-center justify-between bg-white px-3 py-2 rounded-sm border"
-                    >
-                      <div className="flex items-center gap-3">
-                        {/* ✅ Image Preview */}
-                        {isImage ? (
-                          <Image
-                            src={URL.createObjectURL(file)}
-                            alt="preview"
-                            width={48}
-                            height={48}
-                            className="h-12 w-12 rounded-lg object-cover border"
-                          />
-                        ) : (
-                          <div className="h-12 w-12 rounded-lg bg-gray-100 flex items-center justify-center border text-sm">
-                            📄
+                    {/* Image Upload */}
+                    <div className="flex flex-col gap-[10px]">
+                      <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
+                        Image*
+                      </label>
+                      <div className="flex flex-row items-center">
+                        <input
+                          type="file"
+                          name="attachment"
+                          accept="image/*"
+                          multiple
+                          onChange={handleFileChange}
+                          id="multiFile"
+                          placeholder="Browse Image"
+                          className="hidden"
+                        />
+                        <label
+                          htmlFor="multiFile"
+                          className="group flex flex-col items-center justify-center w-full rounded-sm border-2 border-dashed border-gray-300 bg-gradient-to-br from-white to-gray-50 p-5 cursor-pointer transition
+      hover:border-blue-500 hover:shadow-md"
+                        >
+                          {/* Icon */}
+                          <div
+                            className="flex items-center justify-center w-14 h-14 rounded-full bg-blue-50 text-blue-600 text-2xl transition
+        group-hover:bg-blue-100 group-hover:scale-105"
+                          >
+                            <HiOutlineUpload />
                           </div>
-                        )}
 
-                        <div className="flex flex-col">
-                          <span className="text-sm text-gray-800 font-medium">{file.name}</span>
-                          <span className="text-xs text-gray-500">
-                            {(file.size / 1024).toFixed(2)} KB
-                          </span>
-                        </div>
+                          <p className="mt-4 text-base font-semibold text-gray-800">
+                            Click to upload files
+                          </p>
+                        </label>
                       </div>
 
+                      {/* Selected Files Preview */}
+                      {files.map((file, index) => {
+                        const isImage = file.type.startsWith("image/");
+
+                        return (
+                          <li
+                            key={index}
+                            className="flex items-center justify-between bg-white px-3 py-2 rounded-sm border"
+                          >
+                            <div className="flex items-center gap-3">
+                              {/* ✅ Image Preview */}
+                              {isImage ? (
+                                <Image
+                                  src={URL.createObjectURL(file)}
+                                  alt="preview"
+                                  width={48}
+                                  height={48}
+                                  className="h-12 w-12 rounded-lg object-cover border"
+                                />
+                              ) : (
+                                <div className="h-12 w-12 rounded-lg bg-gray-100 flex items-center justify-center border text-sm">
+                                  📄
+                                </div>
+                              )}
+
+                              <div className="flex flex-col">
+                                <span className="text-sm text-gray-800 font-medium">
+                                  {file.name}
+                                </span>
+                                <span className="text-xs text-gray-500">
+                                  {(file.size / 1024).toFixed(2)} KB
+                                </span>
+                              </div>
+                            </div>
+
+                            <button
+                              type="button"
+                              onClick={() => removeFile(index)}
+                              className="text-red-500 cursor-pointer text-sm font-semibold hover:text-red-600"
+                            >
+                              Remove ✖
+                            </button>
+                          </li>
+                        );
+                      })}
+                    </div>
+
+                    {/* Save Button */}
+                    <div className="flex justify-between">
                       <button
                         type="button"
-                        onClick={() => removeFile(index)}
-                        className="text-red-500 cursor-pointer text-sm font-semibold hover:text-red-600"
+                        onClick={() => setFormStep(1)}
+                        className="flex items-center justify-center gap-2 bg-gray-500 md:text-[22px] text-base leading[14px] w-50 rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-gray-600 duration-400 cursor-pointer"
                       >
-                        Remove ✖
+                        <IoArrowBack /> Back
                       </button>
-                    </li>
-                  );
-                })}
-
-              </div>
-
-
-
-              {/* Save Button */}
-              <button
-                type="submit"
-                className="bg-autoblue md:text-[22px] text-base leading[14px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
-              >
-                {requestId ? "Update Request" : "Submit Request"}
-              </button>
-            </form>
-
+                      <button
+                        type="submit"
+                        className="bg-autoblue md:text-[22px] text-base leading[14px] w-50 rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
+                      >
+                        {requestId ? "Update Request" : "Submit Request"}
+                      </button>
+                    </div>
+                  </>
+                )}
+              </form>
+            </div>
           </div>
         </div>
-      </div >
-    </div >
+      </div>
+      {isOpenAddAddress && (
+        <AddNewAddress
+          closeModal={setisOpenAddAddress}
+          Changeaddress={setChangeaddress}
+        />
+      )}
+      <DeleteAddressModal
+        open={modalOpen}
+        addressId={deleAddressID}
+        onClose={setModalOpen}
+        onDeleted={setChangeaddress}
+      />
+    </>
   );
 }

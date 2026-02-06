@@ -19,6 +19,77 @@ export const vehicleApiPath = `${BASE_API_URL}/8006/v1/vehicle`;
 export const imagePath = `${BASE_API_URL}/8000/image/`;  //image path for local 
 
 
+export function updateOrderStatus(token: string,orderid:string,formdata: any) {
+ {
+
+    return axios.put(
+    `${orderPath}/order/orders/${orderid}`,
+    { ...formdata },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+    }
+  )
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error("unable to verify OTP ", error);
+      throw error;
+    });
+  }
+}
+
+// verify OTP
+export function verifyOTP(token: string,formdata: any) {
+ {
+
+    return axios.post(
+    `${buyerPath}/action/verify-otp`,
+    { ...formdata },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+    }
+  )
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error("unable to verify OTP ", error);
+      throw error;
+    });
+  }
+}
+
+// send OTP
+export function sendOTP(token: string,formdata: any) {
+ {
+
+    return axios.post(
+    `${buyerPath}/action/send-otp`,
+    { ...formdata },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+    }
+  )
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error("unable to send OTP ", error);
+      throw error;
+    });
+  }
+}
+
 export async function fetchOrdersByID(
   orderid: string,
   token: string
@@ -51,11 +122,11 @@ export async function fetchAllBuyerOrders(
 }
 
 // create new Order
-export function CreateOrder(formdata: any, token: string) {
+export function CreateOrder(token: string,formdata: any) {
  {
 
     return axios.post(
-    `${orderPath}/order/create-order/`,
+    `${orderPath}/order/create-order`,
     { ...formdata },
     {
       headers: {

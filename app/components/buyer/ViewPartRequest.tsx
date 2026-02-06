@@ -6,7 +6,6 @@ import Loader from "../common/Loader";
 import { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa6";
 import GalleryLoader from "../common/GalleryLoader";
-import { ImEnlarge2 } from "react-icons/im";
 import { IoIosImages } from "react-icons/io";
 import {
   fetchPartRequestsById,
@@ -16,23 +15,29 @@ import {
 } from "@/app/utils/api";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ToastContainer } from "react-toastify";
-import { PartRequestview, Quoteview } from "../common/interface";
+import { PartRequestview, Quoteview ,AddresswithoutID} from "../common/interface";
 import OrderCreate from "./OrderCreate";
-
+import OTPModal from "../supplier/Modal/OtpModal";
 
 type SelectedData = {
   quoteId: string;
-  requestId: string;
   userName: string;
   etaDays: string;
   priceCents: string;
   productName: string;
+  address: AddresswithoutID;
 };
+const statusCode ={
+  0: { name: "Active", color: "text-white-500" },
+  1: { name: "In Process", color: "text-yellow-500" },
+  2: { name: "In Transit", color: "text-blue-500" },
+  3: { name: "Completed", color: "text-green-500" },
+  4: { name: "Cancelled", color: "text-red-500" }
+}
 
 export default function ViewPartRequest() {
 
   const router = useRouter();
-  const [galleryOpen, setGalleryOpen] = useState(false);;
   const searchParams = useSearchParams();
   const request = searchParams.get("request") || "";
   const [partRequest, setPartRequest] = useState<PartRequestview>();
@@ -42,6 +47,10 @@ export default function ViewPartRequest() {
   const [hasAccepted, setHasAccepted] = useState<boolean>(false);
   const [selectedData, setSelectedData] = useState<SelectedData | null>(null);
   const [selectGallery, setSelectedGallery] = useState<string[]>([]);
+  const [galleryOpen, setGalleryOpen] = useState(false);
+  const [otpModalOpen, setOtpModalOpen] = useState<boolean>(false);
+  const [acceptedId, setAcceptedId] = useState<string >("");
+
 
   if (!request) {
 
@@ -63,9 +72,10 @@ export default function ViewPartRequest() {
       
       });
       getQuoteByRequest(request, loggedInUser.access_token).then((data) => {
+        data.some((item : Quoteview) => item.status === "in_transit" && setAcceptedId(item.id));
         setQuoteData(data);
 
-        setHasAccepted(data.some((item : Quoteview) => item.status === "accepted"));
+        setHasAccepted(data.some((item : Quoteview) => item.status === "in_transit"));
       });
     }
   }, [request]);
@@ -81,13 +91,13 @@ export default function ViewPartRequest() {
   }
   async function handleActionChange(
     quoteId: string,
-    requestId: string,
-    userName: string,
+    supplierName: string,
     etaDays: string,
-    priceCents: string
+    priceCents: string,
+    
   ) {
-    setSelectedData({ quoteId: quoteId, requestId: requestId, userName, etaDays, priceCents, productName: partRequest?.title ?? '' })
-
+    if (!partRequest?.address) return;
+    setSelectedData({ quoteId: quoteId, userName: supplierName, etaDays, priceCents, productName: partRequest?.title ?? '', address: partRequest?.address});
     try {
 
       setIsOpenCreateOrder(true);
@@ -143,7 +153,7 @@ export default function ViewPartRequest() {
                   height={150}
                   className="object-cover md:w-[140px] md:h-[140px] w-[36px] h-[50px]"
                 />
-                <ImEnlarge2 onClick={() => openGallery(partRequest?.attachment || [])} className="absolute bottom-1 right-1 shadow-[0_1px_5px_#817f7f] cursor-pointer hover:bg-[#000] duration-600 bg-[#040404c7] text-white text-[33px] p-[4px] rounded-[5px]" /  >
+                <IoIosImages onClick={() => openGallery(partRequest?.attachment || [])} className="absolute bottom-1 right-1 shadow-[0_1px_5px_#817f7f] cursor-pointer hover:bg-[#000] duration-600 bg-[#040404c7] text-white text-[33px] p-[4px] rounded-[5px]" /  >
               </div>
 
               <div className="flex flex-col justify-start">
@@ -163,13 +173,32 @@ export default function ViewPartRequest() {
                     {partRequest?.required_by_date}
                   </span>
                 </p>
+                {partRequest?.address  &&(
+                  <p className="text-[10px] leading-[22px] font-medium text-[#F8F8F8] mt-[5px]">
+                  Delivery address:{" "}
+                  <span className="font-bold">
+                    {partRequest?.address?.address}, {partRequest?.address?.city}, {partRequest?.address?.province} {partRequest?.address?.postal_code}
+                  </span>
+                </p>
+               
+                )}
+                
+                <p className="text-[10px] leading-[22px] font-medium text-[#F8F8F8] mt-[5px]">
+                  Staus:{" "}
+  
+               <span className={`font-medium capitalize leading-[10px] ${statusCode[partRequest?.status as keyof typeof statusCode]?.color || "text-gray-500"} px-[9px] py-[1px] rounded-[50px]`}>{statusCode[partRequest?.status as keyof typeof statusCode]?.name || "Unknown"}</span>
+                </p>
+ 
               </div>
             </div>
-            <div className="flex flex-col items-end gap-[30px]">
+            <div className="flex flex-col items-end gap-[30px] self-start">
               <button onClick={() => history.back()} className="bg-white cursor-pointer h-8 w-8 rounded-full flex justify-center items-center text-black "><FaArrowLeft /></button>
-              <button className="text-autoblue md:w-[auto] w-full cursor-pointer md:text-base text-sm leading-[14px] border border-autoblue py-[13px] px-[20px] duration-400 hover:text-white rounded-sm hover:bg-hoverblue hover:border-hoverblue">
+              
+              {partRequest?.status == 2 && hasAccepted && (
+              <button onClick={()=>setOtpModalOpen(true)} className="text-autoblue md:w-[auto] w-full cursor-pointer md:text-base text-sm leading-[14px] border border-autoblue py-[13px] px-[20px] duration-400 hover:text-white rounded-sm hover:bg-hoverblue hover:border-hoverblue">
                 Mark as Completed
               </button>
+     )}
             </div>
           </div>
           <div>
@@ -181,7 +210,9 @@ export default function ViewPartRequest() {
           {/* QUOTES LIST */}
           <div className="space-y-[10px] mt-[16px]">
             {quoteData?.length &&
-              quoteData?.map((data: Quoteview) => (
+              quoteData?.map((data: Quoteview) =>
+                 (
+              
                 <div
                   key={data.id}
                   className="bg-[#011827] border border-[#153C51] rounded-sm pt-[5px] pb-[15px] ps-[12px] pe-[22px]"
@@ -200,7 +231,7 @@ export default function ViewPartRequest() {
                           Price:
                         </span>{" "}
                         <span className="text-[10px] medium leading-[22px] text-autoblue">
-                          {data?.price_cents}
+                          R {data?.price_cents}
                         </span>
                       </p>
 
@@ -226,13 +257,14 @@ export default function ViewPartRequest() {
                           Accepted
                         </div>
                       )}
+                      
                       {data?.status == "rejected" && (
                         <button disabled className="bg-red-600 duration-400 md:text-base text-xs leading-[14px] md:px-[38px] md:py-[13px] px-[28px] py-[8px] text-white rounded-sm">
                           Rejected
                         </button>
                       )}
 
-                                                <button title="view images"
+                           <button title="view images"
                             className="bg-gray-600  md:text-base text-xs duration-400 leading-[14px] md:px-[12px] md:py-[6px] px-[0px] py-[8px] text-white rounded-sm hover:bg-gray-700 cursor-pointer"
                             onClick={() =>
                               openGallery(data?.attachment || [])
@@ -248,10 +280,11 @@ export default function ViewPartRequest() {
                             onClick={() =>
                               handleActionChange(
                                 data?.id,
-                                data?.request_id,
+
                                 data?.user?.user_name,
                                 data?.eta_days,
-                                data?.price_cents
+                                data?.price_cents,
+                               
 
                               )
                             }
@@ -279,6 +312,7 @@ export default function ViewPartRequest() {
           </div>
         </div>
       </div>
+        <OTPModal quoteId={acceptedId} open={otpModalOpen} onClose={() => setOtpModalOpen(false)} />
       {isOpenCreateOrder && <OrderCreate closeModal={setIsOpenCreateOrder} dataSelect={selectedData} />}
       <GalleryLoader onClose={setGalleryOpen} open={galleryOpen} images={selectGallery}  />
        

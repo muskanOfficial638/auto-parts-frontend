@@ -1,5 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+export interface Address {
+  id: string;
+  name?: string;
+  city: string;
+  province: string;
+  address: string;
+  postal_code: string;
+  country?: string;
+}
+export interface AddresswithoutID {
+  id?: string;
+  name?: string;
+  city: string;
+  province: string;
+  address: string;
+  postal_code: string;
+  country?: string;
+}
+
+
 export interface PartRequest {
   id?: string;
   title: string;
@@ -12,6 +32,7 @@ export interface PartRequest {
   attachment: (File | string)[];  
   status: number;
   description: string;
+  address?: Address;
 }
 export interface PartRequestview {
   id?: string;
@@ -25,6 +46,7 @@ export interface PartRequestview {
   attachment: string[];  
   status: number;
   description: string;
+  address?: Address;
 }
 
 export interface OrdersType {

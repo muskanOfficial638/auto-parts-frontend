@@ -6,10 +6,14 @@ import { useEffect, useState } from "react";
 import { FiChevronDown, FiXCircle } from "react-icons/fi";
 import BidModal from "@/app/components/supplier/Modal/BidModal";
 import { fetchAllSupplierPartRequests, imagePath } from "@/app/utils/api";
+import { FaEye } from "react-icons/fa";
 import { PartRequest } from "../common/interface";
 import Loader from "../common/Loader";
+import { IoIosImages } from "react-icons/io";
 import { ImSpinner6 } from "react-icons/im";
 import Image from "next/image";
+import { IoMdClose } from "react-icons/io";
+import GalleryLoader from "../common/GalleryLoader";
 
 export default function SupplierDashboard() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -23,7 +27,10 @@ export default function SupplierDashboard() {
   const [loading, setIsLoading] = useState(true);
   const [loadingPage, setIsLoadingPage] = useState(true);
   const [globalSearch, setGlobalSearch] = useState("");
-
+  const [onDetailsClose, setOnDetailsClose] = useState(false);
+  const [partRequest, setPartRequest] = useState<PartRequest>();
+  const [selectGallery, setSelectedGallery] = useState<string[]>([]);
+  const [galleryOpen, setGalleryOpen] = useState(false);
 
   interface FiltersOpen {
     make: boolean;
@@ -156,6 +163,11 @@ export default function SupplierDashboard() {
     );
   }
 
+  function openGallery(data: string[]) {
+    setSelectedGallery(data);
+    setGalleryOpen(true);
+  }
+
   return (
     <>
       <div
@@ -284,10 +296,10 @@ export default function SupplierDashboard() {
                 >
                   <div className="flex md:items-center items-start gap-4">
                     <div className="bg-white py-[5px] px-[5px] md:mt-[0] mt-[4px] rounded-sm">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                   
                       <Image
-                      width={120}
-                      height={120}
+                        width={120}
+                        height={120}
                         src={`${imagePath}${item?.attachment[0]}`}
                         alt="Filter"
                         className="md:w-[70px] md:h-[75px] w-[45px] h-[50px] object-cover"
@@ -301,10 +313,7 @@ export default function SupplierDashboard() {
                         </span>
                       </h3>
 
-                      <p className="md:text-sm text-xs leading-[22px] font-medium text-white mt-[5px]">
-                        {item.description}
-                      </p>
-
+                 
                       <p className="text-xs leading-[15px] font-medium text-neutralLight mt-[5px]">
                         {item.vehicle_make} {item.vehicle_model}{" "}
                         {item.vehicle_model_trim}
@@ -315,17 +324,24 @@ export default function SupplierDashboard() {
                       </p>
                     </div>
                   </div>
+                  <div className="flex md:gap-4 gap-2 flex-nowrap">
+                    <button onClick={() =>{ setPartRequest(item); setOnDetailsClose(true); }}
+                      className="bg-gray-500 md:text-base text-sm font-semibold leading-[14px] hover:bg-gray-600 md:w-[auto] w-[auto] duration-400 px-[15px] py-[10px] rounded-sm cursor-pointer"
+                    >
+                      <FaEye />
+                    </button>
 
-                  <button
-                    className="bg-autoblue md:text-base text-sm font-semibold leading-[14px] hover:bg-hoverblue md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm cursor-pointer"
-                    onClick={() => ModalOpen(item)}
-                  >
-                    Quote Now
-                  </button>
+                    <button
+                      className="bg-autoblue md:text-base text-sm font-semibold leading-[14px] hover:bg-hoverblue md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm cursor-pointer"
+                      onClick={() => ModalOpen(item)}
+                    >
+                      Quote Now
+                    </button>
+                  </div>
                 </div>
               ))
             ) : (
-              <h1 className="text-center text-gray-900">No Users found.</h1> 
+              <h1 className="text-center text-gray-900">No Users found.</h1>
             )}
           </div>
         </div>
@@ -334,12 +350,12 @@ export default function SupplierDashboard() {
       </div>
       <div className="p-6">
         {loadingPage && (<div role="status " className="flex justify-center mb-4">
-    <ImSpinner6 className="w-8 h-8  animate-spin"/>
-    <span className="sr-only">Loading...</span>
-</div>)}
+          <ImSpinner6 className="w-8 h-8  animate-spin" />
+          <span className="sr-only">Loading...</span>
+        </div>)}
         <div className="mt-8 flex items-center justify-center gap-3">
           <button
-            onClick={() => { setIsLoadingPage(true); setCurrentPage((prev) => prev - 1)}}
+            onClick={() => { setIsLoadingPage(true); setCurrentPage((prev) => prev - 1) }}
             disabled={currentPage <= 1 || loadingPage}
             className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
           >
@@ -351,7 +367,7 @@ export default function SupplierDashboard() {
           </span>
 
           <button
-            onClick={() => {            setIsLoadingPage(true); setCurrentPage((prev) => prev + 1) } }
+            onClick={() => { setIsLoadingPage(true); setCurrentPage((prev) => prev + 1) }}
             disabled={currentPage >= metaPage.total_pages || loadingPage}
             className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
           >
@@ -365,6 +381,81 @@ export default function SupplierDashboard() {
         userRequest={userRequest}
         onClose={() => setModalOpen(false)}
       />
+
+   {onDetailsClose && (   <>
+        <div className="fixed inset-0 flex items-center justify-center z-40">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+          <div className=" relative w-full max-w-[1037px] bg-brandBlack rounded-sm shadow-lg p-[20px]">
+            {/* Header (Image + Title + Button) */}
+            <div className="flex justify-between flex-wrap gap-y-[20px] items-center">
+              <div className="flex items-start gap-[15px]">
+                <div className="relative bg-white  py-[7px] px-[7px] rounded-sm flex items-center justify-center overflow-hidden">
+                  <Image
+                    src={imagePath + partRequest?.attachment[0]}
+                    alt="Filter"
+                    width={150}
+                    height={150}
+                    className="object-cover md:w-[140px] md:h-[140px] w-[36px] h-[50px]"
+                  />
+                  <IoIosImages onClick={() =>   openGallery(
+      (partRequest?.attachment || []).filter(
+        (a): a is string => typeof a === "string"
+      )
+    ) } className="absolute bottom-1 right-1 shadow-[0_1px_5px_#817f7f] cursor-pointer hover:bg-[#000] duration-600 bg-[#040404c7] text-white text-[33px] p-[4px] rounded-[5px]" />
+                </div>
+
+                <div className="flex flex-col justify-start">
+                  <h1 className="md:text-[26px] text-lg text-white font-bold leading-[22px] flex gap-2 items-center">
+                    {partRequest?.title}
+                    <span className="text-[8px] font-medium capitalize leading-[10px] text-white bg-[#52A84E] px-[9px] py-[1px] rounded-[50px]">
+                      {partRequest?.urgency}
+                    </span>
+                  </h1>
+                  <p className="md:text-xs text-[10px] leading-[15px] font-medium text-neutralLight md:mt-[10px] mt-[5px]">
+                    {partRequest?.vehicle_make} {partRequest?.vehicle_model} •{" "}
+                    {partRequest?.vehicle_model_trim}
+                  </p>
+                  <p className="text-[10px] leading-[22px] font-medium text-[#F8F8F8] mt-[5px]">
+                    Required By:{" "}
+                    <span className="font-bold">
+                      {partRequest?.required_by_date}
+                    </span>
+                  </p>
+                 {partRequest?.address?.address && (
+                     <p className="text-[10px] leading-[22px] font-medium text-[#F8F8F8] mt-[5px]">
+                    Delivery Address:{" "}
+                    <span className="font-bold">
+                    {partRequest?.address?.address}, {partRequest?.address?.city}, {partRequest?.address?.province} ( {partRequest?.address?.postal_code} )
+                    </span>
+                  </p>
+                 )}
+                </div>
+              </div>
+              <div className="flex flex-col items-end gap-[30px]">
+                <button onClick={() => setOnDetailsClose(false)} className="bg-white cursor-pointer h-8 w-8 rounded-full flex justify-center items-center text-black "><IoMdClose /></button>
+                <button  onClick={() => partRequest && ModalOpen(partRequest)} className="text-autoblue md:w-[auto] w-full cursor-pointer md:text-base text-sm leading-[14px] border border-autoblue py-[13px] px-[20px] duration-400 hover:text-white rounded-sm hover:bg-hoverblue hover:border-hoverblue">
+                  Quote Now
+                </button>
+              </div>
+            </div>
+            <div>
+
+            </div>
+
+            {/* QUOTES LIST */}
+            <div className="space-y-[10px] mt-[16px]">
+              <div className="bg-[#011827] border border-[#153C51] rounded-sm pt-[5px] pb-[15px] ps-[12px] pe-[22px]">
+                <p className="pt-3 md:text-sm text-xs leading-[22px] font-medium text-white mt-[5px]">
+                 {partRequest?.description}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+         <GalleryLoader onClose={setGalleryOpen} open={galleryOpen} images={selectGallery}  />
+      </>
+      
+   )}
     </>
   );
 }

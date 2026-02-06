@@ -11,7 +11,14 @@ import { useRouter } from "next/navigation";
 import { OrdersType } from "../common/interface";
 
 import { FaSort } from "react-icons/fa6";
-
+const statusCode ={
+  "pending": { name: "Active", color: "text-white-500" },
+  "in_process": { name: "In Process", color: "text-yellow-500" },
+  "in_transit": { name: "In Transit", color: "text-blue-500" },
+  "completed": { name: "Completed", color: "text-green-500" },
+  "cancelled": { name: "Cancelled", color: "text-red-500" },
+  "hold": { name: "Hold", color: "text-orange-500" }
+}
 
 export default function OrdersTable() {
  const [OrdersData, setOrdersData] = useState<OrdersType[]>([]);
@@ -277,24 +284,14 @@ return sortConfig.direction === "asc"
                         </td>
 
             <td className="md:text-xs text-[10px] p-[10px] md:leading-[22px] leading-[13px] font-semibold text-center">
-                          {item.quotedPrice}
+                          R {item.quotedPrice}
                         </td>
 
                         {/* Status Color */}
                         <td
-                          className={`md:text-xs text-[10px] md:leading-[22px] leading-[13px] p-[10px] font-semibold text-center ${
-                            item.status === 'PENDING'
-                              ? "text-yellow-400"
-                              : item.status === 'COMPLETED'
-                              ? "text-green-500"
-                              : "text-red-500"
-                          }`}
+                          className={`md:text-xs text-[10px] md:leading-[22px] leading-[13px] p-[10px] font-semibold text-center ${statusCode[item.status as keyof typeof statusCode]?.color || "text-gray-500"}`}
                         >
-                          {item.status === 'PENDING'
-                            ? "Pending"
-                            : item.status === 'COMPLETED'
-                            ? "Completed"
-                            : "Suspend"}
+                       {statusCode[item.status as keyof typeof statusCode]?.name || "Unknown"}
                         </td>
 
                         {/* Actions */}

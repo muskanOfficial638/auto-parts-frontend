@@ -31,10 +31,9 @@ export default function DeleteModal({
       }
     } catch (err: any) {
       // Handle errors more gracefully
-      if (err.response) {
-        // Server responded with a status other than 2xx
-        console.error("Server error:", err.response.data);
-        toast.error(err.response.data.detail || "log not found");
+      if (err.response.data.detail.status === false) {
+        console.error("Server error:", err.response.data.detail);
+        toast.error(err.response.data.detail.message|| "Failed to delete request");
       } else if (err.request) {
         // Request was made but no response received
         console.error("No response:", err.request);

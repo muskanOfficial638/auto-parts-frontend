@@ -19,9 +19,18 @@ export default function BidModal({
   onClose: () => void;
   openOTP?: () => void;
 }) {
-  useEffect(() => {
-    // console.log("userRequest=>", userRequest);
+
+  
+  const [files, setFiles] = useState<File[]>([]);
+
+
+
+  useEffect( () => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+     setFiles([]);
+     
   }, [userRequest]);
+
 
   const [formData, setFormData] = useState<QuoteCreate>({
   price_cents: "",
@@ -30,8 +39,6 @@ export default function BidModal({
   terms: "",
   attachment: [],
 });
-
-  const [files, setFiles] = useState<File[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement >) => {
     const target = e.target;
@@ -71,7 +78,7 @@ export default function BidModal({
 
       console.log(formDataPayload)
 
-      const response = await axios.post(`${supplierPath}/quote`, formDataPayload, {
+      const response = await axios.post(`${supplierPath}/quote/`, formDataPayload, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

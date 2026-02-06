@@ -39,7 +39,7 @@ interface OrderDetailsType {
   orderID: string;
   status: string; // extend if needed
   supplierData: SupplierData;
-  shipping_address: ShippingAddress;
+  address: ShippingAddress;
   created_at: string; // or Date if you convert it
   payment_meta: PaymentDetails;
   deliveryDate: string;
@@ -134,21 +134,21 @@ export default function RequestPartPage() {
 }</span></p>
                           </div>
                         </div>
-                        <p className="text-[10px] md:mt-[10px] mt-[3px] md:text-right text-left md:ms-[0] ms-[50px] leading-xs font-medium text-LightGray">Price: <span className="text-white font-bold">₹{OrderDetails?.payment_meta?.amount}</span></p>
+                        <p className="text-[10px] md:mt-[10px] mt-[3px] md:text-right text-left md:ms-[0] ms-[50px] leading-xs font-medium text-LightGray">Price: <span className="text-white font-bold">R {OrderDetails?.payment_meta?.amount}</span></p>
                       </div>
                       <div className="space-y-[10px] md:ps-[22px] md:p-[0] p-[10px] md:border-l border-t border-[#153C51]">
                         <p className="flex text-[13px] font-semibold leading-[16px] items-center gap-[8px] md:pt-[10px]"><Image width={23}
                           height={32} src="/map-icon.svg" alt="map icon" />Delivery Address</p>
                         <div className="space-y-[3px] ps-[24px]">
-                          <p className="text-[10px] leading-xs font-medium text-white">{OrderDetails?.shipping_address?.name}</p>
-                          <p className="text-[10px] leading-xs font-medium text-white">{OrderDetails?.shipping_address?.address}, {OrderDetails?.shipping_address?.city},{OrderDetails?.shipping_address?.province}- {OrderDetails?.shipping_address?.postal_code}</p>
+                          <p className="text-[10px] leading-xs font-medium text-white">{OrderDetails?.address?.name}</p>
+                          <p className="text-[10px] leading-xs font-medium text-white">{OrderDetails?.address?.address}, {OrderDetails?.address?.city},{OrderDetails?.address?.province}- {OrderDetails?.address?.postal_code}</p>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div className="md:text-base text-sm border-b border-[#35373C] pb-[10px] font-bold mt-[15px] leading-sm flex justify-between items-center">
                     <p>Total</p>
-                    <p>₹{OrderDetails?.payment_meta?.amount}</p>
+                    <p>R {OrderDetails?.payment_meta?.amount}</p>
                   </div>
                   <div className="flex justify-end mt-[30px]">
                     {/* <button

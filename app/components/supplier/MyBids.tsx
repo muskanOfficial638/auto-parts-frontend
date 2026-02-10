@@ -179,7 +179,7 @@ export default function MyBids() {
                       />
                     </div>
 
-                    <div>
+                    <div className="md:w-[350px]">
                       <h3 className="text-base leading-[22px] text-white font-bold flex items-center gap-[8px]">
                         {data?.part_request?.title}{" "}
                         <span className={`text-[8px] font-medium leading-[10px] text-white px-[9px] py-[1px] rounded-[50px] ${data?.part_request?.urgency === "high" ? "bg-red-500" : data?.part_request?.urgency === "normal" ? "bg-yellow-500" : "bg-[#52A84E]"}`}>
@@ -197,6 +197,10 @@ export default function MyBids() {
                       <p className="text-[10px] font-medium text-[#F8F8F8] mt-[5px]">
                         Required By:{" "}
                         <span>{data?.part_request?.required_by_date}</span>
+                      </p>
+                        <p className="text-[10px] font-medium text-[#F8F8F8] mt-[5px]">
+                        Address:{" "}
+                        <span>{data?.part_request?.address?.name} {data?.part_request?.address?.address} {data?.part_request?.address?.city} {data?.part_request?.address?.province} ({data?.part_request?.address?.postal_code})</span>
                       </p>
                     </div>
                           <div className="bg-[#011827] p-[10px] border border-[#153C51] rounded-sm text-white flex flex-col w-50">

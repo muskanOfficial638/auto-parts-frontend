@@ -1,6 +1,7 @@
 import { sendOTP, verifyOTP } from "@/app/utils/api";
 
 import { useRef, useState } from "react";
+import { toast } from "react-toastify";
 
 const OTP_LENGTH = 4;
 
@@ -30,7 +31,10 @@ export default function OTPModal({ quoteId,
         user_id: loggedInUser?.user?.id,
       }
     );
-    console.log("OTP sent response:", response);
+    if (response.data.status === true) {
+      
+      toast.success("OTP sent successfully!");
+    }
 
   }
   const handleChange = (value: string, index: number): void => {
@@ -63,7 +67,6 @@ export default function OTPModal({ quoteId,
 
   const handleSubmit = async (): Promise<void> => {
     const otpValue = otp.join("");
-    console.log("OTP:", otpValue);
 
         const response = await verifyOTP(
       loggedInUser?.access_token,
@@ -73,7 +76,13 @@ export default function OTPModal({ quoteId,
         otp: otpValue,
       }
     );
-    console.log("OTP sent response:", response);
+    if (response.data.status === true) {
+      toast.success("Your Order has been completed successfully!");
+      onClose();
+    } else {
+      toast.error(response.data.message || "OTP verification failed!");
+    }
+    
   };
 
   if (!open) return null;

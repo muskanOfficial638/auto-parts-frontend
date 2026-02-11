@@ -46,7 +46,17 @@ const responseStatus = await updateOrderStatus(
         loggedInUser?.access_token,
         response.data.order_uid,
         {
-          payment_meta: {method: "COD"},
+          payment_meta: {
+            paymentMethod: "COD",
+            paymentStatus: "pending",
+            paymentDate: new Date().toISOString(), 
+            amount: dataSelect?.priceCents || "0",
+            transactionId: "",
+            gateway: "COD",
+            notes: ""
+          
+          },
+          
           status: "in_process",
         }
       );

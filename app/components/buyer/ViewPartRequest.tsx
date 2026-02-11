@@ -78,7 +78,7 @@ export default function ViewPartRequest() {
         setHasAccepted(data.some((item : Quoteview) => item.status === "in_transit"));
       });
     }
-  }, [request]);
+  }, [request,otpModalOpen]);
 
   useEffect(() => {
     // console.log("quoteData:", quoteData);

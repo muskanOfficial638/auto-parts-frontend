@@ -18,7 +18,32 @@ export const buyerPath = `${BASE_API_URL}/8002/v1/buyer`;
 export const vehicleApiPath = `${BASE_API_URL}/8006/v1/vehicle`;
 export const imagePath = `${BASE_API_URL}/8000/image/`;  //image path for local 
 
+// verify OTP
+export function shippingSubmit(token: string,formdata: any) {
+ {
 
+    return axios.post(
+    `${supplierPath}/shipping/`,
+    { ...formdata },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+    }
+  )
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error("unable to verify OTP ", error);
+      throw error;
+    });
+  }
+}
+
+
+// update order status
 export function updateOrderStatus(token: string,orderid:string,formdata: any) {
  {
 

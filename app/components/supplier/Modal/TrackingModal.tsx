@@ -4,15 +4,18 @@
 import { useState } from "react";
 import { Quote } from "../../common/interface";
 import { toast } from "react-toastify";
+import { shippingSubmit } from "@/app/utils/api";
 
 export default function TrackingModal({
   open,
   onClose,
+  quoteId
 }: {
   open: boolean;
   onClose: () => void;
+  quoteId?: string;
 }) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
   const [formData, setFormData] = useState<Quote>();
 
   const handleChange = (
@@ -26,6 +29,24 @@ export default function TrackingModal({
   };
 
   if (!open) return null;
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    
+  const autoPartsUserData = localStorage.getItem("autoPartsUserData");
+    const loggedInUser = JSON.parse(autoPartsUserData || "{}");
+    if (loggedInUser?.access_token) {
+        const response = await shippingSubmit(
+          loggedInUser?.access_token,
+         
+          {quote_id:quoteId,tracking_details:{...formData}}
+        )
+    
+        if (response.data?.success===true) {
+         toast.success("Tracking details submitted successfully");
+          onClose();
+        }
+      }
+  }
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -39,28 +60,28 @@ export default function TrackingModal({
           >
             <span className="text-black ">✕</span>
           </button>
-          <form className="w-[429px] max-w-[100%] ms-[auto] me-[auto]">
+          <form className="w-[429px] max-w-[100%] ms-[auto] me-[auto]" onSubmit={handleSubmit}>
             <h2 className="text-white md:text-4xl text-[25px] font-bold md:mb-[38px] mb-[30px]">
               Tracking Detail
             </h2>
             <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
               Tracking URL
             </label>
-            <input placeholder="Tracking URL" className="w-full bg-white text-black px-4 py-2 rounded-sm mb-4" type="text" name="tracking_url" />
+            <input onChange={handleChange} placeholder="Tracking URL" className="w-full bg-white text-black px-4 py-2 rounded-sm mb-4" type="text" name="tracking_url" />
             <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
               Tracking Detail
             </label>
             <textarea
               placeholder="Description"
-              name="terms"
+              name="tracking"
               onChange={handleChange}
               className="md:px-[25px] md:py-[15px] px-[10px] py-[12px] bg-white md:mb-[43px] mb-[30px] h-[100px] md:text-[19px] text-[15px] md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
             />
 
             <button
               className="bg-autoblue w-full md:text-[22px] text-[15px] leading[14px] rounded-sm text-white md:py-[10px] py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
-              onClick={()=>toast.error("Sorry, Work is pending from backend!")}
-              type="button"
+             
+              type="submit"
             >
               Submit
             </button>

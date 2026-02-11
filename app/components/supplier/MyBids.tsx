@@ -1,7 +1,7 @@
 "use client";
 
 import BidModal from "@/app/components/supplier/Modal/BidModal";
- import OTPModal from "@/app/components/supplier/Modal/OtpModal";
+
 import { getQuoteBySupplier, imagePath } from "@/app/utils/api";
 import { useEffect, useState } from "react";
 import { Quote } from "../common/interface";
@@ -18,10 +18,10 @@ export default function MyBids() {
   const [loading, setIsLoading] = useState(true);
   const [delmodalOpen, setdelModalOpen] = useState(false);
   const [deleteQuoteId, setDeleteQuoteId] = useState("");
+  const [shipQuoteId, setShipQuoteId] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [isTrackingModal, setIsTrackingModalOpen] = useState(false);
-  const [otpModalOpen, setOtpModalOpen] = useState<boolean>(false);
-
+ 
   const statusCode ={
   "pending": { name: "Active", color: "bg-gray-500" },
   "in_process": { name: "In Process", color: "bg-yellow-500" },
@@ -169,7 +169,6 @@ export default function MyBids() {
                 >
                   <div className="flex items-center gap-4">
                     <div className="bg-white py-[5px] px-[5px] md:mt-[0] mt-[4px] rounded-sm">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <Image
                       width={100}
                       height={100}
@@ -198,10 +197,12 @@ export default function MyBids() {
                         Required By:{" "}
                         <span>{data?.part_request?.required_by_date}</span>
                       </p>
+                      { data?.part_request?.address && (
                         <p className="text-[10px] font-medium text-[#F8F8F8] mt-[5px]">
                         Address:{" "}
                         <span>{data?.part_request?.address?.name} {data?.part_request?.address?.address} {data?.part_request?.address?.city} {data?.part_request?.address?.province} ({data?.part_request?.address?.postal_code})</span>
                       </p>
+                      )}
                     </div>
                           <div className="bg-[#011827] p-[10px] border border-[#153C51] rounded-sm text-white flex flex-col w-50">
                         <span className="font-bold text-xs leading-[22px]">
@@ -224,7 +225,7 @@ export default function MyBids() {
                     <>
                       <button
                         className="cursor-pointer bg-autoblue hover:bg-hoverblue text-white md:text-base text-sm font-semibold leading-[14px]  md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm"
-                        onClick={() => setIsTrackingModalOpen(true)}
+                        onClick={() => {setShipQuoteId(data?.id); setIsTrackingModalOpen(true)}}
                       >
                         Process now
                       </button>
@@ -268,14 +269,14 @@ export default function MyBids() {
       <BidModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        openOTP={() => setOtpModalOpen(true)}
+       
       />
 
-      {/* <OTPModal open={otpModalOpen} onClose={() => setOtpModalOpen(false)} /> */}
 
       <TrackingModal
         open={isTrackingModal}
-        onClose={() => setIsTrackingModalOpen(false)}
+        onClose={() => {setIsTrackingModalOpen(false); onTabClick("in_process")}}
+        quoteId={shipQuoteId}
       />
     </>
   );

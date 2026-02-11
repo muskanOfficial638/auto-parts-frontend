@@ -12,6 +12,7 @@ export interface UserProfile {
 }
 
 export default function MyAccountForm() {
+  const [loading, setLoading] = useState(true);
   const [profileData, setProfileData] = useState<UserProfile>({
     user_name: "",
     email: "",
@@ -36,7 +37,8 @@ export default function MyAccountForm() {
           loggedInUser.user.id,
           loggedInUser.access_token
         ).then((data: any) => {
-          console.log("data", data);
+         
+          setLoading(false);
           setProfileData({
             user_name: data?.user_name || "",
             email: data?.email || "",
@@ -118,10 +120,17 @@ export default function MyAccountForm() {
       {/* Page Content */}
       <div className="relative z-10 flex flex-col">
         <div className="flex justify-center items-start pt-36 pb-20 px-4">
+              {loading ? (
+            <div className="flex justify-center items-center h-[50vh]">
+              <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+
+           ): (
           <div className="w-[850px] max-w-[100%] bg-brandBlack rounded-sm p-[30px]">
             <h2 className="md:text-[23px] text-text-lg leading-[36px] font-semibold text-white mb-[27px]">
               Account Details
             </h2>
+      
             <form className="space-y-[28px]" onSubmit={handleSubmit}>
               {/* Product Name */}
               <div>
@@ -211,8 +220,11 @@ export default function MyAccountForm() {
                 Save Changes
               </button>
             </form>
+           
           </div>
+          )}
         </div>
+           
       </div>
     </div>
   );

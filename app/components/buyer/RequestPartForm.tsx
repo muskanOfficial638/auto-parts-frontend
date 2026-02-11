@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   buyerPath,
   fetchPartRequestsById,
@@ -40,7 +40,7 @@ export default function RequestPartForm() {
     province: string;
     postal_code: string;
     country: string;
-     id?: string;
+    id?: string;
   }
   interface AddressTypeWithID {
     address: string;
@@ -49,7 +49,7 @@ export default function RequestPartForm() {
     province: string;
     postal_code: string;
     country: string;
-     id: string;
+    id: string;
   }
   const searchParams = useSearchParams();
   const requestId = searchParams.get("request") || "";
@@ -68,9 +68,8 @@ export default function RequestPartForm() {
   const [address, setAddress] = useState<AddressTypeWithID[]>();
   const [formStep, setFormStep] = useState<number>(1);
 
-  useEffect(() => {
- console.log("dsd",selectedAddressData);
-  },[selectedAddressData])
+
+
   function selectAddrsss() {
     const selectedAddress = (
       document.querySelector(
@@ -84,8 +83,8 @@ export default function RequestPartForm() {
     }
     setFormStep(2);
     setSelectedAddressData(address?.filter((addr) => addr.id === selectedAddress)[0] || null);
-   
-    
+
+
   }
 
 
@@ -101,11 +100,6 @@ export default function RequestPartForm() {
       );
     }
   }, [changeaddress]);
-
-
-  useEffect(() => {
-    console.log("dd :", formData);
-  }, [formData]);
 
 
   useEffect(() => {
@@ -189,9 +183,9 @@ export default function RequestPartForm() {
 
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-   
-   delete selectedAddressData?.id;
- const addressjson = JSON.stringify(selectedAddressData);
+
+    delete selectedAddressData?.id;
+    const addressjson = JSON.stringify(selectedAddressData);
     const updatedData: any = {
       ...formData,
       user_id: loggedInUser?.user?.id || "",
@@ -206,7 +200,7 @@ export default function RequestPartForm() {
         : selectedTrim?.trim || "",
       address: addressjson,
     };
-    
+
     if (
       !updatedData.title ||
       !updatedData.urgency ||
@@ -243,14 +237,14 @@ export default function RequestPartForm() {
         : `${buyerPath}/part-request`;
 
       const method = requestId ? "PATCH" : "POST";
-console.log("url", multipartData);
+      console.log("url", multipartData);
       const response = await fetch(url, {
         method,
         body: multipartData,
         headers: {
           // Add Authorization if your API requires it
           ...(loggedInUser?.access_token && {
-           Authorization: `Bearer ${loggedInUser.access_token}`,
+            Authorization: `Bearer ${loggedInUser.access_token}`,
           }),
         },
       });
@@ -288,6 +282,10 @@ console.log("url", multipartData);
 
   const removeFile = (index: number) => {
     setFiles((prev) => prev.filter((_, i) => i !== index));
+    setFormData((prev) => ({
+      ...prev,
+      attachment: prev.attachment?.filter((_, i) => i !== index),
+    }));
   };
 
   function deleteHandeler(addressId: string) {
@@ -588,6 +586,7 @@ console.log("url", multipartData);
                       <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                         Image*
                       </label>
+                      {files.length < 5 && (
                       <div className="flex flex-row items-center">
                         <input
                           type="file"
@@ -617,7 +616,7 @@ console.log("url", multipartData);
                           </p>
                         </label>
                       </div>
-
+                      )}
                       {/* Selected Files Preview */}
                       {files.map((file, index) => {
                         const isImage = file.type.startsWith("image/");

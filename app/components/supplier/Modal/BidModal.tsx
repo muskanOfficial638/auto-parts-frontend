@@ -17,7 +17,7 @@ export default function BidModal({
   open: boolean;
   userRequest?: PartRequest;
   onClose: () => void;
-  openOTP?: () => void;
+ 
 }) {
 
   
@@ -191,6 +191,7 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                 <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                   Image*
                 </label>
+                {files.length < 5 && (
                 <div className="flex flex-row items-center">
                   <input
                     type="file"
@@ -224,7 +225,7 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
      
                   </label>
                 </div>
-
+                )}
                 {/* Selected Files Preview */}
                 {files.map((file, index) => {
                   const isImage = file.type.startsWith("image/");

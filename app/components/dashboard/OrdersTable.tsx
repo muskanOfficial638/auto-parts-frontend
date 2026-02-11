@@ -256,9 +256,9 @@ return sortConfig.direction === "asc"
                           <div className="bg-white w-[50px] h-[50px] flex items-center justify-center rounded-sm">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
-                              src={`${imagePath}${item?.productImage}`}
+                              src={`${imagePath}${item?.productImage?.[0]}`}
                               alt="product"
-                              className="md:w-[28px] md:h-[39px] w-[22px] h-[22px] "
+                              className="w-[50px]  h-[55px] "
                             />
                           </div>
                           <span className="md:text-xs text-[10px] font-semibold md:leading-[22px] leading-[13px]">

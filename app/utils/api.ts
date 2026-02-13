@@ -15,7 +15,7 @@ export const profilePath = `${BASE_API_URL}/8004/profiles/`;
 export const authApiPath = `${BASE_API_URL}/8001/v1`;
 export const supplierPath = `${BASE_API_URL}/8005/v1/supplier`;
 export const buyerPath = `${BASE_API_URL}/8002/v1/buyer`;
-export const vehicleApiPath = `${BASE_API_URL}/8006/v1/vehicle`;
+//export const vehicleApiPath = `${BASE_API_URL}/8006/v1/vehicle`;
 export const imagePath = `${BASE_API_URL}/8000/image/`;  //image path for local 
 
 // verify OTP
@@ -505,7 +505,7 @@ export async function sendVerification(email: string) {
 // VEHICLE
 // Get Vehicle make
 export async function viewVehicleMake() {
-  const res = await fetch(`${vehicleApiPath}/view/`, {
+  const res = await fetch(`${buyerPath}/vehicle/view/`, {
     cache: "no-store",
     method: "GET",
     headers: {

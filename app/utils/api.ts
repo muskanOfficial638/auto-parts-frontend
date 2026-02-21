@@ -23,7 +23,7 @@ export function shippingSubmit(token: string,formdata: any) {
  {
 
     return axios.post(
-    `${supplierPath}/shipping/`,
+    `${supplierPath}/shipping`,
     { ...formdata },
     {
       headers: {

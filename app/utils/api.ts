@@ -505,7 +505,7 @@ export async function sendVerification(email: string) {
 // VEHICLE
 // Get Vehicle make
 export async function viewVehicleMake() {
-  const res = await fetch(`${buyerPath}/vehicle/view/`, {
+  const res = await fetch(`${buyerPath}/vehicle/view`, {
     cache: "no-store",
     method: "GET",
     headers: {

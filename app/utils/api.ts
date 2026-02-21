@@ -10,7 +10,7 @@ export const getAuth = () => {
 
 //API paths 
 const BASE_API_URL = "https://api.autopartsxchange.co.za";
-export const orderPath = `${BASE_API_URL}/8003/v1`;
+export const orderPath = `${BASE_API_URL}/8003/v1`;p
 export const profilePath = `${BASE_API_URL}/8004/profiles/`;
 export const authApiPath = `${BASE_API_URL}/8001/v1`;
 export const supplierPath = `${BASE_API_URL}/8005/v1/supplier`;
@@ -263,7 +263,7 @@ export async function getQuoteByRequest(
   token: string
 ) {
   const res = await fetch(
-    `${buyerPath}/quote/by-request/?request_id=${part_request_id}`,
+    `${buyerPath}/quote/by-request?request_id=${part_request_id}`,
     {
       cache: "no-store",
       headers: {

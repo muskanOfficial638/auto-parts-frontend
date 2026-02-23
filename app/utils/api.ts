@@ -15,7 +15,7 @@ export const profilePath = `/api/profiles/`;
 export const supplierPath = `/api/supplier`;
 export const buyerPath = `/api/buyer`;
 
-//export const vehicleApiPath = `${BASE_API_URL}/8006/v1/vehicle`;
+//export const vehicleApiPath = `${BASE_API_URL}/8006/v1/vehicle`
 
 
 

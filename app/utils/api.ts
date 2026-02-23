@@ -30,7 +30,7 @@ export function shippingSubmit(formdata: any) {
  {
 
     return axios.post(
-    `${supplierPath}/shipping/`,
+    `${supplierPath}/shipping`,
     { ...formdata },
     {
       headers: {
@@ -349,7 +349,7 @@ export async function updateQuoteByAction(
 
 // SUPPLIER
 // Supplier All part requests
-export async function fetchAllSupplierPartRequests( page:number) {
+export async function fetchAllSupplierPartRequests(token: string, page:number) {
   const res = await fetch(`${supplierPath}/all/part-request/?page=${page}&limit=10`, {
     cache: "no-store",
     headers: {
@@ -508,7 +508,7 @@ export async function verifyEmail(token: string) {
 // VEHICLE
 // Get Vehicle make
 export async function viewVehicleMake() {
-  const res = await fetch(`${buyerPath}/vehicle/view/`, {
+  const res = await fetch(`${buyerPath}/vehicle/view`, {
     cache: "no-store",
     method: "GET",
     headers: {

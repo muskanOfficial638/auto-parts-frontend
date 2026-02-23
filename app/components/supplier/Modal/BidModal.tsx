@@ -82,7 +82,7 @@ const router = useRouter();
 
       console.log(formDataPayload)
 
-      const response = await axios.post(`${supplierPath}/quote/`, formDataPayload, {
+      const response = await axios.post(`${supplierPath}/quote`, formDataPayload, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

@@ -86,9 +86,8 @@ function BuyerSupplierMenu({ autoPartsUserData }: { autoPartsUserData: any }) {
   const router = useRouter();
   function handleLogout() {
     if (autoPartsUserData) {
-      localStorage.removeItem("autoPartsUserData");
-      localStorage.clear();
-      router.push("/login");
+
+      router.push("/logout");
     }
   }
   return (
@@ -106,7 +105,7 @@ function BuyerSupplierMenu({ autoPartsUserData }: { autoPartsUserData: any }) {
         </Link>
       </div>
       <div className="hidden lg:flex items-center space-x-[17px]">
-        {autoPartsUserData?.user?.role === "buyer" && (
+        {autoPartsUserData?.role === "buyer" && (
           <Link
             href="/request-part"
             className="bg-autoblue leading-[19px] font-semibold text-base hover:bg-hoverblue text-white px-[18px] py-[12px] cursor-pointer rounded-sm duration-400"
@@ -154,9 +153,9 @@ function BuyerSupplierMenu({ autoPartsUserData }: { autoPartsUserData: any }) {
               height={32}
               className="w-[30px] h-[30px] rounded-full mr-[10px]"
             />
-            {autoPartsUserData?.user.user_name
-              ? autoPartsUserData?.user.user_name
-              : autoPartsUserData?.user?.role}
+            {autoPartsUserData?.user_name
+              ? autoPartsUserData?.user_name
+              : autoPartsUserData?.role}
             <span className="ml-[10px]"> <Image
               src="/dropdown.svg"
               alt="dropdown"
@@ -171,7 +170,7 @@ function BuyerSupplierMenu({ autoPartsUserData }: { autoPartsUserData: any }) {
               <li>
                 <Link
                   href={
-                    autoPartsUserData?.user?.role === "buyer"
+                    autoPartsUserData?.role === "buyer"
                       ? "/buyer-dashboard"
                       : "/supplier-dashboard"
                   }
@@ -191,7 +190,7 @@ function BuyerSupplierMenu({ autoPartsUserData }: { autoPartsUserData: any }) {
               </li>
 
 
-              {autoPartsUserData?.user.role === "buyer" && (
+              {autoPartsUserData.role === "buyer" && (
                 <li>
                   <Link
                     href="/orders"
@@ -203,7 +202,7 @@ function BuyerSupplierMenu({ autoPartsUserData }: { autoPartsUserData: any }) {
               )}
 
 
-              {autoPartsUserData?.user?.role === "supplier" && (
+              {autoPartsUserData?.role === "supplier" && (
                 <li>
                   <Link
                     href="/my-quote"
@@ -247,9 +246,7 @@ const [autoPartsUserData] = useState(() => {
   const router = useRouter();
   function handleLogout() {
     if (autoPartsUserData) {
-      localStorage.removeItem("autoPartsUserData");
-      localStorage.clear();
-      router.push("/login");
+      router.push("/logout");
     }
   }
  
@@ -328,13 +325,13 @@ const [autoPartsUserData] = useState(() => {
                 />
                 <div>
                   <p className="font-semibold">
-                    {autoPartsUserData?.user?.user_name}
+                    {autoPartsUserData?.user_name}
                   </p>
 
                 </div>
               </div>
 
-              {autoPartsUserData?.user?.role === "buyer" && (
+              {autoPartsUserData?.role === "buyer" && (
                 <Link
                   href="/request-part"
                   className="bg-autoblue leading-[19px] font-semibold text-base hover:bg-hoverblue text-white px-[18px] py-[12px] cursor-pointer rounded-sm duration-400"
@@ -346,7 +343,7 @@ const [autoPartsUserData] = useState(() => {
               <hr className="border-gray-700" />
 
               <Link href={
-                autoPartsUserData?.user?.role === "buyer"
+                autoPartsUserData?.role === "buyer"
                   ? "/buyer-dashboard"
                   : "/supplier-dashboard"
               } className="hover:text-hoverblue">
@@ -361,7 +358,7 @@ const [autoPartsUserData] = useState(() => {
               </Link>
 
 
-              {autoPartsUserData.user.role === "buyer" && (
+              {autoPartsUserData.role === "buyer" && (
 
                 <Link
                   href="/orders"
@@ -371,7 +368,7 @@ const [autoPartsUserData] = useState(() => {
                 </Link>
 
               )}
-              {autoPartsUserData.user.role === "supplier" && (
+              {autoPartsUserData.role === "supplier" && (
                 <Link href="/my-bids" className="hover:text-hoverblue">
                   My Bids
                 </Link>

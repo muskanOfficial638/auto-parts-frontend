@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { AddresswithoutID } from "../common/interface";
 import { CreateOrder, updateOrderStatus } from "@/app/utils/api";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 type SelectedData = {
   quoteId: string;
@@ -23,17 +24,19 @@ type OrderCreateProps = {
 export default function OrderCreate({ closeModal, dataSelect }: OrderCreateProps) {
 
   
-
+const router = useRouter();
   async function processToPay() {
 
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
+    if (!loggedInUser.id) router.replace("/logout");
+
+    
 
    const response = await CreateOrder(
-      loggedInUser?.access_token,
       {
         quote_id: dataSelect?.quoteId,
-        buyer_id: loggedInUser?.user?.id,
+        buyer_id: loggedInUser?.id,
         address: dataSelect?.address,
       }
     );
@@ -43,7 +46,7 @@ export default function OrderCreate({ closeModal, dataSelect }: OrderCreateProps
      
       closeModal(false);
 const responseStatus = await updateOrderStatus(
-        loggedInUser?.access_token,
+
         response.data.order_uid,
         {
           payment_meta: {

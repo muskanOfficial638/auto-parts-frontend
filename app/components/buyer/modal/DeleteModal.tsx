@@ -17,11 +17,10 @@ export default function DeleteModal({
   if (!open) return null;
 
   async function handleDeletePartRequest(requestId: string) {
-    const autoPartsUserData = localStorage.getItem("autoPartsUserData");
-    const loggedInUser = JSON.parse(autoPartsUserData || "{}");
+ 
     try {
       const response = await deletePartRequest(
-        loggedInUser?.access_token,
+     
         requestId
       );
       if (response) {

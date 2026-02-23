@@ -10,6 +10,7 @@ import { MdDelete } from "react-icons/md";
 import DeleteQuoteModal from "../buyer/modal/DeleteQuoteModal";
 import Image from "next/image";
 import TrackingModal from "./Modal/TrackingModal";
+import { useRouter } from "next/navigation";
 //import Loader from "../common/Loader";
 
 export default function MyBids() {
@@ -30,39 +31,40 @@ export default function MyBids() {
   "cancelled": { name: "Cancelled", color: "bg-red-500" }
 }
  // const [loading, setIsLoading] = useState(true);
-
+const router = useRouter();
   useEffect(() => {
     if (typeof window !== "undefined") {
       const autoPartsUserData = localStorage.getItem("autoPartsUserData");
       const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-      if (loggedInUser?.access_token) {
+      if (!loggedInUser.id) router.replace("/logout");
+      if (loggedInUser) {
         getQuoteBySupplier(
-          loggedInUser?.user?.id,
+          loggedInUser?.id,
           "pending",
           1,
           10,
-          loggedInUser.access_token
+       
         ).then((data) => {
           setQuoteData(data?.quotes);
          setIsLoading(false)
         });
       }
     }
-  }, []);
-
+  }, [router]);
 
   function onTabClick(tabName: string) {
     setActiveTab(tabName);
      setIsLoading(true);
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-    if (loggedInUser?.access_token) {
+    if (!loggedInUser.id) router.replace("/logout");
+    if (loggedInUser) {
       getQuoteBySupplier(
-        loggedInUser?.user?.id,
+        loggedInUser?.id,
         tabName,
         1,
-        10,
-        loggedInUser.access_token
+        10
+  
       )
         .then((data) => {
 

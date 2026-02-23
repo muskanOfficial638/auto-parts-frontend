@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { OrdersType } from "../common/interface";
 
 import { FaSort } from "react-icons/fa6";
+import Image from "next/image";
 const statusCode ={
   "pending": { name: "Active", color: "text-white-500" },
   "in_process": { name: "In Process", color: "text-yellow-500" },
@@ -128,17 +129,17 @@ return sortConfig.direction === "asc"
     const loadInitialData = async () => {
       const autoPartsUserData = localStorage.getItem("autoPartsUserData");
       const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-      if (!loggedInUser?.access_token) return;
+      if (!loggedInUser.id) router.replace("/logout");
 
       const data = await fetchAllBuyerOrders(
-        loggedInUser.user?.id,
-        loggedInUser.access_token
+        loggedInUser?.id,
+
       );
       setOrdersData(data);
       setIsLoading(false);
     };
     loadInitialData();
-  }, []);
+  }, [router]);
 
   useEffect(() => {}, [OrdersData]);
 
@@ -254,11 +255,13 @@ return sortConfig.direction === "asc"
                         {/* Product */}
                         <td className="flex p-[10px] items-center gap-[15px]">
                           <div className="bg-white w-[50px] h-[50px] flex items-center justify-center rounded-sm">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
+                           
+                            <Image
                               src={`${imagePath}${item?.productImage?.[0]}`}
                               alt="product"
                               className="w-[50px]  h-[55px] "
+                              width={50}
+                              height={50}
                             />
                           </div>
                           <span className="md:text-xs text-[10px] font-semibold md:leading-[22px] leading-[13px]">

@@ -91,23 +91,23 @@ export default function RequestPartForm() {
   useEffect(() => {
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-    if (loggedInUser?.access_token) {
-      fetchBuyerAddress(loggedInUser.user.id, loggedInUser.access_token).then(
+    if (loggedInUser.id) {
+      fetchBuyerAddress(loggedInUser.id).then(
         (data) => {
           const reversed = [...(data?.data || [])].reverse();
           setAddress(reversed);
         },
       );
+    }else{
+      router.replace("/logout");
     }
-  }, [changeaddress]);
+  }, [changeaddress,router]);
 
 
   useEffect(() => {
-    const autoPartsUserData = localStorage.getItem("autoPartsUserData");
-    const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-
-    if (loggedInUser?.access_token && requestId) {
-      fetchPartRequestsById(requestId, loggedInUser.access_token).then(
+  
+    if (requestId) {
+      fetchPartRequestsById(requestId).then(
         (data: PartRequest) => {
           // console.log("data",data);
           setFormData(data);
@@ -188,7 +188,7 @@ export default function RequestPartForm() {
     const addressjson = JSON.stringify(selectedAddressData);
     const updatedData: any = {
       ...formData,
-      user_id: loggedInUser?.user?.id || "",
+      user_id: loggedInUser?.id || "",
       vehicle_make: formData?.vehicle_make
         ? formData?.vehicle_make
         : selectedMake?.make_name || "",
@@ -242,10 +242,6 @@ export default function RequestPartForm() {
         method,
         body: multipartData,
         headers: {
-          // Add Authorization if your API requires it
-          ...(loggedInUser?.access_token && {
-            Authorization: `Bearer ${loggedInUser.access_token}`,
-          }),
         },
       });
 

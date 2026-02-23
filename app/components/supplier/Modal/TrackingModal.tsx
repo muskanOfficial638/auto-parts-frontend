@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Quote } from "../../common/interface";
 import { toast } from "react-toastify";
 import { shippingSubmit } from "@/app/utils/api";
+import { useRouter } from "next/navigation";
 
 export default function TrackingModal({
   open,
@@ -27,17 +28,16 @@ export default function TrackingModal({
       [name]: value,
     }));
   };
-
+ const router = useRouter();
   if (!open) return null;
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     
   const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-    if (loggedInUser?.access_token) {
+    if (!loggedInUser.id) router.replace("/logout");
+    if (loggedInUser) {
         const response = await shippingSubmit(
-          loggedInUser?.access_token,
-         
           {quote_id:quoteId,tracking_details:{...formData}}
         )
     

@@ -58,12 +58,9 @@ export default function ViewPartRequest() {
   }
 
   useEffect(() => {
-    const autoPartsUserData = localStorage.getItem("autoPartsUserData");
-    const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-
-
-    if (loggedInUser?.access_token && request) {
-      fetchPartRequestsById(request, loggedInUser.access_token).then((data) => {
+ 
+    if ( request) {
+      fetchPartRequestsById(request).then((data) => {
         setPartRequest(data);
         setIsLoading(false);
         if(data.attachment && data.attachment.length > 0){ 
@@ -71,7 +68,7 @@ export default function ViewPartRequest() {
         }
       
       });
-      getQuoteByRequest(request, loggedInUser.access_token).then((data) => {
+      getQuoteByRequest(request).then((data) => {
         data.some((item : Quoteview) => item.status === "in_transit" && setAcceptedId(item.id));
         setQuoteData(data);
 

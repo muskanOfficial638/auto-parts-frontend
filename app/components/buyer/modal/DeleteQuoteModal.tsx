@@ -17,20 +17,18 @@ export default function DeleteQuoteModal({
   if (!open) return null;
 
   async function handleDeletePartRequest(quoteId: string) {
-    const autoPartsUserData = localStorage.getItem("autoPartsUserData");
-    const loggedInUser = JSON.parse(autoPartsUserData || "{}");
+
     try {
       const response = await deletequote(
-        loggedInUser?.access_token,
-        "a5e209fe-3db0-4403-8e4d-3b6ea15b70a1"
+        quoteId
       );
 
-      if (response.data.detail.success) {
+      if (response.data.success) {
         toast.success("Quote deleted successfully");
         onDeleted("pending");
         onClose();
       }else {
-        toast.error(response.data.detail.message || "Quote not Deleted");
+        toast.error(response.data.message || "Quote not Deleted");
          onClose();
       }
     } catch (err: any) {

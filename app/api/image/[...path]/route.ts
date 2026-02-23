@@ -1,17 +1,3 @@
-// import { NextResponse } from "next/server";
-
-// export async function GET(req: Request, { params }: any) {
-//   const imagePath = params.path.join("/");
-//   const url = `http://54.80.119.79:8000/image/${imagePath}`;
-
-//   const response = await fetch(url);
-
-//   const headers = new Headers(response.headers);
-//   headers.set("Content-Type", response.headers.get("Content-Type") || "image/png");
-
-//   return new NextResponse(response.body, { headers });
-// }
-
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
@@ -19,26 +5,32 @@ export const runtime = "nodejs";
 
 export async function GET(
   _request: NextRequest,
-  context: { params: Promise<{ path: string[] }> }
+  { params }: { params: { path: string[] } }
 ) {
   try {
-    const { path } = await context.params;
+    const { path } = params;
 
     if (!path || !path.length) {
       return new NextResponse("Invalid path", { status: 400 });
     }
 
     const imagePath = path.join("/");
-    const url = `http://54.80.119.79:8000/image/${imagePath}`;
+    const url = `https://api.autopartsxchange.co.za/8000/image/${imagePath}`;
 
+ 
     const response = await fetch(url);
 
     if (!response.ok) {
       return new NextResponse("Image not found", { status: 404 });
     }
 
-    const contentType =
-      response.headers.get("content-type") ?? "image/jpeg";
+    const contentType = response.headers.get("content-type");
+
+    if (!contentType || !contentType.startsWith("image/")) {
+      const text = await response.text();
+      console.error("Invalid image response:", text);
+      return new NextResponse("Invalid image response", { status: 400 });
+    }
 
     const buffer = await response.arrayBuffer();
 
@@ -53,4 +45,3 @@ export async function GET(
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
-

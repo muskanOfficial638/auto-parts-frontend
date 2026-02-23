@@ -2,6 +2,7 @@
 "use client";
 import { fetchKycDocs, uploadKycDoc } from "@/app/utils/api";
 import { PencilSquareIcon } from "@heroicons/react/16/solid";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -12,25 +13,23 @@ export default function KycDetailForm() {
   const [kycDoc, setKycDoc] = useState(null as any);
   const [error, setError] = useState("");
   const ALLOWED_TYPES = ["image/jpeg", "application/pdf"];
-
+  const router = useRouter();
   // Load on mount
   useEffect(() => {
     if (typeof window !== "undefined") {
     const loadInitialData = async () => {
       const autoPartsUserData = localStorage.getItem("autoPartsUserData");
       const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-      if (!loggedInUser?.access_token) return;
-
-      const data = await fetchKycDocs(
-        loggedInUser.user?.id,
-        loggedInUser.access_token
+       if (!loggedInUser.id) router.replace("/logout");
+       const data = await fetchKycDocs(
+        loggedInUser?.id,
       );
       setKycData(data);
       // setIsLoading(false);
     };
     loadInitialData();
   }
-  }, []);
+  }, [router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -55,7 +54,7 @@ export default function KycDetailForm() {
 
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-
+    if (!loggedInUser.id) router.replace("/logout");
     if (!formData) {
       toast.error("Please select a file first.");
       return;
@@ -66,7 +65,7 @@ export default function KycDetailForm() {
     multipartData.append("user_id", loggedInUser?.user?.id);
 
     const response = await uploadKycDoc(
-      loggedInUser?.access_token,
+
       "upload",
       multipartData,
       "POST"
@@ -87,7 +86,7 @@ export default function KycDetailForm() {
 
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-
+      if (!loggedInUser.id) router.replace("/logout");
     if (!formData) {
       toast.error("Please select a file first.");
       return;
@@ -95,11 +94,11 @@ export default function KycDetailForm() {
 
     const multipartData = new FormData();
     multipartData.append("file", formData, formData.name);
-    multipartData.append("user_id", loggedInUser?.user?.id);
+    multipartData.append("user_id", loggedInUser?.id);
     multipartData.append("kyc_id", kycDoc?.id);
 
     const response = await uploadKycDoc(
-      loggedInUser?.access_token,
+
       "update",
       multipartData,
       "PATCH"

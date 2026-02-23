@@ -143,14 +143,14 @@ return sortConfig.direction === "asc"
   const refreshRequests = async () => {
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-    if (loggedInUser?.access_token) {
+      if (!loggedInUser.id) router.replace("/logout");
       const data = await fetchAllBuyerPartRequests(
-        loggedInUser?.user?.id,
-        loggedInUser?.access_token
+        loggedInUser?.id
+       
       );
       setPartRequestData(data);
       setIsLoading(false);
-    }
+    
   };
 
   // Load on mount
@@ -158,17 +158,15 @@ return sortConfig.direction === "asc"
     const loadInitialData = async () => {
       const autoPartsUserData = localStorage.getItem("autoPartsUserData");
       const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-      if (!loggedInUser?.access_token) return;
-
+      if (!loggedInUser.id) router.replace("/logout");
       const data = await fetchAllBuyerPartRequests(
-        loggedInUser.user?.id,
-        loggedInUser.access_token
+        loggedInUser?.id
       );
       setPartRequestData(data);
       setIsLoading(false);
     };
     loadInitialData();
-  }, []);
+  }, [router]);
 
   useEffect(() => {}, [partRequestData]);
 
@@ -305,7 +303,7 @@ return sortConfig.direction === "asc"
                         className=" text-white border-b border-[#2C364A] "
                       >
                         {/* Product */}
-                        <td className="flex p-[10px] items-center gap-[15px]">
+                        <td className="flex p-[10px] items-center gap-[15px] cursor-pointer"  onClick={() => handleClick(item)} >
                           <div className="bg-white w-[50px] h-[50px] flex items-center justify-center rounded-sm">
                             
                             <Image

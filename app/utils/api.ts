@@ -2,24 +2,31 @@
 import axios from "axios";
 
 
-export const getAuth = () => {
-  if (typeof window === "undefined") return null;
-  return JSON.parse(localStorage.getItem("autoPartsUserData") || "null");
-};
 
 
+ 
 //API paths 
 const BASE_API_URL = "https://api.autopartsxchange.co.za";
-export const orderPath = `${BASE_API_URL}/8003/v1`;
-export const profilePath = `${BASE_API_URL}/8004/profiles/`;
-export const authApiPath = `${BASE_API_URL}/8001/v1`;
-export const supplierPath = `${BASE_API_URL}/8005/v1/supplier`;
-export const buyerPath = `${BASE_API_URL}/8002/v1/buyer`;
-//export const vehicleApiPath = `${BASE_API_URL}/8006/v1/vehicle`;
 export const imagePath = `${BASE_API_URL}/8000/image/`;  //image path for local 
 
+
+export const orderPath = `/api/order/`;
+export const profilePath = `/api/profiles/`;
+export const supplierPath = `/api/supplier`;
+export const buyerPath = `/api/buyer`;
+
+//export const vehicleApiPath = `${BASE_API_URL}/8006/v1/vehicle`;
+
+
+
+export const authApiPath = `${BASE_API_URL}/8001/v1`;
+export const buyerAPI = `${BASE_API_URL}/8002/v1/buyer`;
+export const orderAPI = `${BASE_API_URL}/8003/v1`;
+export const profileAPI = `${BASE_API_URL}/8004/profiles`;
+export const supplierAPI = `${BASE_API_URL}/8005/v1/supplier`;
+
 // verify OTP
-export function shippingSubmit(token: string,formdata: any) {
+export function shippingSubmit(formdata: any) {
  {
 
     return axios.post(
@@ -28,7 +35,7 @@ export function shippingSubmit(token: string,formdata: any) {
     {
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+ 
       },
     }
   )
@@ -44,7 +51,7 @@ export function shippingSubmit(token: string,formdata: any) {
 
 
 // update order status
-export function updateOrderStatus(token: string,orderid:string,formdata: any) {
+export function updateOrderStatus(orderid:string,formdata: any) {
  {
 
     return axios.put(
@@ -53,7 +60,7 @@ export function updateOrderStatus(token: string,orderid:string,formdata: any) {
     {
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+
       },
     }
   )
@@ -68,7 +75,7 @@ export function updateOrderStatus(token: string,orderid:string,formdata: any) {
 }
 
 // verify OTP
-export function verifyOTP(token: string,formdata: any) {
+export function verifyOTP(formdata: any) {
  {
 
     return axios.post(
@@ -77,7 +84,7 @@ export function verifyOTP(token: string,formdata: any) {
     {
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+
       },
     }
   )
@@ -92,7 +99,7 @@ export function verifyOTP(token: string,formdata: any) {
 }
 
 // send OTP
-export function sendOTP(token: string,formdata: any) {
+export function sendOTP(formdata: any) {
  {
 
     return axios.post(
@@ -100,8 +107,8 @@ export function sendOTP(token: string,formdata: any) {
     { ...formdata },
     {
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+       
       },
     }
   )
@@ -116,14 +123,14 @@ export function sendOTP(token: string,formdata: any) {
 }
 
 export async function fetchOrdersByID(
-  orderid: string,
-  token: string
+  orderid: string
+
 ) {
   const res = await fetch(`${orderPath}/order/view-order-details?order_id=${orderid}`, {
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+
     },
   });
   if (!res.ok) throw new Error("Failed to load orders details");
@@ -133,13 +140,13 @@ export async function fetchOrdersByID(
 // Buyer all Orders
 export async function fetchAllBuyerOrders(
   user_id: string,
-  token: string
+
 ) {
   const res = await fetch(`${orderPath}/order/view-orders-list?buyer_id=${user_id}`, {
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+    
     },
   });
   if (!res.ok) throw new Error("Failed to load orders");
@@ -147,7 +154,7 @@ export async function fetchAllBuyerOrders(
 }
 
 // create new Order
-export function CreateOrder(token: string,formdata: any) {
+export function CreateOrder(formdata: any) {
  {
 
     return axios.post(
@@ -156,7 +163,7 @@ export function CreateOrder(token: string,formdata: any) {
     {
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+   
       },
     }
   )
@@ -171,12 +178,11 @@ export function CreateOrder(token: string,formdata: any) {
 }
 
 //  delete address 
-export async function deleteAddress(token: string, addressID: string) {
+export async function deleteAddress( addressID: string) {
   return axios
     .delete(`${profilePath}/buyer/address/${addressID}`, {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
       },
     })
     .then((response) => {
@@ -188,7 +194,7 @@ export async function deleteAddress(token: string, addressID: string) {
     });
 }
 // create New address
-export function AddNewAddressAPI(user_id:any, formdata: any, token: string) {
+export function AddNewAddressAPI(user_id:any, formdata: any) {
  {
 
     return axios.post(
@@ -197,7 +203,7 @@ export function AddNewAddressAPI(user_id:any, formdata: any, token: string) {
     {
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+      
       },
     }
   )
@@ -213,14 +219,14 @@ export function AddNewAddressAPI(user_id:any, formdata: any, token: string) {
 
 // Get buyer address
 export async function fetchBuyerAddress(
-user_id  : string,
-  token: string
+user_id  : string
+  
 ) {
   const res = await fetch(`${profilePath}/buyer/address/${user_id}`, {
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+   
     },
   });
   if (!res.ok) throw new Error("Failed to load address data");
@@ -228,14 +234,14 @@ user_id  : string,
 }
 // Buyer All part requests
 export async function fetchAllBuyerPartRequests(
-  user_id: string,
-  token: string
+  user_id: string
+
 ) {
   const res = await fetch(`${buyerPath}/all/part-request/${user_id}`, {
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+
     },
   });
   if (!res.ok) throw new Error("Failed to load part requests");
@@ -244,14 +250,14 @@ export async function fetchAllBuyerPartRequests(
 
 // Get Part request by id
 export async function fetchPartRequestsById(
-  part_request_id: string,
-  token: string
+  part_request_id: string
+
 ) {
   const res = await fetch(`${buyerPath}/part-request/${part_request_id}`, {
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+ 
     },
   });
   if (!res.ok) throw new Error("Failed to load part request data");
@@ -259,16 +265,14 @@ export async function fetchPartRequestsById(
 }
 
 export async function getQuoteByRequest(
-  part_request_id: string,
-  token: string
+  part_request_id: string
 ) {
   const res = await fetch(
-    `${buyerPath}/quote/by-request/?request_id=${part_request_id}`,
+    `${buyerPath}/quote/by-request/${part_request_id}`,
     {
       cache: "no-store",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
     }
   );
@@ -277,12 +281,12 @@ export async function getQuoteByRequest(
 }
 
 // Delete buyer part request
-export async function deletequote(token: string, quoteId: string) {
+export async function deletequote( quoteId: string) {
   return axios
     .delete(`${supplierPath}/delete_quote/${quoteId}`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+   
       },
     })
     .then((response) => {
@@ -295,12 +299,12 @@ export async function deletequote(token: string, quoteId: string) {
 }
 
 // Delete buyer part request
-export async function deletePartRequest(token: string, requestId: string) {
+export async function deletePartRequest( requestId: string) {
   return axios
     .delete(`${buyerPath}/part-request/${requestId}`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+       
       },
     })
     .then((response) => {
@@ -316,8 +320,8 @@ export async function deletePartRequest(token: string, requestId: string) {
 export async function updateQuoteByAction(
   quoteId: string,
   requestId: string,
-  status: string,
-  token: string
+  status: string
+
 ) {
   return axios
     .put(
@@ -330,7 +334,7 @@ export async function updateQuoteByAction(
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+       
         },
       }
     )
@@ -345,12 +349,12 @@ export async function updateQuoteByAction(
 
 // SUPPLIER
 // Supplier All part requests
-export async function fetchAllSupplierPartRequests(token: string, page:number) {
+export async function fetchAllSupplierPartRequests( page:number) {
   const res = await fetch(`${supplierPath}/all/part-request/?page=${page}&limit=10`, {
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+
     },
   });
   if (!res.ok) throw new Error("Failed to load all part requests");
@@ -361,8 +365,8 @@ export async function getQuoteBySupplier(
   userId: string,
   status: string,
   page: number,
-  limit: number,
-  token: string
+  limit: number
+
 ) {
   const res = await fetch(
     `${supplierPath}/quote/view?user_id=${userId}&status=${status}&page=${page}&limit=${limit}`,
@@ -370,7 +374,7 @@ export async function getQuoteBySupplier(
       cache: "no-store",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+  
       },
     }
   );
@@ -378,12 +382,12 @@ export async function getQuoteBySupplier(
   return res.json();
 }
 
-export async function viewProfile(user_id: string, token: string) {
+export async function viewProfile(user_id: string) {
   const res = await fetch(`${profilePath}/user?user_id=${user_id}`, {
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+    
     },
   }); // local
   if (!res.ok) throw new Error("Failed to load part request data");
@@ -393,7 +397,7 @@ export async function viewProfile(user_id: string, token: string) {
 // edit supplier
 export async function updateProfile(
   user_id: string,
-  token: string,
+
   payload: any
 ) {
   const res = await fetch(`${profilePath}/profile/edit/${user_id}`, {
@@ -401,7 +405,7 @@ export async function updateProfile(
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+ 
     },
     body: JSON.stringify(payload),
   });
@@ -413,7 +417,6 @@ export async function updateProfile(
 
 //kyc detail
 export async function uploadKycDoc(
-  token: string,
   path: string,
   payload: any,
   method: string
@@ -422,7 +425,7 @@ export async function uploadKycDoc(
     cache: "no-store",
     method: method,
     headers: {
-      Authorization: `Bearer ${token}`,
+     
     },
     body: payload,
   });
@@ -430,12 +433,12 @@ export async function uploadKycDoc(
   return res.json();
 }
 
-export async function fetchKycDocs(user_id: string, token: string) {
+export async function fetchKycDocs(user_id: string) {
   const res = await fetch(`${supplierPath}/kyc/view?user_id=${user_id}`, {
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+
     },
   }); //local
   if (!res.ok) throw new Error("Failed to load kyc doc");
@@ -484,23 +487,23 @@ export async function verifyEmail(token: string) {
     });
 }
 
-// resend Verification
-export async function sendVerification(email: string) {
-  return axios
-    .post(`${authApiPath}/auth/resend-verification?email=${email}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-    .then((response) => {
-      console.log("Verification success:", response.data);
-      return response.data;
-    })
-    .catch((error) => {
-      console.error("Verification failed:", error);
-      throw error;
-    });
-}
+// // resend Verification
+// export async function sendVerification(email: string) {
+//   return axios
+//     .post(`${authApiPath}/auth/resend-verification?email=${email}`, {
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//     })
+//     .then((response) => {
+//       console.log("Verification success:", response.data);
+//       return response.data;
+//     })
+//     .catch((error) => {
+//       console.error("Verification failed:", error);
+//       throw error;
+//     });
+// }
 
 // VEHICLE
 // Get Vehicle make

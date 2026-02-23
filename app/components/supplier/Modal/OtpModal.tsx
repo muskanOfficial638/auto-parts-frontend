@@ -1,4 +1,5 @@
 import { sendOTP, verifyOTP } from "@/app/utils/api";
+import { useRouter } from "next/navigation";
 
 import { useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -20,13 +21,15 @@ export default function OTPModal({ quoteId,
   const [otp, setOtp] = useState<string[]>(
     Array(OTP_LENGTH).fill("")
   );
+  const router = useRouter();
   const autoPartsUserData = localStorage.getItem("autoPartsUserData");
   const loggedInUser = JSON.parse(autoPartsUserData || "{}");
+    if (!loggedInUser.id) router.replace("/logout");
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
   async function handleOTPsend() {
     const response = await sendOTP(
-      loggedInUser?.access_token,
+   
       {
         user_id: loggedInUser?.user?.id,
       }
@@ -67,9 +70,7 @@ export default function OTPModal({ quoteId,
 
   const handleSubmit = async (): Promise<void> => {
     const otpValue = otp.join("");
-
         const response = await verifyOTP(
-      loggedInUser?.access_token,
       {
         user_id: loggedInUser?.user?.id,
         quote_id: quoteId,

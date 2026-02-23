@@ -1,7 +1,7 @@
 "use client";
 import { Suspense, useState } from "react";
 import Image from "next/image";
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Footer from "@/app/components/Footer";
 import Header from "../../../components/Header";
 import { useEffect } from "react";
@@ -59,18 +59,17 @@ export default function RequestPartPage() {
  
   const params = useParams();
   const orderid = params.orderid as string;
-
+const router = useRouter();
 
   // Load on mount
   useEffect(() => {
     const loadInitialData = async () => {
       const autoPartsUserData = localStorage.getItem("autoPartsUserData");
       const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-      if (!loggedInUser?.access_token) return;
+      if (!loggedInUser.id) router.replace("/logout");
 
       const data = await fetchOrdersByID(
         orderid,
-        loggedInUser.access_token
       );
       
       console.log("Fetched Order Details:", data);
@@ -86,7 +85,7 @@ export default function RequestPartPage() {
       
     };
     loadInitialData();
-  }, [orderid]);
+  }, [orderid,router]);
 
 
 

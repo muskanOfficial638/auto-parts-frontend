@@ -2,6 +2,7 @@
 "use client";
 
 import { updateProfile, viewProfile } from "@/app/utils/api";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 export interface UserProfile {
@@ -25,19 +26,18 @@ export default function MyAccountForm() {
     password_hash: "",
     confirm_password: "",
   });
-
+const router = useRouter();
   // Load user data from localStorage
   useEffect(() => {
     if (typeof window !== "undefined") {
       const autoPartsUserData = localStorage.getItem("autoPartsUserData");
       const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-
-      if (loggedInUser?.user) {
+     if (!loggedInUser.id) router.replace("/logout");
+      if (loggedInUser) {
         viewProfile(
-          loggedInUser.user.id,
-          loggedInUser.access_token
+          loggedInUser.id,
+     
         ).then((data: any) => {
-         
           setLoading(false);
           setProfileData({
             user_name: data?.user_name || "",
@@ -49,7 +49,7 @@ export default function MyAccountForm() {
         });
       }
     }
-  }, []);
+  }, [router]);
 
   // Handle text field changes
   const handleProfileChange = (e: any) => {
@@ -69,6 +69,8 @@ export default function MyAccountForm() {
     e.preventDefault();
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
+
+    if (!loggedInUser.id) router.replace("/logout");
     if (passwords.password_hash !== passwords.confirm_password) {
       toast.error("Passwords do not match!");
       return;
@@ -87,13 +89,12 @@ export default function MyAccountForm() {
       };
 
       const res = await updateProfile(
-        loggedInUser?.user.id,
-        loggedInUser?.access_token,
+        loggedInUser?.id, 
         payload
       );
       if (res?.success) {
         toast.success("Profile updated successfully!");
-        viewProfile(loggedInUser.user.id, loggedInUser.access_token);
+        viewProfile(loggedInUser.id);
       } else {
         toast.error(res?.details);
       }

@@ -17,10 +17,10 @@ export default function DeleteAddressModal({
 }:DeleteAddressModal_type ) {
   if (!open) return null;
   async function handleDeletePartRequest(addressId: string) {
-    const autoPartsUserData = localStorage.getItem("autoPartsUserData");
-    const loggedInUser = JSON.parse(autoPartsUserData || "{}");
+
+  
     try {
-      const response = await deleteAddress( loggedInUser?.access_token, addressId );
+      const response = await deleteAddress( addressId );
       if (response) {
        const randomString = Math.random().toString(36).substring(2, 10);
         toast.success("Addess deleted successfully");

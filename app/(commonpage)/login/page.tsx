@@ -6,7 +6,7 @@ import Header from "@/app/components/Header";
 import { AiFillEye } from "react-icons/ai";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { authApiPath } from "@/app/utils/api";
+
 import { FaEyeSlash } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -83,28 +83,28 @@ export default function LoginPage() {
     }
  setLoading(true)
     try {
-      const response = await axios.post(`${authApiPath}/auth/login`, {
+      const response = await axios.post(`/api/auth/login`, {
         email,
         password,
       });
 
 
-      if (response?.data && response.data.access_token && response.data?.user?.role !== "admin"){
+      if (response?.data && response.data?.role !== "admin"){
 
         localStorage.setItem(
           "autoPartsUserData",
           JSON.stringify(response.data)
         );
-        document.cookie = `token=${response.data.access_token}; path=/`;
-        
+
+
         localStorage.setItem("loginTime", Date.now().toString());
         localStorage.setItem("lastActivity", Date.now().toString());
         toast.success("Logged-in Successfully");
-        if (response.data?.user?.role === "buyer") {
+        if (response.data?.role === "buyer") {
           router.push("/buyer-dashboard");
-        } else if (response.data?.user?.role === "supplier"){
+        } else if (response.data?.role === "supplier"){
           router.push(
-            response.data?.user?.profile?.kyc_status === "pending"
+            response.data?.profile?.kyc_status === "pending"
               ? "/kyc-page"
               : "/supplier-dashboard"
           );
@@ -185,9 +185,9 @@ export default function LoginPage() {
                 </div>
 
                 {/* Forgot Password */}
-                <div className="md:text-base text-sm md:leading-[23px] leading-[20px] text-autoblue hover:underline cursor-pointer font-semibold">
+                <Link href="/forgot-password" className="md:text-base text-sm md:leading-[23px] leading-[20px] text-autoblue hover:underline cursor-pointer font-semibold">
                   Forgot Password ?
-                </div>
+                </Link>
                 {error && <p className="text-red-600 text-sm">{error}</p>}
                 {/* Login Button */}
            

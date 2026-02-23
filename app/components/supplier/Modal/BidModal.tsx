@@ -8,6 +8,7 @@ import { supplierPath } from "@/app/utils/api";
 import { toast } from "react-toastify";
 import { HiOutlineUpload } from "react-icons/hi";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function BidModal({
   open,
@@ -51,21 +52,23 @@ export default function BidModal({
       }));
     console.log(formData)
   };
-
+const router = useRouter();
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-
+    if (!loggedInUser.id) router.replace("/logout");
    
   if( userRequest?.id && formData?.price_cents && formData.eta_days && formData.terms){
     const formDataPayload = new FormData();
     formDataPayload.append("request_id", userRequest?.id);
-    formDataPayload.append("user_id", loggedInUser.user.id);
+    formDataPayload.append("user_id", loggedInUser.id);
     formDataPayload.append("price_cents", formData.price_cents);
     formDataPayload.append("currency", formData.currency || "ZAR");
     formDataPayload.append("eta_days", formData.eta_days);
     formDataPayload.append("terms", formData.terms);
+
+ 
 
     if ( formData?.attachment &&  formData.attachment.length > 0 ) {
       formData.attachment.forEach((file) => {
@@ -73,6 +76,7 @@ export default function BidModal({
       });
     }else{
       toast.error("Please upload at least one image")
+      return;
     }
     try {
 
@@ -150,7 +154,7 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
               Quote Now{" "}
             </h2>
             <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-              Price Cents*
+              Price in Rand*
             </label>
             <input
               type="text"

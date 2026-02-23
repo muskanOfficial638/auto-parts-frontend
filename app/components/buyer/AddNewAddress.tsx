@@ -9,7 +9,7 @@ export default function AddNewAddress({ closeModal, Changeaddress }: OrderCreate
   const autoPartsUserData = localStorage.getItem("autoPartsUserData");
   const loggedInUser = JSON.parse(autoPartsUserData || "{}");
   useEffect(() => {
-    if (loggedInUser?.access_token) {
+    if (loggedInUser?.id) {
       // fetchBuyerAddress(loggedInUser.user.id, loggedInUser.access_token).then((data) => {
       //   setAddress(data?.data);
       //   console.log(data)
@@ -50,12 +50,10 @@ export default function AddNewAddress({ closeModal, Changeaddress }: OrderCreate
     toast.error("Please fill in all required fields");
     return;
   }
-     if (loggedInUser?.access_token) {
+     if (loggedInUser) {
       
-       AddNewAddressAPI(loggedInUser.user.id, formData, loggedInUser.access_token).then((data) => {
+       AddNewAddressAPI(loggedInUser.user.id, formData).then((data) => {
    
-
-
           if(data.data.success == "true"){
           const randomString = Math.random().toString(36).substring(2, 10);
           toast.success("Address Add successfully");

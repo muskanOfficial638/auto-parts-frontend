@@ -14,6 +14,7 @@ import { ImSpinner6 } from "react-icons/im";
 import Image from "next/image";
 import { IoMdClose } from "react-icons/io";
 import GalleryLoader from "../common/GalleryLoader";
+import { useRouter } from "next/navigation";
 
 export default function SupplierDashboard() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -86,13 +87,13 @@ export default function SupplierDashboard() {
       }
     ]
   }
-
+const router = useRouter();
   useEffect(() => {
     if (typeof window !== "undefined") {
       const autoPartsUserData = localStorage.getItem("autoPartsUserData");
       const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-      if (loggedInUser?.access_token) {
-        fetchAllSupplierPartRequests(loggedInUser.access_token, currentPage).then((data) => {
+       if (!loggedInUser.id) router.replace("/logout");
+        fetchAllSupplierPartRequests( currentPage).then((data) => {
 
           setPartRequestData(data.data);
           setIsLoading(false);
@@ -102,9 +103,9 @@ export default function SupplierDashboard() {
             total_pages: data.total_pages,
           });
         });
-      }
+      
     }
-  }, [currentPage]);
+  }, [currentPage,router]);
 
   useEffect(() => {
     const delayFilter = setTimeout(() => {
@@ -298,11 +299,12 @@ export default function SupplierDashboard() {
                     <div className="bg-white py-[5px] px-[5px] md:mt-[0] mt-[4px] rounded-sm">
                    
                       <Image
+                        onClick={() =>{ setPartRequest(item); setOnDetailsClose(true); }}
                         width={120}
                         height={120}
                         src={`${imagePath}${item?.attachment[0]}`}
                         alt="Filter"
-                        className="md:w-[70px] md:h-[75px] w-[45px] h-[50px] object-cover"
+                        className="md:w-[70px] md:h-[75px] w-[45px] h-[50px] object-cover cursor-pointer"
                       />
                     </div>
                     <div>

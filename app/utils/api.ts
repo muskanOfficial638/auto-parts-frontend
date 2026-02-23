@@ -347,7 +347,7 @@ export async function updateQuoteByAction(
     });
 }
 
-// SUPPLIER
+// SUPPLIERs
 // Supplier All part requests
 export async function fetchAllSupplierPartRequests(page:number) {
   const res = await fetch(`${supplierPath}/all/part-request?page=${page}&limit=10`, {

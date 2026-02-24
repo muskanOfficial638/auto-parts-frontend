@@ -3,7 +3,7 @@
 import BidModal from "@/app/components/supplier/Modal/BidModal";
 
 import { getQuoteBySupplier, imagePath } from "@/app/utils/api";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { Quote } from "../common/interface";
 import Loader from "../common/Loader";
 import { MdDelete } from "react-icons/md";
@@ -11,12 +11,13 @@ import DeleteQuoteModal from "../buyer/modal/DeleteQuoteModal";
 import Image from "next/image";
 import TrackingModal from "./Modal/TrackingModal";
 import { useRouter } from "next/navigation";
+import SupplierDashboard from "../dashboard/SupplierDashboard";
 //import Loader from "../common/Loader";
 
 export default function MyBids() {
-  const [activeTab, setActiveTab] = useState("pending");
+  const [activeTab, setActiveTab] = useState("Active");
   const [quoteData, setQuoteData] = useState<Quote[]>();
-  const [loading, setIsLoading] = useState(true);
+  const [loading, setIsLoading] = useState(false);
   const [delmodalOpen, setdelModalOpen] = useState(false);
   const [deleteQuoteId, setDeleteQuoteId] = useState("");
   const [shipQuoteId, setShipQuoteId] = useState("");
@@ -32,33 +33,17 @@ export default function MyBids() {
 }
  // const [loading, setIsLoading] = useState(true);
 const router = useRouter();
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const autoPartsUserData = localStorage.getItem("autoPartsUserData");
-      const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-      if (!loggedInUser.id) router.replace("/logout");
-      if (loggedInUser) {
-        getQuoteBySupplier(
-          loggedInUser?.id,
-          "pending",
-          1,
-          10,
-       
-        ).then((data) => {
-          setQuoteData(data?.quotes);
-         setIsLoading(false)
-        });
-      }
-    }
-  }, [router]);
 
   function onTabClick(tabName: string) {
+   
     setActiveTab(tabName);
      setIsLoading(true);
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
     if (!loggedInUser.id) router.replace("/logout");
+     if(tabName =='Active'){  setIsLoading(false); return;} 
     if (loggedInUser) {
+      
       getQuoteBySupplier(
         loggedInUser?.id,
         tabName,
@@ -104,7 +89,18 @@ const router = useRouter();
             <h2 className="text-2xl leading-[14px] font-bold text-center text-white">
               My Quote
             </h2>
-            <div className="text-xl font-medium items-center flex space-x-[36px]">
+            <div className="text-xl font-medium items-center flex space-x-[36px] my-10 flex justify-center">
+             <span
+                className={`cursor-pointer text-xl leading-[14px] ${
+                  activeTab === "Active"
+                    ? "font-bold text-xl leading-[14px] text-white"
+                    : "text-[#6C6C6C]"
+                }`}
+                onClick={() => onTabClick("Active")}
+              >
+                Active 
+              </span> 
+
               <span
                 className={`cursor-pointer text-xl leading-[14px] ${
                   activeTab === "pending"
@@ -163,7 +159,10 @@ const router = useRouter();
             {loading ? (
               <Loader />
             ) :   (<>
-            {quoteData && quoteData?.length ? (
+
+             { activeTab== 'Active' ? ( <SupplierDashboard/> ) : 
+
+             quoteData && quoteData?.length ? (
               quoteData.map((data: Quote) => (
                 <div
                   key={data.id}
@@ -255,6 +254,7 @@ const router = useRouter();
             ) : (
               <div className="font-bold flex items-center text-white">
                 No quotes found
+                
               </div>
             )}
             </>)  }
@@ -268,17 +268,19 @@ const router = useRouter();
         onDeleted={onTabClick} // <-- notify parent
       />
 
-      <BidModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-       
-      />
+
 
 
       <TrackingModal
         open={isTrackingModal}
         onClose={() => {setIsTrackingModalOpen(false); onTabClick("in_process")}}
         quoteId={shipQuoteId}
+      />
+
+        <BidModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+       
       />
     </>
   );

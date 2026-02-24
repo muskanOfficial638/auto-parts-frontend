@@ -3,7 +3,8 @@
 
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
-import { FiChevronDown, FiXCircle } from "react-icons/fi";
+
+
 import BidModal from "@/app/components/supplier/Modal/BidModal";
 import { fetchAllSupplierPartRequests, imagePath } from "@/app/utils/api";
 import { FaEye } from "react-icons/fa";
@@ -13,148 +14,172 @@ import { IoIosImages } from "react-icons/io";
 import { ImSpinner6 } from "react-icons/im";
 import Image from "next/image";
 import { IoMdClose } from "react-icons/io";
+import { IoCloseOutline } from "react-icons/io5";
 import GalleryLoader from "../common/GalleryLoader";
 import { useRouter } from "next/navigation";
 
 export default function SupplierDashboard() {
+
+  /* ---------------- STATES ---------------- */
+
   const [modalOpen, setModalOpen] = useState(false);
+
   const [partRequestData, setPartRequestData] = useState<PartRequest[]>();
   const [filterpartRequestData, setFilterPartRequestData] = useState<PartRequest[]>();
+
   const [userRequest, setUserRequest] = useState<PartRequest>();
-  const [sideBarFilters, setSideBarFilters] = useState("");
-  const [activeTrim, setActiveTrim] = useState<string | number | null>(null);
+
   const [metaPage, setMetaPage] = useState({ page: 1, total_pages: 1 });
   const [currentPage, setCurrentPage] = useState(1);
+
   const [loading, setIsLoading] = useState(true);
   const [loadingPage, setIsLoadingPage] = useState(true);
-  const [globalSearch, setGlobalSearch] = useState("");
+
+  /* ----------- TAG SEARCH STATES ----------- */
+
+  const [searchInput, setSearchInput] = useState("");
+  const [searchTags, setSearchTags] = useState<string[]>([]);
+
+  /* ---------------------------------------- */
+
   const [onDetailsClose, setOnDetailsClose] = useState(false);
   const [partRequest, setPartRequest] = useState<PartRequest>();
+
   const [selectGallery, setSelectedGallery] = useState<string[]>([]);
   const [galleryOpen, setGalleryOpen] = useState(false);
 
-  interface FiltersOpen {
-    make: boolean;
-    [key: string]: boolean; // <-- allows any string key
-  }
+  const [pageLoad, setpageLoad] = useState(false);
 
-  const [filtersOpen, setFiltersOpen] = useState<FiltersOpen>({
-    make: true,
-    bmw: false,
-    a1: false
-  });
+  const router = useRouter();
 
-  const carData = {
-    "cars": [
-      {
-        "brand": "BMW",
-        "models": [
-          {
-            "model": "F-161",
-            "trims": [{ "name": "Platinum", id: 1 }, { "name": "1.2PSI", id: 2 }]
-          },
-          {
-            "model": "X5",
-            "trims": [{ "name": "Sport", id: 3 }, { "name": "Luxury", id: 4 }]
-          }
-        ]
-      },
-      {
-        "brand": "Ford",
-        "models": [
-          {
-            "model": "Micra",
-            "trims": [{ "name": "Base", id: 5 }, { "name": "Platinum", id: 6 }]
-          },
-          {
-            "model": "F-150",
-            "trims": [{ "name": "XL", id: 7 }, { "name": "XLT", id: 8 }]
-          }
-        ]
-      },
-      {
-        "brand": "Honda",
-        "models": [
-          {
-            "model": "Civic",
-            "trims": [{ "name": "LX", id: 11 }, { "name": "EX", id: 12 }]
-          },
-          {
-            "model": "Accord",
-            "trims": [{ "name": "Sport", id: 9 }, { "name": "Touring", id: 10 }]
-          }
-        ]
-      }
-    ]
-  }
-const router = useRouter();
+
+  /* ---------------- FETCH DATA ---------------- */
+
   useEffect(() => {
+
     if (typeof window !== "undefined") {
+
       const autoPartsUserData = localStorage.getItem("autoPartsUserData");
       const loggedInUser = JSON.parse(autoPartsUserData || "{}");
-       if (!loggedInUser.id) router.replace("/logout");
-        fetchAllSupplierPartRequests( currentPage).then((data) => {
 
-          setPartRequestData(data.data);
-          setIsLoading(false);
-          setIsLoadingPage(false);
-          setMetaPage({
-            page: data.page,
-            total_pages: data.total_pages,
-          });
+      if (!loggedInUser.id) router.replace("/logout");
+
+      fetchAllSupplierPartRequests(currentPage).then((data) => {
+
+        setPartRequestData(data.data);
+
+        setIsLoading(false);
+        setIsLoadingPage(false);
+
+        setMetaPage({
+          page: data.page,
+          total_pages: data.total_pages,
         });
-      
+
+        setTimeout(() => {
+          setpageLoad(true);
+        }, 500);
+
+      });
     }
-  }, [currentPage,router]);
 
-  useEffect(() => {
-    const delayFilter = setTimeout(() => {
-      const search = globalSearch.toLowerCase();
-      let filtered1 = [] as any;
+  }, [currentPage, router]);
 
-      if (sideBarFilters && partRequestData) {
-        filtered1 = partRequestData.filter((item) => {
-          console.log("sideBarFilters", sideBarFilters)
-          return (
-            item.vehicle_model_trim?.toLowerCase().includes(sideBarFilters.toLowerCase())
-          );
-        });
-      } else {
-        filtered1 = partRequestData;
+
+  /* ---------------- FILTER LOGIC (AND) ---------------- */
+
+ useEffect(() => {
+  const delay = setTimeout(() => {
+
+    if (!partRequestData) return;
+
+    let filtered = partRequestData;
+
+    // Combine tags + current typing
+    const activeFilters = [
+      ...searchTags,
+      searchInput.trim().toLowerCase()
+    ].filter(Boolean); // remove empty values
+
+
+    if (activeFilters.length > 0) {
+
+      filtered = filtered.filter((item: any) => {
+
+        const searchableText = `
+          ${item.title}
+          ${item.description}
+          ${item.urgency}
+          ${item.vehicle_make}
+          ${item.vehicle_model}
+        `.toLowerCase();
+
+        // AND condition
+        return activeFilters.every((word) =>
+          searchableText.includes(word)
+        );
+      });
+    }
+
+    setFilterPartRequestData(filtered);
+
+  }, 300);
+
+  return () => clearTimeout(delay);
+
+}, [searchTags, searchInput, partRequestData]);
+
+  /* ---------------- TAG HANDLERS ---------------- */
+
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+
+    if (e.key === "Enter") {
+
+      e.preventDefault();
+
+      const value = searchInput.trim().toLowerCase();
+
+      if (!value) return;
+
+      if (searchTags.length >= 3) {
+        alert("Only 3 search tags allowed");
+        return;
       }
 
-      if (search && partRequestData) {
-        filtered1 = filtered1.filter((item: any) => {
-          return (
-            item.title?.toLowerCase().includes(search) ||
-            item.description?.toLowerCase().includes(search) ||
-            item.urgency?.toLowerCase().includes(search) ||
-            item.vehicle_make?.toLowerCase().includes(search) ||
-            item.vehicle_model?.toLowerCase().includes(search)
-          );
-        });
-      } else if (!sideBarFilters && !search) {
-        setFilterPartRequestData(partRequestData || []);
-      }
+      if (searchTags.includes(value)) return;
 
-      setFilterPartRequestData(filtered1);
-    }, 300);
+      setSearchTags((prev) => [...prev, value]);
 
-
-    return () => clearTimeout(delayFilter);
-
-  }, [globalSearch, partRequestData, sideBarFilters]);
-
-  const handleGlobalSearch = (e: any) => {
-    setGlobalSearch(e.target.value);
+      setSearchInput("");
+    }
   };
 
+
+  const removeTag = (tag: string) => {
+    setSearchTags((prev) => prev.filter((t) => t !== tag));
+  };
+
+
+  const clearAllTags = () => {
+    setSearchTags([]);
+  };
+
+
+  /* ---------------- OTHER HANDLERS ---------------- */
+
   function ModalOpen(requestData: PartRequest) {
-    // console.log("requestData",requestData)
     setUserRequest(requestData);
     setModalOpen(true);
   }
 
+
+  function openGallery(data: string[]) {
+    setSelectedGallery(data);
+    setGalleryOpen(true);
+  }
+
+
+  /* ---------------- LOADER ---------------- */
 
   if (loading) {
     return (
@@ -164,219 +189,241 @@ const router = useRouter();
     );
   }
 
-  function openGallery(data: string[]) {
-    setSelectedGallery(data);
-    setGalleryOpen(true);
-  }
+
+  /* ================== JSX ================== */
 
   return (
     <>
-      <div
-        className="min-h-screen md:flex bg-cover bg-center relative"
-        style={{ backgroundImage: "url('/dashboardBg.jpg')" }}
-      >
-        {/* Gradient Overlay */}
-        <div className="absolute top-[0] bottom-[0] h-full w-full bg-gradient-to-b from-[#003253]/95 to-black/95" />
-        {/* Sidebar */}
-        <div className="relative md:w-72 bg-brandBlack text-white fixed">
-          <div className="bg-autoblue md:mt-[6rem] mt-[80px] md:py-2 py-[3px]" />
-          <div className="md:px-[20px] md:py-[40px] p-[20px]">
-            <h2 className="md:text-2xl text-lg mb-[20px] leading-[14px]  font-bold ">
-              Filters Parts
-            </h2>
-            {/* MAKE FILTER */}
 
-            <div className=" bg-black p-[20px] ">
-              <h4 className="md:text-[19px] text-base text-white font-semibold">
-                Make
-              </h4>
+      <div>
 
-              {filtersOpen.make && (
-                <div className="mt-2 space-y-2 text-gray-300">
-                  {carData.cars.map((car) => (
-                    <div key={car.brand}>
-                      {/* Brand */}
-                      <button
-                        onClick={() =>
-                          setFiltersOpen({
-                            ...filtersOpen,
-                            [car.brand]: !filtersOpen[car.brand],
-                          })
-                        }
-                        className="flex justify-between cursor-pointer w-full text-left items-center text-LightGray border-Dark font-medium text-xs leading-[33px] border-b"
-                      >
-                        {car.brand}
-                        <FiChevronDown
-                          className={
-                            filtersOpen[car.brand]
-                              ? "rotate-180 text-[18px] text-LightGray"
-                              : "text-[18px]"
-                          }
-                        />
-                      </button>
+        <div className="relative flex-1 text-white overflow-auto">
 
-                      {filtersOpen[car.brand] && (
-                        <div className="space-y-2 text-gray-400">
-                          {car.models.map((model) => (
-                            <div key={model.model}>
-                              {/* Model */}
-                              <button
-                                onClick={() =>
-                                  setFiltersOpen({
-                                    ...filtersOpen,
-                                    [model.model]: !filtersOpen[model.model],
-                                  })
-                                }
-                                className="flex justify-between cursor-pointer w-full text-left ps-[10px] items-center text-grayMedium border-Dark text-xs font-medium leading-[33px] border-b"
-                              >
-                                {model.model}
-                                <FiChevronDown
-                                  className={
-                                    filtersOpen[model.model]
-                                      ? "rotate-180 text-[18px] text-LightGray"
-                                      : "text-[18px] text-LightGray"
-                                  }
-                                />
-                              </button>
+          {/* ================= SEARCH + TAGS ================= */}
 
-                              {filtersOpen[model.model] && (
-                                <div className="space-y-2 text-grayMedium font-medium items-center text-xs leading-[33px]">
-                                  {model.trims.map((trim, index) => (
-                                    <p
+          <div className="flex flex-col items-center mb-6 gap-2">
 
-                                      key={trim.id}
-                                      className={`flex justify-between items-center ps-[30px] hover:bg-gray-500 hover:text-white duration-400 ${index !== model.trims.length - 1
-                                        ? "border-b border-Dark"
-                                        : ""
-                                        } font-medium ` + (activeTrim === trim.id ? "bg-autoblue text-white" : "")}
-                                    >
-                                      <span className="w-full cursor-pointer" onClick={() => { setSideBarFilters(trim.name); setActiveTrim(trim.id) }}>{trim.name}</span>
-                                      <span className=" mr-[20px] cursor-pointer" onClick={() => { setActiveTrim(""); setSideBarFilters("") }}><FiXCircle className="text-[12px] ml-[5px]" /></span>
-                                    </p>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
 
-          </div>
-        </div>
+            {/* TAGS */}
+            {searchTags.length > 0 && (
 
-        {/* Main Content */}
-        <div className="relative flex-1 md:p-10 p-[20px] text-white overflow-auto h-auto">
-          {/* Search Bar */}
-          <div className="flex justify-center md:my-8 md:pt-[5rem] mb-[20px]">
+              <div className="flex flex-wrap gap-2 max-w-[583px] w-full">
+
+                {searchTags.map((tag) => (
+
+                  <span
+                    key={tag}
+                    className="flex items-center  bg-[#12151b] shadow text-white text-md px-3 py-1 rounded-full"
+                  >
+                    {tag}
+
+                    <button
+                      onClick={() => removeTag(tag)}
+                      className="cursor-pointer hover:text-red-400 text-xl"
+                    >
+                    <IoCloseOutline className="text-[20px]"/>
+                    </button>
+
+                  </span>
+
+                ))}
+
+
+                <button
+                  onClick={clearAllTags}
+                  className="text-xs hover:text-red-500 underline cursor-pointer"
+                >
+                  Clear All
+                </button>
+
+              </div>
+
+            )}
+
+
+            {/* INPUT */}
             <div className="relative w-full max-w-[583px]">
+
               <input
                 type="text"
-                placeholder="Search"
-                onChange={handleGlobalSearch}
-                // onChange={onSearchPartRequest}
+                placeholder="Type & press Enter..."
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                onKeyDown={handleSearchKeyDown}
                 className="w-full bg-white text-sm text-grayMedium placeholder-grayMedium leading-[17px] rounded-sm py-[10px] px-[15px] border border-[#1f2d3a] focus:outline-none"
               />
-              <div className="bg-autoblue text-white absolute right-0 flex  rounded-r-sm items-center h-full top-0 py-[10px] px-[13px] ">
+
+              <div className="bg-autoblue text-white absolute right-0 flex rounded-r-sm items-center h-full top-0 px-[13px]">
                 <MagnifyingGlassIcon className="h-[14px] w-[14px]" />
               </div>
+
             </div>
+
           </div>
 
-          {/* List Items */}
+
+          {/* ================= LIST ================= */}
+
           <div className="space-y-[10px]">
-            {filterpartRequestData ? (
+
+            {filterpartRequestData && filterpartRequestData.length > 0 ? (
+
               filterpartRequestData.map((item) => (
+
                 <div
                   key={item.id}
-                  className="bg-brandBlack p-[20px] rounded-lg flex flex-wrap lg:gap-[0] gap-y-[20px] items-center justify-between"
+                  className="bg-brandBlack p-[20px] rounded-lg flex flex-wrap gap-y-[20px] items-center justify-between"
                 >
-                  <div className="flex md:items-center items-start gap-4">
-                    <div className="bg-white py-[5px] px-[5px] md:mt-[0] mt-[4px] rounded-sm">
-                   
+
+                  {/* LEFT */}
+                  <div className="flex gap-4">
+
+                    <div className="bg-white p-1 rounded-sm">
+
                       <Image
-                        onClick={() =>{ setPartRequest(item); setOnDetailsClose(true); }}
+                        onClick={() => {
+                          setPartRequest(item);
+                          setOnDetailsClose(true);
+                        }}
                         width={120}
                         height={120}
                         src={`${imagePath}${item?.attachment[0]}`}
-                        alt="Filter"
-                        className="md:w-[70px] md:h-[75px] w-[45px] h-[50px] object-cover cursor-pointer"
+                        alt="Part"
+                        className="w-[70px] h-[75px] object-cover cursor-pointer"
                       />
+
                     </div>
+
+
                     <div>
-                      <h3 className="text-base leading-[22px] font-bold flex items-center gap-[8px]">
-                        {item.title}{" "}
-                        <span className={`text-[8px] font-medium leading-[10px] text-white px-[9px] py-[1px] rounded-[50px] ${item.urgency === "high" ? "bg-red-500" : item.urgency === "normal" ? "bg-yellow-500" : "bg-[#52A84E]"}`}>
+
+                      <h3 className="text-base font-bold flex gap-2">
+
+                        {item.title}
+
+                        <span
+                          className={`text-[8px] px-2 py-1 rounded-full ${item.urgency === "high"
+                            ? "bg-red-500"
+                            : item.urgency === "normal"
+                              ? "bg-yellow-500"
+                              : "bg-green-500"
+                            }`}
+                        >
                           {item.urgency}
                         </span>
+
                       </h3>
 
-                 
-                      <p className="text-xs leading-[15px] font-medium text-neutralLight mt-[5px]">
-                        {item.vehicle_make} {item.vehicle_model}{" "}
-                        {item.vehicle_model_trim}
+
+                      <p className="text-xs text-neutralLight mt-1">
+                        {item.vehicle_make} {item.vehicle_model}
                       </p>
 
-                      <p className="text-[10px] font-medium text-[#F8F8F8] mt-[5px]">
-                        Required By: <span>{item.required_by_date}</span>
+
+                      <p className="text-[10px] mt-1">
+                        Required By: {item.required_by_date}
                       </p>
+
                     </div>
+
                   </div>
-                  <div className="flex md:gap-4 gap-2 flex-nowrap">
-                    <button onClick={() =>{ setPartRequest(item); setOnDetailsClose(true); }}
-                      className="bg-gray-500 md:text-base text-sm font-semibold leading-[14px] hover:bg-gray-600 md:w-[auto] w-[auto] duration-400 px-[15px] py-[10px] rounded-sm cursor-pointer"
+
+
+                  {/* RIGHT */}
+                  <div className="flex gap-3">
+
+                    <button
+                      onClick={() => {
+                        setPartRequest(item);
+                        setOnDetailsClose(true);
+                      }}
+                      className="bg-gray-500 hover:bg-gray-600 px-3 py-2 rounded-sm"
                     >
                       <FaEye />
                     </button>
 
+
                     <button
-                      className="bg-autoblue md:text-base text-sm font-semibold leading-[14px] hover:bg-hoverblue md:w-[auto] w-full duration-400 px-[44px] md:py-[13px] py-[10px] rounded-sm cursor-pointer"
                       onClick={() => ModalOpen(item)}
+                      className="bg-autoblue hover:bg-hoverblue px-6 py-2 rounded-sm"
                     >
                       Quote Now
                     </button>
+
                   </div>
+
                 </div>
+
               ))
+
             ) : (
-              <h1 className="text-center text-gray-900">No Users found.</h1>
+
+              <h1 className="text-center text-gray-400">
+                No found
+              </h1>
+
             )}
+
           </div>
+
         </div>
 
 
-      </div>
-      <div className="p-6">
-        {loadingPage && (<div role="status " className="flex justify-center mb-4">
-          <ImSpinner6 className="w-8 h-8  animate-spin" />
-          <span className="sr-only">Loading...</span>
-        </div>)}
-        <div className="mt-8 flex items-center justify-center gap-3">
-          <button
-            onClick={() => { setIsLoadingPage(true); setCurrentPage((prev) => prev - 1) }}
-            disabled={currentPage <= 1 || loadingPage}
-            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            ⬅ Prev
-          </button>
+        {/* ================= PAGINATION ================= */}
 
-          <span className="text-sm font-medium text-gray-700">
-            Page <b>{metaPage.page}</b> / <b>{metaPage.total_pages}</b>
-          </span>
+        {pageLoad && (
 
-          <button
-            onClick={() => { setIsLoadingPage(true); setCurrentPage((prev) => prev + 1) }}
-            disabled={currentPage >= metaPage.total_pages || loadingPage}
-            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            Next ➡
-          </button>
-        </div>
+          <div className="p-6">
+
+            {loadingPage && (
+
+              <div className="flex justify-center mb-4">
+                <ImSpinner6 className="w-8 h-8 animate-spin" />
+              </div>
+
+            )}
+
+
+            <div className="flex justify-center gap-3">
+
+              <button
+                onClick={() => {
+                  setIsLoadingPage(true);
+                  setCurrentPage((p) => p - 1);
+                }}
+                disabled={currentPage <= 1 || loadingPage}
+                className="border px-4 py-2 rounded disabled:opacity-50"
+              >
+                ⬅ Prev
+              </button>
+
+
+              <span className="text-sm">
+                Page {metaPage.page} / {metaPage.total_pages}
+              </span>
+
+
+              <button
+                onClick={() => {
+                  setIsLoadingPage(true);
+                  setCurrentPage((p) => p + 1);
+                }}
+                disabled={currentPage >= metaPage.total_pages || loadingPage}
+                className="border px-4 py-2 rounded disabled:opacity-50"
+              >
+                Next ➡
+              </button>
+
+            </div>
+
+          </div>
+
+        )}
+
       </div>
+
+
+      {/* ================= MODALS ================= */}
 
       <BidModal
         open={modalOpen}
@@ -384,7 +431,7 @@ const router = useRouter();
         onClose={() => setModalOpen(false)}
       />
 
-   {onDetailsClose && (   <>
+ {onDetailsClose && (<>
         <div className="fixed inset-0 flex items-center justify-center z-40">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
           <div className=" relative w-full max-w-[1037px] bg-brandBlack rounded-sm shadow-lg p-[20px]">
@@ -399,11 +446,11 @@ const router = useRouter();
                     height={150}
                     className="object-cover md:w-[140px] md:h-[140px] w-[36px] h-[50px]"
                   />
-                  <IoIosImages onClick={() =>   openGallery(
-      (partRequest?.attachment || []).filter(
-        (a): a is string => typeof a === "string"
-      )
-    ) } className="absolute bottom-1 right-1 shadow-[0_1px_5px_#817f7f] cursor-pointer hover:bg-[#000] duration-600 bg-[#040404c7] text-white text-[33px] p-[4px] rounded-[5px]" />
+                  <IoIosImages onClick={() => openGallery(
+                    (partRequest?.attachment || []).filter(
+                      (a): a is string => typeof a === "string"
+                    )
+                  )} className="absolute bottom-1 right-1 shadow-[0_1px_5px_#817f7f] cursor-pointer hover:bg-[#000] duration-600 bg-[#040404c7] text-white text-[33px] p-[4px] rounded-[5px]" />
                 </div>
 
                 <div className="flex flex-col justify-start">
@@ -423,19 +470,19 @@ const router = useRouter();
                       {partRequest?.required_by_date}
                     </span>
                   </p>
-                 {partRequest?.address?.address && (
-                     <p className="text-[10px] leading-[22px] font-medium text-[#F8F8F8] mt-[5px]">
-                    Delivery Address:{" "}
-                    <span className="font-bold">
-                    {partRequest?.address?.city}, {partRequest?.address?.province} ( {partRequest?.address?.postal_code} )
-                    </span>
-                  </p>
-                 )}
+                  {partRequest?.address?.address && (
+                    <p className="text-[10px] leading-[22px] font-medium text-[#F8F8F8] mt-[5px]">
+                      Delivery Address:{" "}
+                      <span className="font-bold">
+                        {partRequest?.address?.city}, {partRequest?.address?.province} ( {partRequest?.address?.postal_code} )
+                      </span>
+                    </p>
+                  )}
                 </div>
               </div>
               <div className="flex flex-col items-end gap-[30px]">
                 <button onClick={() => setOnDetailsClose(false)} className="bg-white cursor-pointer h-8 w-8 rounded-full flex justify-center items-center text-black "><IoMdClose /></button>
-                <button  onClick={() => partRequest && ModalOpen(partRequest)} className="text-autoblue md:w-[auto] w-full cursor-pointer md:text-base text-sm leading-[14px] border border-autoblue py-[13px] px-[20px] duration-400 hover:text-white rounded-sm hover:bg-hoverblue hover:border-hoverblue">
+                <button onClick={() => partRequest && ModalOpen(partRequest)} className="text-autoblue md:w-[auto] w-full cursor-pointer md:text-base text-sm leading-[14px] border border-autoblue py-[13px] px-[20px] duration-400 hover:text-white rounded-sm hover:bg-hoverblue hover:border-hoverblue">
                   Quote Now
                 </button>
               </div>
@@ -448,25 +495,22 @@ const router = useRouter();
             <div className="space-y-[10px] mt-[16px]">
               <div className="bg-[#011827] border border-[#153C51] rounded-sm pt-[5px] pb-[15px] ps-[12px] pe-[22px]">
                 <p className="pt-3 md:text-sm text-xs leading-[22px] font-medium text-white mt-[5px]">
-                 {partRequest?.description}
+                  {partRequest?.description}
                 </p>
               </div>
             </div>
           </div>
         </div>
-         <GalleryLoader onClose={setGalleryOpen} open={galleryOpen} images={selectGallery}  />
+        <GalleryLoader onClose={setGalleryOpen} open={galleryOpen} images={selectGallery} />
       </>
-      
-   )}
+
+      )}
+      <GalleryLoader
+        onClose={setGalleryOpen}
+        open={galleryOpen}
+        images={selectGallery}
+      />
+
     </>
   );
 }
-// 🔍 Debounce utility
-
-// const debounce = (func: Function, delay: number) => {
-//   let timer: any;
-//   return (...args: any[]) => {
-//     clearTimeout(timer);
-//     timer = setTimeout(() => func(...args), delay);
-//   };
-// };

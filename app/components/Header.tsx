@@ -202,7 +202,7 @@ function BuyerSupplierMenu({ autoPartsUserData }: { autoPartsUserData: any }) {
               )}
 
 
-              {autoPartsUserData?.role === "supplier" && (
+              {/* {autoPartsUserData?.role === "supplier" && (
                 <li>
                   <Link
                     href="/my-quote"
@@ -211,7 +211,7 @@ function BuyerSupplierMenu({ autoPartsUserData }: { autoPartsUserData: any }) {
                     My Quote
                   </Link>
                 </li>
-              )}
+              )} */}
               <li>
                 <button
                   className="block w-full text-left px-4 py-2 hover:bg-gray-800 hover:text-hoverblue rounded duration-400 cursor-pointer"

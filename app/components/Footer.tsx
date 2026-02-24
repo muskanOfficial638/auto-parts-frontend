@@ -10,6 +10,7 @@ import {
 } from "react-icons/fa6";
 import { MdAccessibility, MdLocationOn, MdEmail, MdCall } from "react-icons/md";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -86,7 +87,7 @@ export default function Footer() {
             <ul className="space-y-6 text-sm">
               {[
                 { name: "Home", href: "/" },
-                { name: "About", href: "/about" },
+                { name: "About", href: "/about-us" },
                 { name: "Blog", href: "/blog" },
                 { name: "Contact", href: "/contact" },
               ].map((link) => (
@@ -94,7 +95,7 @@ export default function Footer() {
                   key={link.name}
                   className="hover:text-hoverblue duration-400 cursor-pointer"
                 >
-                  <a href={link.href}>{link.name}</a>
+                  <Link href={link.href}>{link.name}</Link>
                 </li>
               ))}
             </ul>

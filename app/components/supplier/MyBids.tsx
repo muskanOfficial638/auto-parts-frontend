@@ -12,7 +12,6 @@ import Image from "next/image";
 import TrackingModal from "./Modal/TrackingModal";
 import { useRouter } from "next/navigation";
 import SupplierDashboard from "../dashboard/SupplierDashboard";
-//import Loader from "../common/Loader";
 
 export default function MyBids() {
   const [activeTab, setActiveTab] = useState("Active");

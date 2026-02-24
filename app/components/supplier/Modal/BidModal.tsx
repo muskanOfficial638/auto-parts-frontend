@@ -134,11 +134,11 @@ export default function BidModal({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50">
+    <div className="fixed inset-0 flex justify-center z-50">
       <div className="absolute inset-0" onClick={onClose} />
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#003253]/95 to-black/95 " />
-      <div className="p-[20px] scrollbar-none overflow-auto bid-modal-box ">
+      <div className="px-[20px] py-[50px] scrollbar-none overflow-auto bid-modal-box ">
         <div className="relative bg-brandBlack text-white w-[550px] max-w-[100%] bg-[#1d4aa4]/15 backdrop-blur-xl md:px-10 px-[15px] md:py-[30px] py-[20px] rounded-sm ms-[auto] me-[auto] p-8 shadow-xl  backdrop-blurr">
           <button
             onClick={onClose}

@@ -83,7 +83,7 @@ const router = useRouter();
         <div className="absolute top-[0] bottom-[0] h-full w-full bg-gradient-to-b from-[#003253]/95 to-black/95" />
 
         {/* Main Content */}
-        <div className="relative z-10 flex justify-center pt-36 pb-20 px-4">
+        <div className="relative  flex justify-center pt-36 pb-20 px-4">
           {/* List Items */}
           <div className="space-y-[25px] w-full max-w-[1037px] rounded-lg shadow-lg ">
             <h2 className="text-2xl leading-[14px] font-bold text-center text-white">

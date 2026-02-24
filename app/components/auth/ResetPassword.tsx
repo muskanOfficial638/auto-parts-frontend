@@ -46,7 +46,7 @@ export default function ResetPassword() {
     }
   };
 
-  // ---------------- Handlers ----------------
+  // ---------------- Handler ----------------
   const handlePasswordChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {

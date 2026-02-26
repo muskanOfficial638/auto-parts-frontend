@@ -293,7 +293,7 @@ export default function Header() {
     <>
       {/* HEADER */}
       <header
-        className="fixed top-0  left-0 w-full z-10
+        className="fixed top-0  left-0 w-full z-20
   lg:bg-black/50 lg:backdrop-blur-md bg-black
   
    lg:py-8 py-[20px] text-white"

@@ -18,20 +18,13 @@ export default function BidModal({
   open: boolean;
   userRequest?: PartRequest;
   onClose: () => void;
-
 }) {
-
-
   const [files, setFiles] = useState<File[]>([]);
-
-
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setFiles([]);
-
   }, [userRequest]);
-
 
   const [formData, setFormData] = useState<QuoteCreate>({
     price_cents: "",
@@ -41,7 +34,11 @@ export default function BidModal({
     attachment: [],
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
+  ) => {
     const target = e.target;
     const name = target.name;
     const value = target.value;
@@ -50,7 +47,7 @@ export default function BidModal({
       ...prev,
       [name]: value,
     }));
-    console.log(formData)
+    console.log(formData);
   };
   const router = useRouter();
   async function handleSave(e: React.FormEvent) {
@@ -59,7 +56,12 @@ export default function BidModal({
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
     if (!loggedInUser.id) router.replace("/logout");
 
-    if (userRequest?.id && formData?.price_cents && formData.eta_days && formData.terms) {
+    if (
+      userRequest?.id &&
+      formData?.price_cents &&
+      formData.eta_days &&
+      formData.terms
+    ) {
       const formDataPayload = new FormData();
       formDataPayload.append("request_id", userRequest?.id);
       formDataPayload.append("user_id", loggedInUser.id);
@@ -68,29 +70,30 @@ export default function BidModal({
       formDataPayload.append("eta_days", formData.eta_days);
       formDataPayload.append("terms", formData.terms);
 
-
-
       if (formData?.attachment && formData.attachment.length > 0) {
         formData.attachment.forEach((file) => {
           formDataPayload.append("attachments", file);
         });
       } else {
-        toast.error("Please upload at least one image")
+        toast.error("Please upload at least one image");
         return;
       }
       try {
+        console.log(formDataPayload);
 
-        console.log(formDataPayload)
-
-        const response = await axios.post(`${supplierPath}/quote`, formDataPayload, {
-          headers: {
-            "Content-Type": "multipart/form-data",
+        const response = await axios.post(
+          `${supplierPath}/quote`,
+          formDataPayload,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           },
-        });
+        );
 
         if (response?.status === 200) {
           toast.success("Quote Submitted Successfully!");
-          setFiles([])
+          setFiles([]);
           onClose();
         }
       } catch (err: any) {
@@ -110,7 +113,7 @@ export default function BidModal({
         }
       }
     } else {
-      toast.error("Please fill all required fields ")
+      toast.error("Please fill all required fields ");
     }
   }
 
@@ -121,15 +124,15 @@ export default function BidModal({
       ...prev,
       attachment: [...(prev.attachment || []), ...selectedFiles],
     }));
-
-
   };
 
   const removeFile = (index: number) => {
     setFiles((prev) => prev.filter((_, i) => i !== index));
-    setFormData((prev) => ({ ...prev, attachment: [...prev.attachment.filter((_, i) => i !== index)] }));
+    setFormData((prev) => ({
+      ...prev,
+      attachment: [...prev.attachment.filter((_, i) => i !== index)],
+    }));
   };
-
 
   if (!open) return null;
 
@@ -154,13 +157,12 @@ export default function BidModal({
               Quote Now{" "}
             </h2>
 
-
             <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
               Price*
             </label>
             <div className="relative">
               <div className="absolute left-3 top-1/5 -translate-y-1/5 text-base text-gray-400 ">
-                R : 
+                R :
               </div>
               <input
                 type="text"
@@ -172,7 +174,6 @@ export default function BidModal({
                 onChange={handleChange}
                 className=" px-[35px] py-[13px] md:mb-[30px] mb-[20px] bg-white md:text-base text-sm md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
               />
-
             </div>
 
             <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
@@ -229,13 +230,9 @@ export default function BidModal({
                       <HiOutlineUpload />
                     </div>
 
-
                     <p className="mt-4 text-base font-semibold text-gray-800">
                       Click to upload files
                     </p>
-
-
-
                   </label>
                 </div>
               )}
@@ -244,7 +241,6 @@ export default function BidModal({
                 const isImage = file.type.startsWith("image/");
 
                 return (
-
                   <li
                     key={index}
                     className="flex items-center justify-between bg-white px-3 py-2 rounded-sm border"
@@ -266,7 +262,9 @@ export default function BidModal({
                       )}
 
                       <div className="flex flex-col">
-                        <span className="text-sm text-gray-800 font-medium">{file.name}</span>
+                        <span className="text-sm text-gray-800 font-medium">
+                          {file.name}
+                        </span>
                         <span className="text-xs text-gray-500">
                           {(file.size / 1024).toFixed(2)} KB
                         </span>
@@ -283,9 +281,7 @@ export default function BidModal({
                   </li>
                 );
               })}
-
             </div>
-
 
             <button
               className="bg-autoblue md:mt-[30px] mt-[20px] w-full md:text-[20px] text-[15px] leading[14px] rounded-sm text-white  py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"

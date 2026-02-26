@@ -181,7 +181,7 @@ export default function ViewPartRequest() {
                 )}
                 
                 <p className="text-[10px] leading-[22px] font-medium text-[#F8F8F8] mt-[5px]">
-                  Staus:{" "}
+                  Status:{" "}
   
                <span className={`font-medium capitalize leading-[10px] ${statusCode[partRequest?.status as keyof typeof statusCode]?.color || "text-gray-500"} px-[9px] py-[1px] rounded-[50px]`}>{statusCode[partRequest?.status as keyof typeof statusCode]?.name || "Unknown"}</span>
                 </p>

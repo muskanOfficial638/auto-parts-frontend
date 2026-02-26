@@ -176,14 +176,8 @@ export default function Footer() {
         </div>
 
         {/* Bottom Section */}
-        <div className="flex flex-col md:flex-row justify-between items-center text-xs mt-[15px]">
-          <p>Copyright 2025 © AutoParts Theme. All rights reserved.</p>
-          <div className="mt-3 md:mt-0 text-right">
-            <p className="text-white">
-              <strong className="me-[6px]">25,160,181 Total</strong>AutoParts
-              Posted
-            </p>
-          </div>
+        <div className=" text-center text-xs mt-[20px]">
+          <p>Copyright 2026 © AutoParts XChange. All rights reserved.</p>         
         </div>
       </div>
     </footer>

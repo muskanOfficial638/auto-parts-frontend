@@ -141,13 +141,13 @@ export default function LoginPage() {
         }}
       >
         <div className="rounded-xl shadow-lg w-full lg:pt-0 pt-[30px] px-[20px] pb-[20px] flex items-center">        
-            <div className="w-[700px]  max-w-[100%] ms-[auto] me-[auto] bg-[#1d4aa4]/15 backdrop-blur-xl md:px-10 px-[30px] py-[40px] rounded-[20px] shadow-xl flex flex-col items-center border-2 border-borderblue">
-              <h2 className="text-white md:text-4xl text-[25px] font-bold">
+            <div className="w-[650px]  max-w-[100%] ms-[auto] me-[auto] bg-[#1d4aa4]/15 backdrop-blur-xl  p-[25px] rounded-[20px] shadow-xl flex flex-col items-center border-2 border-borderblue">
+              <h2 className="text-white md:text-[30px] text-[20px] font-bold">
                 Login
               </h2>
 
               <form
-                className=" w-full flex flex-col gap-[30px] py-[30px]"
+                className=" w-full flex flex-col gap-[25px] py-[25px]"
                 onSubmit={handleLogin}
               >
                 {/* Email */}
@@ -156,7 +156,7 @@ export default function LoginPage() {
                   name="email"
                   onChange={handleEmailChange}
                   placeholder="Enter email"
-                  className="px-[20px] py-[13px] bg-white md:text-base text-sm md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
+                  className="w-full px-[15px] py-[10px] bg-white text-sm rounded-sm placeholder-grayMedium text-grayMedium outline-none"
                 />
                 {emailError && (
                   <p className="text-red-400 text-sm">{emailError}</p>
@@ -169,7 +169,7 @@ export default function LoginPage() {
                     name="password"
                     onChange={handlePasswordChange}
                     placeholder="Enter password"
-                    className="px-[20px] py-[13px] bg-white md:text-base text-sm md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
+                    className="w-full px-[15px] py-[10px] bg-white text-sm rounded-sm placeholder-grayMedium text-grayMedium outline-none"
                   />
 
                   <span
@@ -185,13 +185,13 @@ export default function LoginPage() {
                 </div>
 
                 {/* Forgot Password */}
-                <Link href="/forgot-password" className="md:text-base text-sm md:leading-[23px] leading-[20px] text-autoblue hover:underline cursor-pointer font-semibold">
+                <Link href="/forgot-password" className=" text-sm text-autoblue hover:underline cursor-pointer font-semibold">
                   Forgot Password ?
                 </Link>
                 {error && <p className="text-red-600 text-sm">{error}</p>}
                 {/* Login Button */}
            
-                <button className="flex justify-center  bg-autoblue md:text-[20px] text-[15px] leading[14px]  rounded-sm text-white md:py-[15px] py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer">
+                <button className="flex justify-center  bg-autoblue md:text-base text-sm leading[14px]  rounded-sm text-white md:py-[15px] py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer">
                      
                   { loading && ( <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent border-white rounded-full animate-spin me-2"></div>)} Login
           
@@ -199,7 +199,7 @@ export default function LoginPage() {
               </form>
 
               {/* Signup */}
-              <div className="text-white font-medium md:text-base text-sm  md:leading-[23px] leading-[20px]">
+              <div className="text-white font-medium md:text-base text-[15px]  md:leading-[23px] leading-[20px]">
                 Are you a new user{" "}
                 <Link
                   href="/sign-up"

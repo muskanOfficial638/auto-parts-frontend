@@ -143,7 +143,7 @@ const router = useRouter();
                   name="user_name"
                   value={profileData?.user_name || ""}
                   onChange={handleProfileChange}
-                  className="w-full py-[8px] px-[18px]  bg-white md:text-base text-sm leading-[13px]  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
+                  className="w-full py-[8px] px-[15px]  bg-white text-sm  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
                 />
               </div>
 
@@ -157,7 +157,7 @@ const router = useRouter();
                   name="company_name"
                   value={profileData?.company_name || ""}
                   onChange={handleProfileChange}
-                  className="w-full py-[8px] px-[18px]  bg-white md:text-base text-sm leading-[13px]  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
+                  className="w-full py-[8px] px-[15px]  bg-white text-sm  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
                 />
               </div>
 
@@ -166,7 +166,7 @@ const router = useRouter();
                 <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                   Email
                 </label>
-                <div className="w-full py-[8px] px-[18px]  bg-white md:text-base text-sm leading-[20px]  border border-LightNeutral rounded-sm text-Gray">
+                <div className="w-full py-[8px] px-[15px]  bg-white text-sm   border border-LightNeutral rounded-sm text-Gray">
                   {profileData?.email || ""}
                 </div>
               </div>
@@ -184,7 +184,7 @@ const router = useRouter();
                   name="old_password"
                   autoComplete="new-password"
                   onChange={handlePasswordChange}
-                  className="w-full py-[8px] px-[18px]  bg-white md:text-base text-sm leading-[13px]  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
+                  className="w-full py-[8px] px-[15px]  bg-white text-sm  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
                 />
               </div>
 
@@ -197,26 +197,26 @@ const router = useRouter();
                   placeholder="***********"
                   name="password_hash"
                   onChange={handlePasswordChange}
-                  className="w-full py-[8px] px-[18px]  bg-white md:text-base text-sm leading-[13px]  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
+                  className="w-full py-[8px] px-[15px]  bg-white md:text-base text-sm leading-[13px]  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
                 />
               </div>
               <div>
                 <label className="text-Gray  md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-                  Repeat New Password
+                  Confirm Password
                 </label>
                 <input
                   type="password"
                   placeholder="***********"
                   name="confirm_password"
                   onChange={handlePasswordChange}
-                  className="w-full py-[8px] px-[18px]  bg-white md:text-base text-sm leading-[13px]  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
+                  className="w-full py-[8px] px-[15px]  bg-white text-sm leading-[13px]  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
                 />
               </div>
 
               {/* Save Button */}
               <button
                 type="submit"
-                className="bg-autoblue md:text-[22px] text-base leading[14px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
+                className="bg-autoblue md:text-base text-[15px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
               >
                 Save Changes
               </button>

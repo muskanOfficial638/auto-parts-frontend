@@ -151,8 +151,14 @@ return sortConfig.direction === "asc"
 
   if (loading) {
     return (
-      <div className="h-screen">
+      <div className="min-h-screen w-full relative flex justify-center items-center">
+         <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/dashboardBg.jpg')" }}
+        />
+          <div className="absolute inset-0 bg-gradient-to-b bg-gradient-to-b from-[#003253]/95 to-black/95 z-0" />
         <Loader />
+     
       </div>
     );
   }

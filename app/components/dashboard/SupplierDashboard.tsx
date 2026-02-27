@@ -302,7 +302,7 @@ export default function SupplierDashboard() {
                         {item.title}
 
                         <span
-                          className={`text-[8px] px-2 py-1 rounded-full ${item.urgency === "high"
+                          className={`text-[8px] capitalize self-end-safe px-2 py-1 rounded-full ${item.urgency === "high"
                             ? "bg-red-500"
                             : item.urgency === "normal"
                               ? "bg-yellow-500"
@@ -337,7 +337,7 @@ export default function SupplierDashboard() {
                         setPartRequest(item);
                         setOnDetailsClose(true);
                       }}
-                      className="bg-gray-500 hover:bg-gray-600 px-3 py-2 rounded-sm"
+                      className="bg-gray-500 cursor-pointer hover:bg-gray-600 duration-400 px-3 py-2 rounded-sm"
                     >
                       <FaEye />
                     </button>
@@ -345,7 +345,7 @@ export default function SupplierDashboard() {
 
                     <button
                       onClick={() => ModalOpen(item)}
-                      className="bg-autoblue hover:bg-hoverblue px-6 py-2 rounded-sm"
+                      className="bg-autoblue hover:bg-hoverblue cursor-pointer duration-400 px-6 py-2 rounded-sm"
                     >
                       Quote Now
                     </button>
@@ -384,7 +384,7 @@ export default function SupplierDashboard() {
             )}
 
 
-            <div className="flex justify-center gap-3">
+            <div className="flex justify-center items-center text-white gap-3">
 
               <button
                 onClick={() => {
@@ -392,7 +392,7 @@ export default function SupplierDashboard() {
                   setCurrentPage((p) => p - 1);
                 }}
                 disabled={currentPage <= 1 || loadingPage}
-                className="border px-4 py-2 rounded disabled:opacity-50"
+                className="border cursor-pointer px-4 py-2 rounded disabled:opacity-50"
               >
                 ⬅ Prev
               </button>
@@ -409,7 +409,7 @@ export default function SupplierDashboard() {
                   setCurrentPage((p) => p + 1);
                 }}
                 disabled={currentPage >= metaPage.total_pages || loadingPage}
-                className="border px-4 py-2 rounded disabled:opacity-50"
+                className="border cursor-pointer px-4 py-2 rounded disabled:opacity-50"
               >
                 Next ➡
               </button>

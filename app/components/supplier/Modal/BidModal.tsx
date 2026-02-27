@@ -78,6 +78,10 @@ export default function BidModal({
         toast.error("Please upload at least one image");
         return;
       }
+      if(files.length >5  ){
+             toast.error("Please upload up to 5 images only");
+            return;
+          }
       try {
         console.log(formDataPayload);
 
@@ -153,7 +157,7 @@ export default function BidModal({
             className="w-[500px] max-w-[100%] ms-[auto] me-[auto]"
             onSubmit={handleSave}
           >
-            <h2 className="text-white md:text-3xl text-[20px] font-bold md:mb-[30px] mb-[20px]">
+            <h2 className="text-white md:text-[25px] text-[20px] font-bold md:mb-[25px] mb-[20px]">
               Quote Now{" "}
             </h2>
 
@@ -172,7 +176,7 @@ export default function BidModal({
                 pattern="[0-9]*"
                 required
                 onChange={handleChange}
-                className=" px-[35px] py-[13px] md:mb-[30px] mb-[20px] bg-white md:text-base text-sm md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
+                className=" px-[35px] py-[13px] md:mb-[30px] mb-[20px] bg-white text-sm rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
               />
             </div>
 
@@ -187,7 +191,7 @@ export default function BidModal({
               pattern="[0-9]*"
               onChange={handleChange}
               required
-              className="px-[20px] py-[12px] md:mb-[30px] mb-[20px] bg-white md:text-base text-sm md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
+              className="px-[15px] py-[10px] md:mb-[30px] mb-[20px] bg-white text-sm rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
             />
             <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
               Description*
@@ -199,7 +203,7 @@ export default function BidModal({
               minLength={2}
               maxLength={280}
               required
-              className=" px-[20px] py-[12px] bg-white md:mb-[30px] mb-[20px] h-[125px] md:text-base text-sm md:leading-[23px] leading-[20px] rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
+              className=" px-[15px] py-[10px] bg-white md:mb-[30px] mb-[20px] h-[125px] text-sm rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
             />
             <div className="flex flex-col gap-[10px]">
               <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
@@ -282,9 +286,8 @@ export default function BidModal({
                 );
               })}
             </div>
-
             <button
-              className="bg-autoblue md:mt-[30px] mt-[20px] w-full md:text-[20px] text-[15px] leading[14px] rounded-sm text-white  py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
+              className="bg-autoblue md:mt-[30px] mt-[20px] w-full md:text-base text-[15px] leading[14px] rounded-sm text-white  py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
               type="submit"
             >
               Submit

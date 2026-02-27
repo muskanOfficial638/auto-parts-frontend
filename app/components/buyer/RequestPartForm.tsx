@@ -216,6 +216,10 @@ export default function RequestPartForm() {
       toast.error("Please upload at least one image");
       return;
     }
+    if(files.length >5  ){
+       toast.error("Please upload up to 5 images only");
+      return;
+    }
 
     const multipartData = new FormData();
     Object.entries(updatedData).forEach(([key, value]) => {
@@ -549,7 +553,7 @@ export default function RequestPartForm() {
                           name="required_by_date"
                           onChange={handleChange}
                           value={formData?.required_by_date}
-                          className="w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[13px]  border border-LightNeutral rounded-sm text-Gray outline-none"
+                          className="w-full py-[8px] px-[18px] bg-white md:text-base text-sm   border border-LightNeutral rounded-sm text-Gray outline-none"
                         />
                         {/* <CalendarDays
                       className="absolute right-5 top-4 text-gray-400"
@@ -665,13 +669,13 @@ export default function RequestPartForm() {
                       <button
                         type="button"
                         onClick={() => setFormStep(1)}
-                        className="flex items-center justify-center gap-2 bg-gray-500 md:text-[22px] text-base leading[14px] w-50 rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-gray-600 duration-400 cursor-pointer"
+                        className="flex items-center justify-center gap-2 bg-gray-500 md:text-base text-sm leading[14px] w-50 rounded-sm text-white md:py-[10px] p-[13px] font-semibold hover:bg-gray-600 duration-400 cursor-pointer"
                       >
                         <IoArrowBack /> Back
                       </button>
                       <button
                         type="submit"
-                        className="bg-autoblue md:text-[22px] text-base leading[14px] w-50 rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
+                        className="bg-autoblue md:text-base text-sm leading[14px] w-50 rounded-sm text-white md:py-[10px] p-[13px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
                       >
                         {requestId ? "Update Request" : "Submit Request"}
                       </button>

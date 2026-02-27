@@ -38,8 +38,11 @@ export async function proxy(request: NextRequest) {
     }
   }
 
+  if(userData.role == "supplier" && userData.profile.kyc_status !=="approved" &&  url.pathname !== "/kyc-info"){
+    return NextResponse.redirect(new URL("/kyc-info", request.url));
+  }
   const buyerRoutes = ["/buyer-dashboard", "/request-part", "/orders"];
-  const supplierRoutes = ["/supplier-dashboard", "/my-quote"];
+  const supplierRoutes = ["/supplier-dashboard", "/my-quote",'/kyc-info'];
 
   if (!userData.role) {
     return NextResponse.redirect(new URL("/login", request.url));
@@ -101,5 +104,6 @@ export const config = {
     "/my-account",
     "/view-part-request/:path*",
     "/orders/:path*",
+    "/kyc-info"
   ],
 };

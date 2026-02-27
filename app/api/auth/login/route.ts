@@ -10,6 +10,11 @@ export async function POST(req: Request) {
   });
 
   const data = await res.json();
+
+  if(data.detail){
+    const response = NextResponse.json(data,{ status: 401 });
+      return response;
+  }
   const response = NextResponse.json(data.user);
   if(data.user.role !== "admin"){
   response.cookies.set("ATXAT", data.access_token, {

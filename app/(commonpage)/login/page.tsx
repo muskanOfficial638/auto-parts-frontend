@@ -105,7 +105,7 @@ export default function LoginPage() {
         } else if (response.data?.role === "supplier"){
           router.push(
             response.data?.profile?.kyc_status === "pending"
-              ? "/kyc-page"
+              ? "/kyc-info"
               : "/supplier-dashboard"
           );
         }

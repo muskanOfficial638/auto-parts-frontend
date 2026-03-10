@@ -54,12 +54,18 @@ export default function KycDetailForm() {
     setFile(selectedFile); // ✅ single file state
   };
 
-  const handleDrag = (e: React.DragEvent<HTMLLabelElement>) => {
+
+
+  const handleDrop = (e: React.DragEvent<HTMLElement>) => {
+
     e.preventDefault();
     handleFiles(e.dataTransfer.files);
   };
 
-  const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+
+
+  const handleDragOver = (e: React.DragEvent<HTMLElement>) => {
+
     e.preventDefault();
   };
 
@@ -121,7 +127,7 @@ export default function KycDetailForm() {
             <form onSubmit={handleSave}>
               {/* Drag Area */}
               <label
-                onDrop={handleDrag}
+                onDrop={handleDrop}
                 onDragOver={handleDragOver}
                 htmlFor="fileUpload"
                 className="cursor-pointer border-2 block border-dashed border-autoblue bg-brandBlack p-8 text-center rounded mb-4"

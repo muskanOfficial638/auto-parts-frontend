@@ -52,7 +52,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
       if ('scrollRestoration' in history) {
-        history.scrollRestoration = 'manual';
+          history.scrollRestoration = 'manual';
       }
     `,
           }}

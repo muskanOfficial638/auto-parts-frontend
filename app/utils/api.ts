@@ -25,6 +25,39 @@ export const orderAPI = `${BASE_API_URL}/8003/v1`;
 export const profileAPI = `${BASE_API_URL}/8004/profiles`;
 export const supplierAPI = `${BASE_API_URL}/8005/v1/supplier`;
 
+// update notification
+export async function updateNotification(
+  id: string,
+) {
+  const res = await fetch(`${profilePath}notifications/${id}`, {
+    method: "PATCH",
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+ 
+    },
+    body: `{"status": "read"}`,
+  });
+
+  if (!res.ok) throw new Error("Failed to update ");
+
+  return res.json();
+}
+
+// get Notification
+export async function getNotification(user_id: string) {
+  const res = await fetch(`${profilePath}notifications/${user_id}`, {
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+    
+    },
+  }); // local
+  if (!res.ok) throw new Error("Failed to load part request data");
+  return res.json();
+}
+
+
 // verify OTP
 export function shippingSubmit(formdata: any) {
  {

@@ -7,7 +7,29 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 import { FaRegBell } from "react-icons/fa";
+import { getNotification, updateNotification } from "../utils/api";
+import { FaEye } from "react-icons/fa";
+interface Notification {
+  id: string;
+  user_id: string;
+  subject: string;
+  body: string;
+  status: "read" | "unread";
+  created_at: string;
+  updated_at: string;
+}
 
+interface NotificationCounts {
+  total_count: number;
+  read_count: number;
+  unread_count: number;
+}
+
+interface NotificationsResponse {
+  status: boolean;
+  notifications: Notification[];
+  counts: NotificationCounts;
+}
 function MainNav() {
   return (
     <>
@@ -93,14 +115,31 @@ function BuyerSupplierMenu({ autoPartsUserData }: { autoPartsUserData: any }) {
       router.push("/logout");
     }
   }
-  function setIsPopupOpen(arg0: (prev: any) => boolean): void {
-    throw new Error("Function not implemented.");
-  }
+
 
   const [isPopupOpenNoti, setIsPopupOpenNoti] = useState<boolean>(false);
   const popupRef = useRef<HTMLDivElement | null>(null);
+  const [getNotifi, setNotifi] = useState<NotificationsResponse | null>(null);
+  
+  useEffect(() => {
+    getNotification(autoPartsUserData.id).then((data: any) => {
+      setNotifi(data)
+    });
+  }, [autoPartsUserData])
 
-  // Close on outside click + ESC
+  async function MdMarkAsUnread(id: string) {
+    const res = await updateNotification(id);
+    if (res?.status) {
+      getNotification(autoPartsUserData.id).then((data: any) => {
+        setNotifi(data)
+      });
+    } else {
+      toast.error(res?.details);
+    }
+  }
+
+
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -154,33 +193,41 @@ function BuyerSupplierMenu({ autoPartsUserData }: { autoPartsUserData: any }) {
             onClick={() => setIsPopupOpenNoti((prev) => !prev)}
           >
             <FaRegBell className="text-autoblue text-[22px]" />
-            <span className="bg-[#03CD21] text-[8px] h-3.75 w-3.75 rounded-full flex items-center justify-center absolute top-0 -right-[6px]">
-              2
-            </span>
+            {getNotifi?.counts?.unread_count && getNotifi?.counts?.unread_count > 0 ? (
+              <span className="bg-[#03CD21] text-[8px] h-3.75 w-3.75 rounded-full flex items-center justify-center absolute top-0 -right-[6px]">
+                {getNotifi?.counts.unread_count}
+              </span>
+            ): ""}
           </div>
-          {/* 🪟 Popup Panel */}
+
           <div
             ref={popupRef}
-            className={`absolute md:top-9.5 top-11.75 md:-right-4 -right-8.25 w-62.5 transition-all duration-300 ${
-              isPopupOpenNoti
-                ? "opacity-100 scale-100 visible"
-                : "opacity-0 scale-95 invisible"
-            }`}
+            className={`
+              [&::-webkit-scrollbar]:w-1
+  [&::-webkit-scrollbar-track]:bg-gray-900
+  [&::-webkit-scrollbar-thumb]:bg-gray-500
+  [&::-webkit-scrollbar-thumb]:rounded-full
+  overflow-x-auto h-61 absolute md:top-9.5 top-11.75 md:-right-4 -right-8.25 w-68.5 transition-all duration-300 ${isPopupOpenNoti
+              ? "opacity-100 scale-100 visible"
+              : "opacity-0 scale-95 invisible"
+              }`}
           >
             <div className="relative bg-brandBlack rounded-[10px] shadow-2xl py-5 px-3.75">
-              {/* Arrow */}
               <div className="absolute -top-1.75 right-5  w-5 h-5 bg-brandBlack rotate-45 "></div>
-
               <div className="space-y-2.5">
-                {[1, 2, 3].map((item) => (
-                  <div key={item}>
-                    <h3 className="text-autoblue text-[13px] font-semibold">
-                      Transaction Confirmed
-                    </h3>
-                    <p className="text-white text-[10px] mt-1">
-                      Your payment was successfully deposited into escrow. 290
-                      DAI
-                    </p>
+                {getNotifi?.notifications.map((item) => (
+                  <div key={item.id} className=" flex items-center justify-between gap-2">
+                    <div>
+                      <h3 className={`text-[13px] font-semibold ${item.status == 'unread' ? 'text-autoblue' : 'text-gray-500'}`}>
+                        {item.subject}
+                      </h3>
+                      <p className={`text-[10px] mt-1 ${item.status == 'unread' ? 'text-white' : 'text-gray-500'}`}>
+                        {item.body}
+                      </p>
+                    </div>
+                    {item.status == 'unread' && (
+                      <div> <FaEye title="Mark as read" onClick={() => MdMarkAsUnread(item.id)} className="cursor-pointer text-autoblue text-[13px]" /></div>
+                    )}
                   </div>
                 ))}
               </div>
@@ -304,7 +351,7 @@ export default function Header() {
           ) : (
             <BuyerSupplierMenu autoPartsUserData={autoPartsUserData} />
           )}
-          
+
           <button
             onClick={() => setMobileOpen(true)}
             className="lg:hidden text-white text-3xl"
@@ -316,9 +363,8 @@ export default function Header() {
 
       {/* MOBILE SLIDE-IN MENU */}
       <div
-        className={`fixed top-0 right-0 h-full w-72 bg-black/90 text-white z-50 transform transition-transform duration-300 ${
-          mobileOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed top-0 right-0 h-full w-72 bg-black/90 text-white z-50 transform transition-transform duration-300 ${mobileOpen ? "translate-x-0" : "translate-x-full"
+          }`}
       >
         <button
           onClick={() => setMobileOpen(false)}

@@ -25,7 +25,7 @@ export const orderAPI = `${BASE_API_URL}/8003/v1`;
 export const profileAPI = `${BASE_API_URL}/8004/profiles`;
 export const supplierAPI = `${BASE_API_URL}/8005/v1/supplier`;
 
-// update notification
+// update notification api
 export async function updateNotification(
   id: string,
 ) {

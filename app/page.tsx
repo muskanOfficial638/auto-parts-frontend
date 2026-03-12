@@ -14,7 +14,7 @@ export default function Home() {
 
       <Header />
 
-      {/* Hero Section */}
+      
       <HeroSection />
 
       {/* Why choose Section */}

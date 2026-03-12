@@ -12,7 +12,6 @@ export default function Home() {
     <main className="min-h-screen bg-black text-white">
       <ScrollToTop />
 
-      {/* Header */}
       <Header />
 
       {/* Hero Section */}

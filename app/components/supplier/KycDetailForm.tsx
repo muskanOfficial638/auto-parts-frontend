@@ -4,7 +4,7 @@ import { fetchKycDocs, imagePath, uploadKycDoc } from "@/app/utils/api";
 import { EyeIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { HiOutlineUpload } from "react-icons/hi";
 import Image from "next/image";
 
@@ -17,6 +17,7 @@ interface KycItem {
 
 export default function KycDetailForm() {
   const [kycData, setKycData] = useState<KycItem[]>([]);
+  const [isproccess, setisproccess] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const router = useRouter();
 
@@ -90,6 +91,15 @@ export default function KycDetailForm() {
       return;
     }
 
+    const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+    if (file.size > maxSize) {
+      toast.error("File size must be less than 5MB");
+      return;
+    }
+
+
+    if (isproccess) return;
+    setisproccess(true);
     const formData = new FormData();
     formData.append("file", file);
     formData.append("user_id", loggedInUser.id);
@@ -99,14 +109,16 @@ export default function KycDetailForm() {
     toast.success("Uploaded successfully");
     setFile(null);
 
+
     const data = await fetchKycDocs(loggedInUser.id);
     setKycData(data || []);
+    setisproccess(false);
   }
 
   // ================= UI =================
   return (
     <div className="min-h-screen w-full relative">
-      <ToastContainer />
+
 
       {/* Background */}
       <div
@@ -154,7 +166,7 @@ export default function KycDetailForm() {
                 <div className="mb-4">
                   <div className="flex items-center gap-4 bg-[#011827] p-3 rounded">
                     {file.type === "image/jpeg" ||
-                    file.type === "image/png" ? (
+                      file.type === "image/png" ? (
                       <Image
                         src={URL.createObjectURL(file)}
                         alt="preview-doc"
@@ -183,7 +195,8 @@ export default function KycDetailForm() {
                 </div>
               )}
 
-              <button className="bg-autoblue w-full py-3 text-white font-semibold rounded">
+              <button className="flex justify-center bg-autoblue w-full py-3 text-white font-semibold rounded">
+                {isproccess && (<div className="w-6 h-6 border-4 border-blue-500 border-t-transparent border-white rounded-full animate-spin me-2"></div>)}
                 Upload Document
               </button>
             </form>
@@ -214,7 +227,7 @@ export default function KycDetailForm() {
                   <tr key={item.id} className="border-b border-[#2C364A]">
                     <td className="text-center p-3">
                       {item.attachment_name?.endsWith("jpg") ||
-                      item.attachment_name?.endsWith("png") ? (
+                        item.attachment_name?.endsWith("png") ? (
                         <Image
                           src={imagePath + item.attachment_name}
                           width={80}
@@ -234,13 +247,12 @@ export default function KycDetailForm() {
                     </td>
 
                     <td
-                      className={`capitalize text-center text-xs p-3 font-semibold ${
-                        item.status === "pending"
+                      className={`capitalize text-center text-xs p-3 font-semibold ${item.status === "pending"
                           ? "text-yellow-400"
                           : item.status === "approved"
-                          ? "text-green-500"
-                          : "text-red-500"
-                      }`}
+                            ? "text-green-500"
+                            : "text-red-500"
+                        }`}
                     >
                       {item.status}
                     </td>

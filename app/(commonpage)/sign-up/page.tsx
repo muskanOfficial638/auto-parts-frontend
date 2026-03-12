@@ -5,7 +5,7 @@ import { useState } from "react";
 import Header from "@/app/components/Header";
 import { AiFillEye } from "react-icons/ai";
 import { motion } from "framer-motion";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import axios from "axios";
 import { authApiPath } from "@/app/utils/api";
 import { FaEyeSlash } from "react-icons/fa6";
@@ -28,6 +28,8 @@ export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isTermsChecked, setIsTermsChecked] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [submitProcess, setSubmitProcess] = useState(false);
+
 
   // Email Validation
   const validateEmail = (value: string) => {
@@ -35,7 +37,7 @@ export default function SignUpPage() {
     if (!value) {
       setEmailError("Email is required");
     } else if (/^\s|\s$/.test(value)) {
-      setEmailError("Leading or trailing spaces are not allowed");
+      setEmailError("Spaces are not allowed");
     } else if (/\s/.test(value)) {
       setEmailError("Spaces are not allowed");
     } else if (!emailRegex.test(value)) {
@@ -97,7 +99,11 @@ export default function SignUpPage() {
 
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
+    if(submitProcess){
+      return
+    }
 
+      setSubmitProcess(true);
     try {
        setLoading(true)
       if (!name || !role || !email || !password) {
@@ -153,11 +159,13 @@ export default function SignUpPage() {
       // console.log("RegisterData:", response.data);
       if (response?.data) {
          setLoading(false)
+         setSubmitProcess(false);
         toast.success("Signed-up Successfully");
         router.push("/login");
       }
     } catch (err: any) {
        setLoading(false)
+       setSubmitProcess(false);
       // Handle errors more gracefully
       if (err.response) {
         // Server responded with a status other than 2xx
@@ -192,7 +200,7 @@ export default function SignUpPage() {
         }}
       >
         <div className="rounded-xl shadow-lg w-full p-[20px] flex items-center ">
-          <ToastContainer />
+         
           <motion.div
             className="w-[650px] ms-[auto] me-[auto]  max-w-full bg-[#1d4aa4]/15 backdrop-blur-xl  p-[25px]  rounded-[20px] shadow-xl flex flex-col items-center border-2 border-borderblue"
             initial={{ opacity: 0, y: 50 }}
@@ -227,6 +235,7 @@ export default function SignUpPage() {
               <input
                 type="text"
                 name="company"
+                required
                 placeholder="Company"
                 onChange={(e) => setCompanyName(e.target.value)}
                 className="md:col-span-1 col-span-2 px-[15px] py-[10px] bg-white text-sm rounded-sm placeholder-grayMedium text-grayMedium outline-none "
@@ -244,12 +253,12 @@ export default function SignUpPage() {
                 <option value="buyer">Buyer</option>
                 <option value="supplier">Supplier</option>
               </select>
-
+       {role=='buyer' && (
               <div className="md:col-span-1 col-span-2">
                 <input
                   type="text"
                   name="vat_number"
-                  disabled={role == "supplier"}
+                 
                   onChange={(e) => {
                     setVATNumber(e.target.value);
                     setError("");
@@ -263,6 +272,7 @@ export default function SignUpPage() {
                   <p className="text-red-500 text-sm mt-1">{vatError}</p>
                 )}
               </div>
+              )}
               <input
                 type="text"
                 name="email"

@@ -1,23 +1,27 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast } from "react-toastify";
 
 export default function LogoutPage() {
   const router = useRouter();
+  const hasLoggedOut = useRef(false);
 
   useEffect(() => {
+    if (hasLoggedOut.current) return;
+    hasLoggedOut.current = true;
+
     const logout = async () => {
       try {
         await axios.post("/api/auth/logout");
-        toast.success("Logged out successfully");
 
-        // Also clear localStorage if you have stored user data there
         localStorage.removeItem("autoPartsUserData");
         localStorage.removeItem("loginTime");
         localStorage.removeItem("lastActivity");
+
+        toast.success("Logged out successfully");
 
         router.push("/login");
       } catch (err) {
@@ -29,5 +33,5 @@ export default function LogoutPage() {
     logout();
   }, [router]);
 
-  return null; // optionally you can show a spinner
+  return null;
 }

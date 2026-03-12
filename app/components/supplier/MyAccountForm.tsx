@@ -4,7 +4,7 @@
 import { updateProfile, viewProfile } from "@/app/utils/api";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 export interface UserProfile {
   company_name: string;
   email: string;
@@ -14,6 +14,9 @@ export interface UserProfile {
 
 export default function MyAccountForm() {
   const [loading, setLoading] = useState(true);
+   const [isEdit, SetEdit] = useState(false)
+   const [submitProcess, setSubmitProcess] = useState(false);
+  
   const [profileData, setProfileData] = useState<UserProfile>({
     user_name: "",
     email: "",
@@ -32,6 +35,7 @@ const router = useRouter();
     if (typeof window !== "undefined") {
       const autoPartsUserData = localStorage.getItem("autoPartsUserData");
       const loggedInUser = JSON.parse(autoPartsUserData || "{}");
+     
      if (!loggedInUser.id) router.replace("/logout");
       if (loggedInUser) {
         viewProfile(
@@ -53,6 +57,7 @@ const router = useRouter();
 
   // Handle text field changes
   const handleProfileChange = (e: any) => {
+     SetEdit(true)
     const { name, value } = e.target;
     setProfileData((prev: any) => ({ ...prev, [name]: value }));
 
@@ -60,23 +65,45 @@ const router = useRouter();
 
   // Handle password inputs
   const handlePasswordChange = (e: any) => {
+    SetEdit(true)
     const { name, value } = e.target;
     setPasswords((prev) => ({ ...prev, [name]: value }));
+  };
+
+ const validatePassword = (value: string) => {
+    const errors: string[] = [];
+
+    if (/\s/.test(value)) errors.push("Spaces are not allowed");
+    if (value.length < 6) errors.push("Minimum length 6 characters");
+    if (!/[A-Z]/.test(value))
+      errors.push("Must contain at least one uppercase letter");
+    if (!/[a-z]/.test(value))
+      errors.push("Must contain at least one lowercase letter");
+    if (!/[0-9]/.test(value)) errors.push("Must contain at least one number");
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(value))
+      errors.push("Must contain at least one special character");
+    return errors.length>0
   };
 
   // Submit handler
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    if(!isEdit) return;
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
 
     if (!loggedInUser.id) router.replace("/logout");
+      if(passwords.password_hash && validatePassword(passwords.password_hash)){
+         toast.error("Invalid password format.");
+         return;
+      }
+
     if (passwords.password_hash !== passwords.confirm_password) {
       toast.error("Passwords do not match!");
       return;
     }
 
-    try {
+    try { 
 
 
       const payload = {
@@ -88,26 +115,40 @@ const router = useRouter();
         confirm_password: passwords.confirm_password || "",
       };
 
+         if(submitProcess){
+         return
+       }
+
+      setSubmitProcess(true);
+
       const res = await updateProfile(
         loggedInUser?.id, 
         payload
       );
       if (res?.success) {
         toast.success("Profile updated successfully!");
+        setSubmitProcess(false);
         viewProfile(loggedInUser.id);
+        setPasswords({
+    old_password: "",
+    password_hash: "",
+    confirm_password: "",
+  })
       } else {
         toast.error(res?.details);
+        setSubmitProcess(false);
       }
 
     } catch (error) {
       console.log("Update Error:", error);
       toast.error("Failed to update profile.");
+      setSubmitProcess(false);
     }
   };
 
   return (
     <div className="min-h-screen w-full relative">
-      <ToastContainer />
+      
 
       {/* Background Image */}
       <div
@@ -200,6 +241,55 @@ const router = useRouter();
                   className="w-full py-[8px] px-[15px]  bg-white md:text-base text-sm leading-[13px]  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
                 />
               </div>
+
+                {passwords.password_hash && (
+                <ul className="mt-2 text-sm">
+                  <li
+                    className={
+                      /\s/.test(passwords.password_hash) ? "text-red-500" : "text-green-600"
+                    }
+                  >
+                    Spaces are not allowed
+                  </li>
+                  <li
+                    className={
+                      passwords.password_hash.length >= 6 ? "text-green-600" : "text-red-500"
+                    }
+                  >
+                    Minimum length 6 characters
+                  </li>
+                  <li
+                    className={
+                      /[A-Z]/.test(passwords.password_hash) ? "text-green-600" : "text-red-500"
+                    }
+                  >
+                    At least one uppercase letter
+                  </li>
+                  <li
+                    className={
+                      /[a-z]/.test(passwords.password_hash) ? "text-green-600" : "text-red-500"
+                    }
+                  >
+                    At least one lowercase letter
+                  </li>
+                  <li
+                    className={
+                      /[0-9]/.test(passwords.password_hash) ? "text-green-600" : "text-red-500"
+                    }
+                  >
+                    At least one number
+                  </li>
+                  <li
+                    className={
+                      /[!@#$%^&*(),.?":{}|<>]/.test(passwords.password_hash)
+                        ? "text-green-600"
+                        : "text-red-500"
+                    }
+                  >
+                    At least one special character
+                  </li>
+                </ul>
+              )}
               <div>
                 <label className="text-Gray  md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                   Confirm Password
@@ -216,9 +306,10 @@ const router = useRouter();
               {/* Save Button */}
               <button
                 type="submit"
-                className="bg-autoblue md:text-base text-[15px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
+             
+                className={`flex justify-center md:text-base text-[15px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold  duration-400 ${isEdit?"cursor-pointer bg-autoblue hover:bg-hoverblue ":"cursor-not-allowed bg-gray-500"}  `}
               >
-                Save Changes
+                { submitProcess && ( <div className="w-6 h-6 border-4 border-blue-500 border-t-transparent border-white rounded-full animate-spin me-2"></div>)} Save Changes
               </button>
             </form>
            

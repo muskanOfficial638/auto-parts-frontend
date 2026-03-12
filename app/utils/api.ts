@@ -25,6 +25,31 @@ export const orderAPI = `${BASE_API_URL}/8003/v1`;
 export const profileAPI = `${BASE_API_URL}/8004/profiles`;
 export const supplierAPI = `${BASE_API_URL}/8005/v1/supplier`;
 
+
+// Quote Reject
+export function QuoteReject(formdata: any) {
+ {
+
+    return axios.put(
+    `${buyerPath}/quote/action`,
+    { ...formdata },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  )
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error("unable to process ", error);
+      throw error;
+    });
+  }
+}
+
+
 // update notification
 export async function updateNotification(
   id: string,

@@ -17,7 +17,10 @@ export default function TrackingModal({
   quoteId?: string;
 }) {
  
-  const [formData, setFormData] = useState<Quote>();
+  const [formData, setFormData] = useState({
+    "tracking_url": "",
+    "tracking": ""
+  });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -37,6 +40,11 @@ export default function TrackingModal({
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
     if (!loggedInUser.id) router.replace("/logout");
     if (loggedInUser) {
+      
+      if(!formData.tracking_url){
+     toast.error("Tracking URL is Required");
+     return;
+      }
         const response = await shippingSubmit(
           {quote_id:quoteId,tracking_details:{...formData}}
         )
@@ -65,9 +73,9 @@ export default function TrackingModal({
               Tracking Detail
             </h2>
             <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-              Tracking URL
+              Tracking URL*
             </label>
-            <input onChange={handleChange} placeholder="Tracking URL" className="w-full bg-white text-black px-4 py-2 rounded-sm mb-4" type="text" name="tracking_url" />
+            <input onChange={handleChange} placeholder="Tracking URL" className="w-full bg-white text-black px-4 py-2 rounded-sm mb-4" type="url" name="tracking_url" />
             <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
               Tracking Detail
             </label>

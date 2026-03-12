@@ -16,7 +16,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
-  const [error, setError] = useState("");
+
   const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading ]= useState(false);
@@ -42,7 +42,7 @@ export default function LoginPage() {
     const value = e.target.value;
     setEmail(value);
     validateEmail(value);
-    setError("");
+ 
   };
 
   //Password
@@ -66,7 +66,7 @@ export default function LoginPage() {
     value.replace(/\s/g, "");
     setPassword(value);
     validatePassword(value);
-    setError("");
+   
   };
 
   async function handleLogin(e: React.FormEvent) {
@@ -77,8 +77,17 @@ export default function LoginPage() {
     validateEmail(email);
     validatePassword(password);
 
-    if (!email || emailError || passwordErrors.length > 0 || !password) {
-      toast.error("Please fix the errors before submitting");
+    if (!email || emailError ) {
+      toast.error(emailError);
+      return;
+    }
+    if(!password){
+        toast.error("Password is required");
+      return;
+    }
+    if(passwordErrors.length > 0 || !password){
+
+       toast.error("Invalid password format. Please enter a valid password");
       return;
     }
  setLoading(true)
@@ -95,8 +104,6 @@ export default function LoginPage() {
           "autoPartsUserData",
           JSON.stringify(response.data)
         );
-
-
         localStorage.setItem("loginTime", Date.now().toString());
         localStorage.setItem("lastActivity", Date.now().toString());
         toast.success("Logged-in Successfully");
@@ -118,10 +125,10 @@ export default function LoginPage() {
 
       if (err.response) {
         console.error("Server error:", err.response.data);
-        setError(err.response.data.detail || "Login failed");
+        toast.error(err.response.data.detail || "Login failed");
       } else if (err.request) {
         console.error("No response:", err.request);
-        setError("No response from server");
+        toast.error("No response from server");
       } else {
         console.error("Error:", err.message);
         toast.error("Unexpected error occurred");
@@ -158,10 +165,7 @@ export default function LoginPage() {
                   placeholder="Enter email"
                   className="w-full px-[15px] py-[10px] bg-white text-sm rounded-sm placeholder-grayMedium text-grayMedium outline-none"
                 />
-                {emailError && (
-                  <p className="text-red-400 text-sm">{emailError}</p>
-                )}
-
+             
                 {/* Password */}
                 <div className="relative">
                   <input
@@ -184,11 +188,12 @@ export default function LoginPage() {
                   </span>
                 </div>
 
+
                 {/* Forgot Password */}
                 <Link href="/forgot-password" className=" text-sm text-autoblue hover:underline cursor-pointer font-semibold">
                   Forgot Password ?
                 </Link>
-                {error && <p className="text-red-600 text-sm">{error}</p>}
+               
                 {/* Login Button */}
            
                 <button className="flex justify-center  bg-autoblue md:text-base text-sm leading[14px]  rounded-sm text-white md:py-[15px] py-[10px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer">

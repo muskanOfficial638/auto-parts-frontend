@@ -3,7 +3,7 @@
 import BidModal from "@/app/components/supplier/Modal/BidModal";
 
 import { getQuoteBySupplier, imagePath } from "@/app/utils/api";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Quote } from "../common/interface";
 import Loader from "../common/Loader";
 import { MdDelete } from "react-icons/md";
@@ -12,6 +12,7 @@ import Image from "next/image";
 import TrackingModal from "./Modal/TrackingModal";
 import { useRouter } from "next/navigation";
 import SupplierDashboard from "../dashboard/SupplierDashboard";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 export default function MyBids() {
   const [activeTab, setActiveTab] = useState("Active");
@@ -22,7 +23,7 @@ export default function MyBids() {
   const [shipQuoteId, setShipQuoteId] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [isTrackingModal, setIsTrackingModalOpen] = useState(false);
-
+  const [searchTerm, setSearchTerm] = useState("");
   const statusCode = {
     pending: { name: "Active", color: "bg-gray-500" },
     in_process: { name: "In Process", color: "bg-yellow-500" },
@@ -62,6 +63,32 @@ export default function MyBids() {
     setdelModalOpen(true);
   }
 
+  const filteredData = useMemo(() => {
+    let result = quoteData;
+    if (searchTerm) {
+      const lowerSearch = searchTerm.toLowerCase();
+      if (result) {
+        result = result.filter(
+          (item) => {
+            if (item.part_request) {
+              return item.part_request.title.toLowerCase().includes(lowerSearch) ||
+                item.part_request.vehicle_make.toLowerCase().includes(lowerSearch) ||
+                item.part_request.vehicle_model.toLowerCase().includes(lowerSearch) ||
+                item.part_request.vehicle_model_trim.toLowerCase().includes(lowerSearch) ||
+                item.part_request.urgency.toLowerCase().includes(lowerSearch) ||
+                item.part_request.required_by_date.toLowerCase().includes(lowerSearch);
+            }
+          }
+        );
+      }
+    }
+
+
+
+    return result;
+  }, [quoteData, searchTerm]);
+
+
   return (
     <>
       <div className="min-h-screen w-full relative">
@@ -83,77 +110,90 @@ export default function MyBids() {
             </h2>
             <div className="md:text-xl text-sm overflow-x-auto font-medium items-center flex md:space-x-[36px] space-x-[20px] md:my-10 my-5 flex md:justify-center justify-items-start">
               <span
-                className={`cursor-pointer ${
-                  activeTab === "Active"
+                className={`cursor-pointer ${activeTab === "Active"
                     ? "font-bold text-white"
                     : "text-[#6C6C6C]"
-                }`}
+                  }`}
                 onClick={() => onTabClick("Active")}
               >
                 Active
               </span>
 
               <span
-                className={`cursor-pointer whitespace-nowrap ${
-                  activeTab === "pending"
+                className={`cursor-pointer whitespace-nowrap ${activeTab === "pending"
                     ? "font-bold text-white"
                     : "text-[#6C6C6C]"
-                }`}
+                  }`}
                 onClick={() => onTabClick("pending")}
               >
                 Pending
               </span>
 
               <span
-                className={`cursor-pointer whitespace-nowrap ${
-                  activeTab === "in_process"
+                className={`cursor-pointer whitespace-nowrap ${activeTab === "in_process"
                     ? "font-bold text-white"
                     : "text-[#6C6C6C]"
-                }`}
+                  }`}
                 onClick={() => onTabClick("in_process")}
               >
                 In Process
               </span>
               <span
-                className={`cursor-pointer whitespace-nowrap ${
-                  activeTab === "in_transit"
+                className={`cursor-pointer whitespace-nowrap ${activeTab === "in_transit"
                     ? "font-bold text-white"
                     : "text-[#6C6C6C]"
-                }`}
+                  }`}
                 onClick={() => onTabClick("in_transit")}
               >
                 In Transit
               </span>
 
               <span
-                className={`cursor-pointer whitespace-nowrap ${
-                  activeTab === "completed"
+                className={`cursor-pointer whitespace-nowrap ${activeTab === "completed"
                     ? "font-bold text-white"
                     : "text-[#6C6C6C]"
-                }`}
+                  }`}
                 onClick={() => onTabClick("completed")}
               >
                 Completed
               </span>
               <span
-                className={`cursor-pointer whitespace-nowrap ${
-                  activeTab === "cancelled"
+                className={`cursor-pointer whitespace-nowrap ${activeTab === "cancelled"
                     ? "font-bold text-white"
                     : "text-[#6C6C6C]"
-                }`}
+                  }`}
                 onClick={() => onTabClick("cancelled")}
               >
                 Cancelled
               </span>
             </div>
+
+            {/* Search Bar */}
+            {activeTab !== "Active" && ( 
+            <div className="flex justify-center">
+              <div className="relative w-full max-w-[583px]">
+                <input
+                  type="text"
+                  placeholder="Search"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full bg-white text-sm text-grayMedium placeholder-grayMedium leading-[17px] rounded-sm py-[10px] px-[15px] border border-[#1f2d3a] focus:outline-none"
+                />
+                <div className="bg-autoblue text-white absolute right-0 flex  rounded-r-sm items-center h-full top-0 py-[10px] px-[13px]">
+                  <MagnifyingGlassIcon className="h-[14px] w-[14px]" />
+                </div>
+              </div>
+            </div>
+            )}
+
             {loading ? (
               <Loader />
             ) : (
               <>
                 {activeTab == "Active" ? (
                   <SupplierDashboard />
-                ) : quoteData && quoteData?.length ? (
-                  quoteData.map((data: Quote) => (
+                ) : filteredData && filteredData?.length ? (
+                  filteredData.map((data: Quote) => (
                     <div
                       key={data.id}
                       className="bg-brandBlack p-[20px] rounded-lg flex flex-wrap lg:gap-[0] gap-y-[20px] items-center justify-between"

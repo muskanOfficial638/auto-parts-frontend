@@ -15,7 +15,6 @@ export default function OTPModal({ quoteId,
   onClose: () => void;
 }) {
 
-  console.log("Quote ID in OTP Modal:", quoteId);
   const [confirmDialogBox, setConfirmDialogBox] = useState<boolean>(false);
   const [otpEntered, setOtpEntered] = useState<boolean>(false);
   const [otp, setOtp] = useState<string[]>(
@@ -31,7 +30,7 @@ export default function OTPModal({ quoteId,
     const response = await sendOTP(
    
       {
-        user_id: loggedInUser?.user?.id,
+        user_id: loggedInUser?.id,
       }
     );
     if (response.data.status === true) {
@@ -72,7 +71,7 @@ export default function OTPModal({ quoteId,
     const otpValue = otp.join("");
         const response = await verifyOTP(
       {
-        user_id: loggedInUser?.user?.id,
+        user_id: loggedInUser?.id,
         quote_id: quoteId,
         otp: otpValue,
       }

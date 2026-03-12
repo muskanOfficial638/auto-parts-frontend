@@ -44,8 +44,7 @@ export default function RootLayout({
           hideProgressBar={false}
           newestOnTop
           closeOnClick
-          pauseOnHover
-          theme="dark"
+          
         />
         <CheckSession /> {/* <-- session checker */}
         {/* <script

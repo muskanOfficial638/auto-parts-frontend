@@ -5,9 +5,18 @@ type OrderCreateProps = {
   closeModal: React.Dispatch<React.SetStateAction<boolean>>;
   Changeaddress:React.Dispatch<React.SetStateAction<string>>;
 };
+type FormData = {
+  name: string;
+  address: string;
+  city: string;
+  province: string;
+  postal_code: string;
+  country: string;
+};
 export default function AddNewAddress({ closeModal, Changeaddress }: OrderCreateProps) {
   const autoPartsUserData = localStorage.getItem("autoPartsUserData");
   const loggedInUser = JSON.parse(autoPartsUserData || "{}");
+  const [isSubmit,SetSubmit] = useState(false);
   useEffect(() => {
     if (loggedInUser?.id) {
       // fetchBuyerAddress(loggedInUser.user.id, loggedInUser.access_token).then((data) => {
@@ -29,7 +38,7 @@ export default function AddNewAddress({ closeModal, Changeaddress }: OrderCreate
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     
     const { name, value } = e.target;
-    console.log(formData)
+  
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -39,30 +48,55 @@ export default function AddNewAddress({ closeModal, Changeaddress }: OrderCreate
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-     if (
-    !formData.name.trim() ||
-    !formData.address.trim() ||
-    !formData.city.trim() ||
-    !formData.province.trim() ||
-    !formData.postal_code.trim() ||
-    !formData.country.trim()
-  ) {
-    toast.error("Please fill in all required fields");
+
+const validations: Record<keyof FormData, { min: number; max: number; label: string }> = {
+  name: { min: 2, max: 50, label: "Name" },
+  address: { min: 5, max: 150, label: "Address" },
+  city: { min: 2, max: 50, label: "City" },
+  province: { min: 2, max: 50, label: "Province" },
+  postal_code: { min: 4, max: 10, label: "Postal Code" },
+  country: { min: 2, max: 50, label: "Country" },
+};
+
+for (const field in validations) {
+  const key = field as keyof FormData;
+
+  const value = formData[key]?.trim() || "";
+  const { min, max, label } = validations[key];
+
+  if (!value) {
+    toast.error(`${label} is required`);
     return;
   }
+
+  if (value.length < min) {
+    toast.error(`${label} must be at least ${min} characters`);
+    return;
+  }
+
+  if (value.length > max) {
+    toast.error(`${label} must be less than ${max} characters`);
+    return;
+  }
+}
+
+
      if (loggedInUser) {
       
-       AddNewAddressAPI(loggedInUser.user.id, formData).then((data) => {
+       if(isSubmit)return;
+       SetSubmit(true)
+       AddNewAddressAPI(loggedInUser.id, formData).then((data) => {
    
           if(data.data.success == "true"){
           const randomString = Math.random().toString(36).substring(2, 10);
           toast.success("Address Add successfully");
           Changeaddress(randomString);
-          setTimeout(()=> closeModal(false),1000 )
+          setTimeout(()=> {SetSubmit(false); closeModal(false)},1000 )
          }
+          
        });
     }
-   
+     
 
   };
 
@@ -92,8 +126,8 @@ export default function AddNewAddress({ closeModal, Changeaddress }: OrderCreate
                       <input
                         type="text"
                         name="name"
-                      value={formData.name}
-                     onChange={handleChange}
+                       value={formData.name}
+                       onChange={handleChange}
                         className="w-full py-[8px] px-[18px]  bg-white text-[14px] leading-[29px]  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
                       />
                     </div>

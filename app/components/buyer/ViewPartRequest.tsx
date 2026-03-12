@@ -11,13 +11,15 @@ import {
   fetchPartRequestsById,
   getQuoteByRequest,
   imagePath,
+  QuoteReject,
 
 } from "@/app/utils/api";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ToastContainer } from "react-toastify";
+
 import { PartRequestview, Quoteview ,AddresswithoutID} from "../common/interface";
 import OrderCreate from "./OrderCreate";
 import OTPModal from "../supplier/Modal/OtpModal";
+import { toast } from "react-toastify";
 
 type SelectedData = {
   quoteId: string;
@@ -45,10 +47,12 @@ export default function ViewPartRequest() {
   const [loading, setIsLoading] = useState(true);
   const [isOpenCreateOrder, setIsOpenCreateOrder] = useState(false);
   const [hasAccepted, setHasAccepted] = useState<boolean>(false);
+  const [inProcess, setinProcess] = useState<boolean>(false);
   const [selectedData, setSelectedData] = useState<SelectedData | null>(null);
   const [selectGallery, setSelectedGallery] = useState<string[]>([]);
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [otpModalOpen, setOtpModalOpen] = useState<boolean>(false);
+  const [dataChanged, setdataChanged] = useState<number>(0);
   const [acceptedId, setAcceptedId] = useState<string >("");
 
 
@@ -58,7 +62,7 @@ export default function ViewPartRequest() {
   }
 
   useEffect(() => {
- 
+    if(otpModalOpen) return;
     if ( request) {
       fetchPartRequestsById(request).then((data) => {
         setPartRequest(data);
@@ -73,9 +77,11 @@ export default function ViewPartRequest() {
         setQuoteData(data);
 
         setHasAccepted(data.some((item : Quoteview) => item.status === "in_transit"));
+        setinProcess(data.some((item : Quoteview) => item.status === "in_process"));
+
       });
     }
-  }, [request,otpModalOpen]);
+  }, [request,otpModalOpen,dataChanged]);
 
   useEffect(() => {
     // console.log("quoteData:", quoteData);
@@ -86,6 +92,32 @@ export default function ViewPartRequest() {
     setSelectedGallery(data);
     setGalleryOpen(true);
   }
+
+ async function handleActionReject(QuoteId:string) {
+         const response = await QuoteReject(
+       {
+         quote_id: QuoteId,
+         request_id: request,
+         status: "rejected",
+       }
+     );
+  
+     if (response.data.success === true) {
+       toast.success("Quote rejected successfully");
+       setdataChanged(1)
+     } else {
+       toast.error(response.data.message || "Quote action failed");
+     }
+
+  
+ }
+
+
+
+    
+   
+ 
+
   async function handleActionChange(
     quoteId: string,
     supplierName: string,
@@ -134,7 +166,7 @@ export default function ViewPartRequest() {
 
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#003253]/95 to-black/95" />
-      <ToastContainer />
+     
 
       {/* Page Content */}
       <div className="relative z-10 flex justify-center pt-36 pb-20 px-4">
@@ -249,7 +281,7 @@ export default function ViewPartRequest() {
 
                     {/* Right-Side Buttons  */}
                     <div className="flex items-center gap-3">
-                      {data?.status == "accepted" && (
+                      {data?.status == "in_process" && (
                         <div className="bg-autoblue hover:bg-hoverblue duration-400 cursor-pointer md:text-base text-xs leading-[14px] md:px-[38px] md:py-[13px] px-[28px] py-[8px] text-white rounded-sm">
                           Accepted
                         </div>
@@ -270,7 +302,7 @@ export default function ViewPartRequest() {
                           >
                             <IoIosImages className="text-[30px]" />
                           </button>
-                      {data?.status == "pending" && !hasAccepted && (
+                      {data?.status == "pending" && !inProcess && (
                         <>
                           <button 
                             className="bg-green-600 md:text-base text-xs duration-400 leading-[14px] md:px-[38px] md:py-[13px] px-[28px] py-[8px] text-white rounded-sm hover:bg-green-700 cursor-pointer"
@@ -290,13 +322,12 @@ export default function ViewPartRequest() {
                           </button>
                           <button
                             className="bg-red-600 px-5 py-2 md:text-base text-xs duration-400 leading-[14px] md:px-[38px] md:py-[13px] px-[28px] py-[8px] text-white rounded-sm hover:bg-red-700 cursor-pointer"
-                          // onClick={() =>
-                          //   handleActionChange(
-                          //     data?.id,
-                          //     data?.request_id,
-                          //     "rejected"
-                          //   )
-                          // }
+                          onClick={() =>
+                            handleActionReject(
+                              data?.id
+                              
+                            )
+                          }
                           >
                             Reject
                           </button>

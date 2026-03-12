@@ -70,6 +70,19 @@ export default function BidModal({
       formDataPayload.append("eta_days", formData.eta_days);
       formDataPayload.append("terms", formData.terms);
 
+      
+      if(formData.price_cents=="0"){
+        toast.error("Price must be greater than zero")
+         return;
+      }
+      if(formData.eta_days=="0"){
+        toast.error("Estimated Days must be greater than zero")
+         return;
+      }
+      if(formData.terms.length<2 || formData.terms.length > 200){
+        toast.error("Description must be between 2 and 200 characters")
+         return;
+      }
       if (formData?.attachment && formData.attachment.length > 0) {
         formData.attachment.forEach((file) => {
           formDataPayload.append("attachments", file);
@@ -123,12 +136,37 @@ export default function BidModal({
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files ?? []) as File[];
-    setFiles((prev: File[]) => [...prev, ...selectedFiles]);
+  
+  
+  
+   const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+const maxSize = 5 * 1024 * 1024; 
+
+const validFiles = selectedFiles.filter((file) => {
+  if (!allowedTypes.includes(file.type)) {
+    toast.error(`Please upload a valid image file (JPG, JPEG, PNG).`);
+    return false;
+  }
+  if (file.size > maxSize) {
+    toast.error(`${file.name} must be less than 5MB`);
+    return false;
+  }
+  return true;
+});
+  
+
+  
+    if (validFiles.length === 0) return;
+  
+    setFiles((prev: File[]) => [...prev, ...validFiles]);
+  
     setFormData((prev) => ({
       ...prev,
-      attachment: [...(prev.attachment || []), ...selectedFiles],
+      attachment: [...(prev.attachment || []), ...validFiles],
     }));
   };
+
+ 
 
   const removeFile = (index: number) => {
     setFiles((prev) => prev.filter((_, i) => i !== index));
@@ -169,11 +207,12 @@ export default function BidModal({
                 R :
               </div>
               <input
-                type="text"
+                type="number"
                 placeholder="Price(in numeric format)"
                 name="price_cents"
                 inputMode="numeric"
-                pattern="[0-9]*"
+                step="0.1"
+            
                 required
                 onChange={handleChange}
                 className=" px-[35px] py-[13px] md:mb-[30px] mb-[20px] bg-white text-sm rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
@@ -184,11 +223,12 @@ export default function BidModal({
               Estimated Days*
             </label>
             <input
-              type="text"
+              type="number"
               placeholder="Estimate Days(in numeric format)"
               name="eta_days"
               inputMode="numeric"
-              pattern="[0-9]*"
+              step="1"
+              min="0"
               onChange={handleChange}
               required
               className="px-[15px] py-[10px] md:mb-[30px] mb-[20px] bg-white text-sm rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
@@ -200,8 +240,7 @@ export default function BidModal({
               placeholder="Description"
               name="terms"
               onChange={handleChange}
-              minLength={2}
-              maxLength={280}
+              maxLength={200}
               required
               className=" px-[15px] py-[10px] bg-white md:mb-[30px] mb-[20px] h-[125px] text-sm rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"
             />
@@ -214,7 +253,7 @@ export default function BidModal({
                   <input
                     type="file"
                     name="attachment"
-                    accept="image/*"
+                    accept=".jpg,.jpeg,.png"
                     multiple
                     onChange={handleFileChange}
                     id="multiFile"

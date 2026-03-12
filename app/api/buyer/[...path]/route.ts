@@ -100,7 +100,7 @@ async function handle(
       );
     }
 
-
+  
     const data = await apiRes.json();
  
     return NextResponse.json(data, {

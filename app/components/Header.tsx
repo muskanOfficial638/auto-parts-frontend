@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { FaRegBell } from "react-icons/fa";
 import { getNotification, updateNotification } from "../utils/api";
 import { FaEye } from "react-icons/fa";
@@ -44,7 +44,7 @@ function MainNav() {
             priority
           />
         </Link>
-        <ToastContainer />
+  
 
         <nav className="hidden lg:flex items-center space-x-[25px] text-white text-sm font-medium">
           <div className="relative group">
@@ -120,7 +120,7 @@ function BuyerSupplierMenu({ autoPartsUserData }: { autoPartsUserData: any }) {
   const [isPopupOpenNoti, setIsPopupOpenNoti] = useState<boolean>(false);
   const popupRef = useRef<HTMLDivElement | null>(null);
   const [getNotifi, setNotifi] = useState<NotificationsResponse | null>(null);
-  
+
   useEffect(() => {
     getNotification(autoPartsUserData.id).then((data: any) => {
       setNotifi(data)
@@ -197,7 +197,7 @@ function BuyerSupplierMenu({ autoPartsUserData }: { autoPartsUserData: any }) {
               <span className="bg-[#03CD21] text-[8px] h-3.75 w-3.75 rounded-full flex items-center justify-center absolute top-0 -right-[6px]">
                 {getNotifi?.counts.unread_count}
               </span>
-            ): ""}
+            ) : ""}
           </div>
 
           <div
@@ -208,28 +208,46 @@ function BuyerSupplierMenu({ autoPartsUserData }: { autoPartsUserData: any }) {
   [&::-webkit-scrollbar-thumb]:bg-gray-500
   [&::-webkit-scrollbar-thumb]:rounded-full
   overflow-x-auto h-61 absolute md:top-9.5 top-11.75 md:-right-4 -right-8.25 w-68.5 transition-all duration-300 ${isPopupOpenNoti
-              ? "opacity-100 scale-100 visible"
-              : "opacity-0 scale-95 invisible"
+                ? "opacity-100 scale-100 visible"
+                : "opacity-0 scale-95 invisible"
               }`}
           >
             <div className="relative bg-brandBlack rounded-[10px] shadow-2xl py-5 px-3.75">
               <div className="absolute -top-1.75 right-5  w-5 h-5 bg-brandBlack rotate-45 "></div>
               <div className="space-y-2.5">
-                {getNotifi?.notifications.map((item) => (
-                  <div key={item.id} className=" flex items-center justify-between gap-2">
-                    <div>
-                      <h3 className={`text-[13px] font-semibold ${item.status == 'unread' ? 'text-autoblue' : 'text-gray-500'}`}>
-                        {item.subject}
-                      </h3>
-                      <p className={`text-[10px] mt-1 ${item.status == 'unread' ? 'text-white' : 'text-gray-500'}`}>
-                        {item.body}
-                      </p>
+                {getNotifi?.notifications?.length === 0 ? (
+                  <p className="text-gray-400 text-sm text-center">No notifications</p>
+                ) : (
+                  getNotifi?.notifications.map((item) => (
+                    <div key={item.id} className="flex items-center justify-between gap-2">
+                      <div>
+                        <h3
+                          className={`text-[13px] font-semibold ${item.status == "unread" ? "text-autoblue" : "text-gray-500"
+                            }`}
+                        >
+                          {item.subject}
+                        </h3>
+
+                        <p
+                          className={`text-[10px] mt-1 ${item.status == "unread" ? "text-white" : "text-gray-500"
+                            }`}
+                        >
+                          {item.body}
+                        </p>
+                      </div>
+
+                      {item.status == "unread" && (
+                        <div>
+                          <FaEye
+                            title="Mark as read"
+                            onClick={() => MdMarkAsUnread(item.id)}
+                            className="cursor-pointer text-autoblue text-[13px]"
+                          />
+                        </div>
+                      )}
                     </div>
-                    {item.status == 'unread' && (
-                      <div> <FaEye title="Mark as read" onClick={() => MdMarkAsUnread(item.id)} className="cursor-pointer text-autoblue text-[13px]" /></div>
-                    )}
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             </div>
           </div>
@@ -472,7 +490,7 @@ export default function Header() {
         ></div>
       )}
 
-      <ToastContainer />
+   
     </>
   );
 }

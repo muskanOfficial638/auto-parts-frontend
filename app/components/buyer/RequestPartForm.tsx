@@ -67,6 +67,7 @@ export default function RequestPartForm() {
   const [selectedAddressData, setSelectedAddressData] = useState<AddressType | null>(null);
   const [address, setAddress] = useState<AddressTypeWithID[]>();
   const [formStep, setFormStep] = useState<number>(1);
+  const [inproccess, setinproccess] = useState<boolean>(false);
 
 
 
@@ -180,7 +181,8 @@ export default function RequestPartForm() {
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
-
+     if(inproccess) return;
+     setinproccess(true)
     const autoPartsUserData = localStorage.getItem("autoPartsUserData");
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
 
@@ -241,7 +243,7 @@ export default function RequestPartForm() {
         : `${buyerPath}/part-request`;
 
       const method = requestId ? "PATCH" : "POST";
-      console.log("url", multipartData);
+
       const response = await fetch(url, {
         method,
         body: multipartData,
@@ -256,12 +258,13 @@ export default function RequestPartForm() {
         return;
       }
 
-      const data = await response.json();
-      console.log("Success:", data);
+
       toast.success(
         requestId ? "Part request updated" : "Part request created",
       );
+     
       router.push("/buyer-dashboard");
+      setinproccess(false)
     } catch (err) {
       console.error("Unexpected error:", err);
       toast.error("Network error or server not responding");
@@ -270,16 +273,37 @@ export default function RequestPartForm() {
 
   const [files, setFiles] = useState<File[]>([]);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = Array.from(e.target.files ?? []) as File[];
 
-    setFiles((prev: File[]) => [...prev, ...selectedFiles]);
-    setFormData((prev) => ({
-      ...prev,
-      attachment: [...(prev.attachment || []), ...selectedFiles],
-    }));
-  };
 
+const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const selectedFiles = Array.from(e.target.files ?? []) as File[];
+
+   const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+const maxSize = 5 * 1024 * 1024; 
+
+const validFiles = selectedFiles.filter((file) => {
+  if (!allowedTypes.includes(file.type)) {
+    toast.error(`Please upload a valid image file (JPG, JPEG, PNG).`);
+    return false;
+  }
+  if (file.size > maxSize) {
+    toast.error(`${file.name} must be less than 5MB`);
+    return false;
+  }
+  return true;
+});
+
+  if (validFiles.length === 0) return;
+
+  setFiles((prev: File[]) => [...prev, ...validFiles]);
+
+  setFormData((prev) => ({
+    ...prev,
+    attachment: [...(prev.attachment || []), ...validFiles],
+  }));
+};
+
+  
   const removeFile = (index: number) => {
     setFiles((prev) => prev.filter((_, i) => i !== index));
     setFormData((prev) => ({
@@ -553,6 +577,7 @@ export default function RequestPartForm() {
                           name="required_by_date"
                           onChange={handleChange}
                           value={formData?.required_by_date}
+                          min={new Date().toISOString().split("T")[0]}
                           className="w-full py-[8px] px-[18px] bg-white md:text-base text-sm   border border-LightNeutral rounded-sm text-Gray outline-none"
                         />
                         {/* <CalendarDays
@@ -591,7 +616,7 @@ export default function RequestPartForm() {
                         <input
                           type="file"
                           name="attachment"
-                          accept="image/*"
+                          accept=".jpg,.jpeg,.png"
                           multiple
                           onChange={handleFileChange}
                           id="multiFile"

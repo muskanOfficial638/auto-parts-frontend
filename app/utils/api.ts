@@ -49,8 +49,8 @@ export function QuoteReject(formdata: any) {
   }
 }
 
+// update notification api
 
-// update notification
 export async function updateNotification(
   id: string,
 ) {

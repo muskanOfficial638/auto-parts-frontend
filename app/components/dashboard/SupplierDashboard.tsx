@@ -64,7 +64,7 @@ export default function SupplierDashboard() {
 
       if (!loggedInUser.id) router.replace("/logout");
 
-      fetchAllSupplierPartRequests(currentPage).then((data) => {
+      fetchAllSupplierPartRequests(currentPage,loggedInUser.id).then((data) => {
 
         setPartRequestData(data.data);
 
@@ -83,7 +83,7 @@ export default function SupplierDashboard() {
       });
     }
 
-  }, [currentPage, router]);
+  }, [currentPage, router,modalOpen]);
 
 
   /* ---------------- FILTER LOGIC (AND) ---------------- */

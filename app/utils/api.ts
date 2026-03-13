@@ -50,7 +50,6 @@ export function QuoteReject(formdata: any) {
 }
 
 // update notification api
-
 export async function updateNotification(
   id: string,
 ) {
@@ -407,8 +406,9 @@ export async function updateQuoteByAction(
 
 // SUPPLIERs
 // Supplier All part requests
-export async function fetchAllSupplierPartRequests(page:number) {
-  const res = await fetch(`${supplierPath}/all/part-request?page=${page}&limit=10`, {
+export async function fetchAllSupplierPartRequests(page:number,userId:string) {
+  const res = await fetch(`${supplierPath}/all/part-request/${userId}?page=${page}&limit=10`, {
+    
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",

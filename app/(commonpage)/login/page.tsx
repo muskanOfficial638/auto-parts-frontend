@@ -90,6 +90,7 @@ export default function LoginPage() {
        toast.error("Invalid password format. Please enter a valid password");
       return;
     }
+    if(loading){return;}
  setLoading(true)
     try {
       const response = await axios.post(`/api/auth/login`, {

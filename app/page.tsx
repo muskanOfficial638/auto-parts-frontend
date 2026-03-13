@@ -17,7 +17,7 @@ export default function Home() {
       
       <HeroSection />
 
-      {/* Why choose Section */}
+    
       <WhyChooseUs />
 
       {/* Parts Gallery Section*/}

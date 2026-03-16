@@ -195,7 +195,7 @@ export default function KycDetailForm() {
                 </div>
               )}
 
-              <button className="flex justify-center bg-autoblue w-full py-3 text-white font-semibold rounded">
+              <button className="cursor-pointer flex justify-center bg-autoblue w-full py-3 text-white font-semibold rounded">
                 {isproccess && (<div className="w-6 h-6 border-4 border-blue-500 border-t-transparent border-white rounded-full animate-spin me-2"></div>)}
                 Upload Document
               </button>

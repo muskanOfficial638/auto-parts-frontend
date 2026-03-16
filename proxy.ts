@@ -9,6 +9,16 @@ export async function proxy(request: NextRequest) {
   const tokenR = request.cookies.get("ATXRT")?.value;
   const userData = JSON.parse(request.cookies.get("ATXDT")?.value || "{}");
 
+  if (url.pathname == "/login" || url.pathname == "/sign-up") {
+    if (userData?.role === "buyer") {
+      return NextResponse.redirect(new URL("/buyer-dashboard", request.url));
+    }
+    if (userData?.role === "supplier") {
+      return NextResponse.redirect(new URL("/supplier-dashboard", request.url));
+    }
+    return NextResponse.next();
+  }
+
   async function genToken() {
     try {
       const res = await fetch(`${authApiPath}/auth/refresh-token`, {
@@ -38,11 +48,39 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  if(userData.role == "supplier" && userData.profile.kyc_status !=="approved" &&  url.pathname !== "/kyc-info"){
+  if (
+    userData.role == "supplier" &&
+    userData.profile.kyc_status !== "approved" &&
+    url.pathname !== "/kyc-info"
+  ) {
     return NextResponse.redirect(new URL("/kyc-info", request.url));
   }
+
+  if (url.pathname == "/kyc-info") {
+    const res = await fetch(`${authApiPath}/auth/verify-kyc`, {
+      method: "POST",
+      body: JSON.stringify({ user_id: userData.id }),
+      headers: {
+        "Content-Type": "application/json",
+         Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+    if (data.status) {
+      const response = NextResponse.next();
+        response.cookies.set("ATXDT", JSON.stringify(data.data), {
+          httpOnly: true,
+          secure: true,
+          path: "/",
+        });
+    return response;
+    }
+     return NextResponse.next();
+  }
+
   const buyerRoutes = ["/buyer-dashboard", "/request-part", "/orders"];
-  const supplierRoutes = ["/supplier-dashboard", "/my-quote",'/kyc-info'];
+  const supplierRoutes = ["/supplier-dashboard", "/my-quote", "/kyc-info"];
 
   if (!userData.role) {
     return NextResponse.redirect(new URL("/login", request.url));
@@ -81,9 +119,9 @@ export async function proxy(request: NextRequest) {
       }
     } catch (err) {
       url.pathname = "/login";
-    
+
       return NextResponse.redirect(url);
-      console.log(err)
+      console.log(err);
     }
   } else if (!tokenR) {
     url.pathname = "/login";
@@ -104,6 +142,8 @@ export const config = {
     "/my-account",
     "/view-part-request/:path*",
     "/orders/:path*",
-    "/kyc-info"
+    "/kyc-info",
+    "/login",
+    "/sign-up",
   ],
 };

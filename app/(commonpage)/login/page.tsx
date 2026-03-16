@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "@/app/components/Header";
 import { AiFillEye } from "react-icons/ai";
 import { toast } from "react-toastify";
@@ -21,6 +21,16 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading ]= useState(false);
 
+  useEffect(() => {
+    const autoPartsUserData = localStorage.getItem("autoPartsUserData");
+    const loggedInUser = JSON.parse(autoPartsUserData || "{}");
+    if (loggedInUser?.role === "buyer") {
+      router.replace("/buyer-dashboard");
+    }
+    if(loggedInUser?.role === "supplier"){ 
+      router.replace("/supplier-dashboard")
+    }
+  }, [router]);
 
   // Email Validation
   const validateEmail = (value: string) => {
@@ -109,9 +119,9 @@ export default function LoginPage() {
         localStorage.setItem("lastActivity", Date.now().toString());
         toast.success("Logged-in Successfully");
         if (response.data?.role === "buyer") {
-          router.push("/buyer-dashboard");
+          router.replace("/buyer-dashboard");
         } else if (response.data?.role === "supplier"){
-          router.push(
+          router.replace(
             response.data?.profile?.kyc_status === "pending"
               ? "/kyc-info"
               : "/supplier-dashboard"

@@ -432,7 +432,6 @@ export async function getQuoteBySupplier(
       cache: "no-store",
       headers: {
         "Content-Type": "application/json",
-  
       },
     }
   );

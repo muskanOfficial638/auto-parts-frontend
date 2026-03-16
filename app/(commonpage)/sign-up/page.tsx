@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"; 
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "@/app/components/Header";
 import { AiFillEye } from "react-icons/ai";
 import { motion } from "framer-motion";
@@ -30,6 +30,17 @@ export default function SignUpPage() {
   const [loading, setLoading] = useState(false);
   const [submitProcess, setSubmitProcess] = useState(false);
 
+
+    useEffect(() => {
+      const autoPartsUserData = localStorage.getItem("autoPartsUserData");
+      const loggedInUser = JSON.parse(autoPartsUserData || "{}");
+      if (loggedInUser?.role === "buyer") {
+        router.replace("/buyer-dashboard");
+      }
+      if(loggedInUser?.role === "supplier"){ 
+        router.replace("/supplier-dashboard")
+      }
+    }, [router]);
 
   // Email Validation
   const validateEmail = (value: string) => {
@@ -238,7 +249,7 @@ export default function SignUpPage() {
                 required
                 placeholder="Company"
                 onChange={(e) => setCompanyName(e.target.value)}
-                className="md:col-span-1 col-span-2 px-[15px] py-[10px] bg-white text-sm rounded-sm placeholder-grayMedium text-grayMedium outline-none "
+                className="h-max md:col-span-1 col-span-2 px-[15px] py-[10px] bg-white text-sm rounded-sm placeholder-grayMedium text-grayMedium outline-none "
               />
 
               <select

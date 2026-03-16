@@ -228,7 +228,7 @@ const validFiles = selectedFiles.filter((file) => {
               name="eta_days"
               inputMode="numeric"
               step="1"
-              min="0"
+              min="1"
               onChange={handleChange}
               required
               className="px-[15px] py-[10px] md:mb-[30px] mb-[20px] bg-white text-sm rounded-sm placeholder-grayMedium text-grayMedium focus:outline-none w-full"

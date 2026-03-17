@@ -20,7 +20,7 @@ export default function Home() {
     
       <WhyChooseUs />
 
-      {/* Parts Gallery Section*/}
+
       <PartsGallery />
 
       {/* Standard Section*/}

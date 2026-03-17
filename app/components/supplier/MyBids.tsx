@@ -30,6 +30,7 @@ export default function MyBids() {
     in_transit: { name: "In Transit", color: "bg-blue-500" },
     completed: { name: "Completed", color: "bg-green-500" },
     cancelled: { name: "Cancelled", color: "bg-red-500" },
+    rejected: { name: "Rejected", color: "bg-red-500" }
   };
   // const [loading, setIsLoading] = useState(true);
   const router = useRouter();
@@ -156,6 +157,15 @@ export default function MyBids() {
                 onClick={() => onTabClick("completed")}
               >
                 Completed
+              </span>
+                            <span
+                className={`cursor-pointer whitespace-nowrap ${activeTab === "rejected"
+                    ? "font-bold text-white"
+                    : "text-[#6C6C6C]"
+                  }`}
+                onClick={() => onTabClick("rejected")}
+              >
+                Rejected
               </span>
               <span
                 className={`cursor-pointer whitespace-nowrap ${activeTab === "cancelled"

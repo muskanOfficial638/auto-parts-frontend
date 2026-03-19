@@ -23,7 +23,7 @@ export default function Home() {
 
       <PartsGallery />
 
-      {/* Standard Section*/}
+      
       <StandardSection />
 
       {/* Where Section*/}

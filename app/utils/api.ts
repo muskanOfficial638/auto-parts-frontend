@@ -291,10 +291,12 @@ user_id  : string
 }
 // Buyer All part requests
 export async function fetchAllBuyerPartRequests(
-  user_id: string
+  user_id: string,
+  page = 1,
+  limit = 10
 
 ) {
-  const res = await fetch(`${buyerPath}/all/part-request/${user_id}`, {
+  const res = await fetch(`${buyerPath}/all/part-request/${user_id}?page=${page}&limit=${limit}`, {
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",

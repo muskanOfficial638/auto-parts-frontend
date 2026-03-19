@@ -36,6 +36,8 @@ export default function BuyerDashboard() {
   const [modalOpen, setModalOpen] = useState(false);
   const [requestId, setRequestId] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [selectedStatus, setSelectedStatus] = useState<number | "all">("all");
 
   type SortKey = "title" | "urgency" | "required_by_date";
@@ -129,7 +131,8 @@ export default function BuyerDashboard() {
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
     if (!loggedInUser.id) router.replace("/logout");
     const data = await fetchAllBuyerPartRequests(loggedInUser?.id);
-    setPartRequestData(data);
+     setPartRequestData(data.data);
+     setTotalPages(data.total_pages);
     setIsLoading(false);
   };
 
@@ -139,12 +142,13 @@ export default function BuyerDashboard() {
       const autoPartsUserData = localStorage.getItem("autoPartsUserData");
       const loggedInUser = JSON.parse(autoPartsUserData || "{}");
       if (!loggedInUser.id) router.replace("/logout");
-      const data = await fetchAllBuyerPartRequests(loggedInUser?.id);
-      setPartRequestData(data);
+      const data = await fetchAllBuyerPartRequests(loggedInUser?.id, page, 10);
+      setPartRequestData(data.data);
+      setTotalPages(data.total_pages);
       setIsLoading(false);
     };
     loadInitialData();
-  }, [router]);
+  }, [router,page]);
 
   useEffect(() => {}, [partRequestData]);
 
@@ -400,6 +404,27 @@ export default function BuyerDashboard() {
                   )}
                 </tbody>
               </table>
+              <div className="flex justify-center items-center gap-3 mt-6">
+  <button
+    disabled={page === 1}
+    onClick={() => setPage((prev) => prev - 1)}
+    className="px-3 py-1 bg-autoblue text-white rounded disabled:opacity-50"
+  >
+    Prev
+  </button>
+
+  <span className="text-white text-sm">
+    Page {page} of {totalPages}
+  </span>
+
+  <button
+    disabled={page === totalPages}
+    onClick={() => setPage((prev) => prev + 1)}
+    className="px-3 py-1 bg-autoblue text-white rounded disabled:opacity-50"
+  >
+    Next
+  </button>
+</div>
             </div>
           </div>
         </div>

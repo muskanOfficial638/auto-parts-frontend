@@ -53,13 +53,23 @@ interface OrderDetailsType {
   shipping_details?: ShippingDetails
 }
 
+const statusCode = {
+  "pending": { name: "Active", color: "text-white bg-autoblue" },
+  "in_process": { name: "In Process", color: "text-yellow-500 bg-yellow-500" },
+  "in_transit": { name: "In Transit", color: "text-white bg-blue-500" },
+  "completed": { name: "Completed", color: "text-white bg-green-500" },
+  "cancelled": { name: "Cancelled", color: "text-white bg-red-500" },
+  "hold": { name: "Hold", color: "text-white bg-orange-500" }
+} as const;
+
+
 export default function RequestPartPage() {
   const [OrderDetails, setOrderDetails] = useState<OrderDetailsType | null>(null);
   const [loading, setLoading] = useState(true);
- 
+
   const params = useParams();
   const orderid = params.orderid as string;
-const router = useRouter();
+  const router = useRouter();
 
   // Load on mount
   useEffect(() => {
@@ -71,21 +81,21 @@ const router = useRouter();
       const data = await fetchOrdersByID(
         orderid,
       );
-      
+
       console.log("Fetched Order Details:", data);
       setLoading(false);
-      if (data.status===false || data.error) {
+      if (data.status === false || data.error) {
         setOrderDetails(null);
       } else {
         setOrderDetails(data);
-        
+
       }
 
 
-      
+
     };
     loadInitialData();
-  }, [orderid,router]);
+  }, [orderid, router]);
 
 
 
@@ -127,7 +137,12 @@ const router = useRouter();
                     <p className="text-sm leading-[22px] font-bold text-white">Order ID:
                       <span className=" ms-[5px] font-medium text-[#B9B9B9]">{OrderDetails?.orderID}</span>
                     </p>
-                    <span className="bg-[#6BB776] px-[13px] py-[3px] rounded-[3px] text-xs leading-[14px]">{OrderDetails?.status}</span>
+                    <span
+                      className={`px-[13px] py-[3px] rounded-[3px] text-xs leading-[14px] ${statusCode[OrderDetails?.status as keyof typeof statusCode]?.color || "text-gray-500"
+                        }`}
+                    >
+                      {statusCode[OrderDetails?.status as keyof typeof statusCode]?.name || "Unknown Status"}
+                    </span>
                   </div>
                   <div className="flex items-center gap-[30px] bg-[#011827] p-[10px] rounded-sm mt-[25px] border-[#153C51] border">
                     <div className="flex-1">
@@ -138,7 +153,7 @@ const router = useRouter();
                         <p className="ps-[32px] text-xs text-[#B9B9B9] mt-[5px]"><b className="text-white">Shipping Note:</b> {OrderDetails?.shipping_details?.tracking} </p>
                       )}
                     </div>
-                    {OrderDetails?.shipping_details?.tracking_url && (
+                    {(OrderDetails?.shipping_details?.tracking_url && OrderDetails?.status === "in_transit") && (
                       <div className="ms-auto">
                         <Link href={OrderDetails?.shipping_details?.tracking_url} target="_blank" className="bg-green-700 text-white md:text-base text-sm leading-[14px] rounded-sm text-white md:py-[9px] md:px-[12px] py-[9px] px-[15px] font-semibold hover:bg-green-900 duration-400 cursor-pointer">
                           <FaShippingFast className="inline-block mr-2" /> Track Now
@@ -198,9 +213,9 @@ const router = useRouter();
               </div>
             </div>) : (
             <div className="relative flex justify-center items-center pt-36 pb-20 px-4">
-    
-                  <p className="text-white pt-[150px]">Order Not Found</p>
-         
+
+              <p className="text-white pt-[150px]">Order Not Found</p>
+
             </div>
           )}
 

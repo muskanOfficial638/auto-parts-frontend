@@ -1,7 +1,7 @@
 import { sendOTP, verifyOTP } from "@/app/utils/api";
 import { useRouter } from "next/navigation";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
 const OTP_LENGTH = 4;
@@ -17,6 +17,7 @@ export default function OTPModal({ quoteId,
 
   const [confirmDialogBox, setConfirmDialogBox] = useState<boolean>(false);
   const [otpEntered, setOtpEntered] = useState<boolean>(false);
+  const [time, setTime] = useState(0);
   const [otp, setOtp] = useState<string[]>(
     Array(OTP_LENGTH).fill("")
   );
@@ -26,7 +27,19 @@ export default function OTPModal({ quoteId,
     if (!loggedInUser.id) router.replace("/logout");
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
+
+    useEffect(() => {
+    if (time === 0) return;
+
+    const timer = setInterval(() => {
+      setTime((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [time]);
+
   async function handleOTPsend() {
+    setTime(60);
     const response = await sendOTP(
    
       {
@@ -139,9 +152,13 @@ export default function OTPModal({ quoteId,
             </button>
             <p className="text-center mt-4">
               {`Didn't receive OTP code? `}
+              {time <= 0 ? (
               <button className="ml-2 text-autoblue font-semibold hover:text-hoverblue cursor-pointer" onClick={handleOTPsend}>
                 Resend Code
               </button>
+              ):(
+                <span className="ml-2 text-gray-500 font-semibold"> Resend Code in {time}s</span>
+              )}
             </p>
           </div>
         ) : (

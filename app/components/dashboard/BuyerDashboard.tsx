@@ -142,7 +142,7 @@ export default function BuyerDashboard() {
       const autoPartsUserData = localStorage.getItem("autoPartsUserData");
       const loggedInUser = JSON.parse(autoPartsUserData || "{}");
       if (!loggedInUser.id) router.replace("/logout");
-      const data = await fetchAllBuyerPartRequests(loggedInUser?.id, page, 10);
+      const data = await fetchAllBuyerPartRequests(loggedInUser?.id, page, 50);
       setPartRequestData(data.data);
       setTotalPages(data.total_pages);
       setIsLoading(false);
@@ -408,7 +408,7 @@ export default function BuyerDashboard() {
   <button
     disabled={page === 1}
     onClick={() => setPage((prev) => prev - 1)}
-    className="px-3 py-1 bg-autoblue text-white rounded disabled:opacity-50"
+    className={`px-3 py-1 bg-autoblue text-white rounded disabled:opacity-50 ${page === 1 ? "cursor-not-allowed" : "cursor-pointer"}`}
   >
     Prev
   </button>
@@ -420,7 +420,7 @@ export default function BuyerDashboard() {
   <button
     disabled={page === totalPages}
     onClick={() => setPage((prev) => prev + 1)}
-    className="px-3 py-1 bg-autoblue text-white rounded disabled:opacity-50"
+    className={`px-3 py-1 bg-autoblue text-white rounded disabled:opacity-50 ${page === totalPages ? "cursor-not-allowed" : "cursor-pointer"}`}
   >
     Next
   </button>

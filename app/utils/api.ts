@@ -21,9 +21,12 @@ export const buyerPath = `/api/buyer`;
 
 export const authApiPath = `${BASE_API_URL}/8001/v1`;
 export const buyerAPI = `${BASE_API_URL}/8002/v1/buyer`;
-export const orderAPI = `${BASE_API_URL}/8003/v1`;
+export const orderAPI = `${BASE_API_URL}/8003/v1/order`;
 export const profileAPI = `${BASE_API_URL}/8004/profiles`;
 export const supplierAPI = `${BASE_API_URL}/8005/v1/supplier`;
+
+
+
 
 
 // Quote Reject
@@ -108,15 +111,16 @@ export function shippingSubmit(formdata: any) {
 
 
 // update order status
-export function updateOrderStatus(orderid:string,formdata: any) {
+export function updateOrderStatus(orderid:string,formdata: any,token: string) {
  {
 
     return axios.put(
-    `${orderPath}/order/orders/${orderid}`,
+    `${orderAPI}/orders/${orderid}`,
     { ...formdata },
     {
       headers: {
         "Content-Type": "application/json",
+         "Authorization": `Bearer ${token}`,
 
       },
     }
@@ -183,7 +187,7 @@ export async function fetchOrdersByID(
   orderid: string
 
 ) {
-  const res = await fetch(`${orderPath}/order/view-order-details?order_id=${orderid}`, {
+  const res = await fetch(`${orderPath}/view-order-details?order_id=${orderid}`, {
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",
@@ -199,7 +203,7 @@ export async function fetchAllBuyerOrders(
   user_id: string,
 
 ) {
-  const res = await fetch(`${orderPath}/order/view-orders-list?buyer_id=${user_id}`, {
+  const res = await fetch(`${orderPath}/view-orders-list?buyer_id=${user_id}`, {
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",
@@ -215,7 +219,7 @@ export function CreateOrder(formdata: any) {
  {
 
     return axios.post(
-    `${orderPath}/order/create-order`,
+    `${orderPath}create-order`,
     { ...formdata },
     {
       headers: {

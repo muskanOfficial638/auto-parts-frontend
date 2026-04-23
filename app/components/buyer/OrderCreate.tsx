@@ -1,10 +1,9 @@
 import { Suspense, useState } from "react";
 import { AddresswithoutID } from "../common/interface";
-import { CreateOrder, updateOrderStatus } from "@/app/utils/api";
+import { CreateOrder } from "@/app/utils/api";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-
 
 type SelectedData = {
   quoteId: string;
@@ -26,7 +25,6 @@ export default function OrderCreate({
 }: OrderCreateProps) {
   const router = useRouter();
 
-  // ✅ Terms checkbox state
   const [isAgreed, setIsAgreed] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -54,34 +52,47 @@ export default function OrderCreate({
         address: dataSelect?.address,
       });
 
-      if (!response?.data?.success) {
-        toast.error("Failed to create order.");
-        return;
-      }
-
-      closeModal(false);
-
-      // ✅ Update Status
-      const responseStatus = await updateOrderStatus(
-        response.data.order_uid,
-        {
-          payment_meta: {
-            paymentMethod: "COD",
-            paymentStatus: "pending",
-            paymentDate: new Date().toISOString(),
-            amount: dataSelect?.priceCents || "0",
-            transactionId: "",
-            gateway: "COD",
-            notes: "",
-          },
-
-          status: "in_process",
+      if (response?.data?.success) {
+        if (!response.data.success) {
+          toast.error("Failed to create order. Try again.");
+          closeModal(false);
+          return;
         }
-      );
+        const res = await fetch(`api/payment/create-session`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            orderId: response.data.order_uid,
+          }),
+        });
+        const data = await res.json();
+        if (data.success) {
+          window.location.href = data.url;
+        } else {
+          toast.error("Failed to create checkout session. Try again.");
+        }
 
-      if (responseStatus?.data?.status === "in_process") {
-        toast.success("Order created successfully!");
-        window.location.reload();
+        // ✅ Update Status
+        // const responseStatus = await updateOrderStatus(
+        //   response.data.order_uid,
+        //   {
+        //     payment_meta: {
+        //       paymentMethod: "COD",
+        //       paymentStatus: "pending",
+        //       paymentDate: new Date().toISOString(),
+        //       amount: dataSelect?.priceCents || "0",
+        //       transactionId: "",
+        //       gateway: "COD",
+        //       notes: "",
+        //     },
+        //     status: "in_process",
+        //   }
+        // );
+
+        // if (responseStatus?.data?.status === "in_process") {
+        //   toast.success("Order created successfully!");
+        //   window.location.reload();
+        // }
       }
     } catch (error) {
       console.error(error);
@@ -98,9 +109,7 @@ export default function OrderCreate({
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="absolute inset-0 flex items-center justify-center px-4 z-20 bg-gradient-to-b from-[#003253]/95 to-black/95">
-
         <div className="w-[700px] relative animate-slide max-w-full bg-brandBlack rounded-sm md:px-[40px] px-[20px] md:py-[50px] py-[30px]">
-
           {/* Close Button */}
           <button
             onClick={handleClose}
@@ -110,10 +119,8 @@ export default function OrderCreate({
           </button>
 
           <div className="max-w-full mx-auto">
-
             {/* Payment Summary */}
             <div className="mt-[30px]">
-
               <h3 className="md:text-[22px] text-lg font-semibold text-white mb-[18px]">
                 Payment Summary
               </h3>
@@ -145,11 +152,8 @@ export default function OrderCreate({
               </div>
             </div>
 
-       
             <div className="mt-6 bg-gray-900 p-4 rounded-sm text-xs text-gray-300">
-
               <label className="flex items-start gap-3 cursor-pointer">
-
                 <input
                   type="checkbox"
                   checked={isAgreed}
@@ -160,17 +164,26 @@ export default function OrderCreate({
                 <span>
                   By clicking <b>Confirm and Pay</b>, you acknowledge that you
                   have read and agree to our{" "}
-                  <Link className="text-autoblue" href="#">Terms & Conditions</Link>, <Link className="text-autoblue" href="#">Payment Terms</Link> and{" "}
-                <Link className="text-autoblue" href="#"> Delivery Policy</Link>, and authorise the transaction to be
-                  processed.
+                  <Link className="text-autoblue" href="#">
+                    Terms & Conditions
+                  </Link>
+                  ,{" "}
+                  <Link className="text-autoblue" href="#">
+                    Payment Terms
+                  </Link>{" "}
+                  and{" "}
+                  <Link className="text-autoblue" href="#">
+                    {" "}
+                    Delivery Policy
+                  </Link>
+                  , and authorise the transaction to be processed.
                   <br />
                   <br />
-                  All sales are subject to our Terms & Conditions. Delivery times
-                  are estimates. Prices include VAT unless stated otherwise.
+                  All sales are subject to our Terms & Conditions. Delivery
+                  times are estimates. Prices include VAT unless stated
+                  otherwise.
                 </span>
-
               </label>
-
             </div>
 
             {/* ✅ Proceed Button */}
@@ -187,7 +200,6 @@ export default function OrderCreate({
             >
               {loading ? "Processing..." : "Confirm & Pay"}
             </button>
-
           </div>
         </div>
       </div>

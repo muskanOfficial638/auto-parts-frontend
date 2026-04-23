@@ -7,7 +7,7 @@ export async function GET(
   context: { params: Promise<{ path?: string[] }> }
 ) {
   return handle(request, context);
-}
+ }
 
 // ---------- POST ----------
 export async function POST(
@@ -52,7 +52,7 @@ async function handle(
     const { path } = await context.params;
     const search = request.nextUrl.search; // ?id=5&name=test
 
-  
+
     if (!path || path.length === 0) {
       return NextResponse.json(
         { error: "Invalid API path" },
@@ -61,7 +61,6 @@ async function handle(
     }
 
     const apiPath = path.join("/");
-
     const token = request.cookies.get("ATXAT")?.value;
 
     if (!token) {

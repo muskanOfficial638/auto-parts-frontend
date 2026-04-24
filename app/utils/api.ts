@@ -28,6 +28,57 @@ export const supplierAPI = `${BASE_API_URL}/8005/v1/supplier`;
 
 
 
+// Delete bank details
+export async function deleteBankDetails(accID: string) {
+  return axios
+    .delete(`${orderPath}stripe/delete-account/${accID}`, {
+      headers: {
+        "Content-Type": "application/json",
+   
+      },
+    })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error("unable to delete ", error);
+      throw error;
+    });
+}
+
+
+// get bank details
+export async function GetBankDetails(user_id: string) {
+  const res = await fetch(`${orderPath}details/${user_id}`, {
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+    
+    },
+  }); // local
+  if (!res.ok) throw new Error("Failed to load bank details");
+  return res.json();
+}
+
+
+// edit supplier
+export async function addBankDetails(
+  payload: any
+) {
+  const res = await fetch(`${orderPath}create-account`, {
+    method: "POST",
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) throw new Error("Failed to add bank details");
+  return res.json();
+}
+
+
 
 // Quote Reject
 export function QuoteReject(formdata: any) {
@@ -446,7 +497,7 @@ export async function getQuoteBySupplier(
 }
 
 export async function viewProfile(user_id: string) {
-  const res = await fetch(`${profilePath}/user?user_id=${user_id}`, {
+  const res = await fetch(`${profilePath}user?user_id=${user_id}`, {
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",

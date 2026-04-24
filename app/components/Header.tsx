@@ -301,6 +301,16 @@ function BuyerSupplierMenu({ autoPartsUserData }: { autoPartsUserData: any }) {
                 </Link>
               </li>
 
+                   {autoPartsUserData.role === "supplier" && (  <li>
+                <Link
+                  href="/bank-details"
+                  className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue duration-400 border-Dark border-b rounded"
+                >
+                  Bank Details
+                </Link>
+              </li>
+                   )}
+
               {autoPartsUserData.role === "buyer" && (
                 <li>
                   <Link
@@ -466,10 +476,12 @@ export default function Header() {
                 </Link>
               )}
               {autoPartsUserData.role === "supplier" && (
-                <Link href="/my-bids" className="hover:text-hoverblue">
-                  My Bids
+                <Link href="/bank-details" className="hover:text-hoverblue">
+                  Bank Details
                 </Link>
               )}
+
+    
 
               <button
                 onClick={handleLogout}

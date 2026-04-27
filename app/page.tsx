@@ -26,7 +26,7 @@ export default function Home() {
       
       <StandardSection />
 
-      {/* Where Section*/}
+
       <WhereSection />
 
       {/* Footer Section */}

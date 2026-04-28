@@ -28,6 +28,41 @@ export const supplierAPI = `${BASE_API_URL}/8005/v1/supplier`;
 
 
 
+export async function MarkAllASRead(
+  id: string,
+) {
+  const res = await fetch(`${profilePath}markallasread/${id}`, {
+    method: "PATCH",
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+ 
+    },
+    body: `{"status": "read"}`,
+  });
+
+  if (!res.ok) throw new Error("Failed to update ");
+
+  return res.json();
+}
+
+// get payout history
+export async function fetchPayoutHistory(
+  user_id: string,
+  page = 1,
+  limit = 10
+
+) {
+  const res = await fetch(`${orderPath}view-payout/${user_id}?page=${page}&limit=${limit}`, {
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (!res.ok) throw new Error("Failed to load part requests");
+  return res.json();
+}
+
 // Delete bank details
 export async function deleteBankDetails(accID: string) {
   return axios
@@ -123,8 +158,8 @@ export async function updateNotification(
 }
 
 // get Notification
-export async function getNotification(user_id: string) {
-  const res = await fetch(`${profilePath}notifications/${user_id}`, {
+export async function getNotification(user_id: string, page: number) {
+  const res = await fetch(`${profilePath}notifications/${user_id}/${page}`, {
     cache: "no-store",
     headers: {
       "Content-Type": "application/json",

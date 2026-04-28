@@ -9,10 +9,10 @@ import { FaShippingFast } from "react-icons/fa";
 
 import { fetchOrdersByID, imagePath } from "@/app/utils/api";
 import Link from "next/link";
+import OTPModal from "@/app/components/supplier/Modal/OtpModal";
 
 interface SupplierData {
   name: string;
-  email: string;
 }
 
 interface ShippingAddress {
@@ -43,6 +43,7 @@ interface ShippingDetails {
 interface OrderDetailsType {
   id: string;
   orderID: string;
+  quoteID: string;
   status: string; // extend if needed
   supplierData: SupplierData;
   address: ShippingAddress;
@@ -66,7 +67,7 @@ const statusCode = {
 export default function RequestPartPage() {
   const [OrderDetails, setOrderDetails] = useState<OrderDetailsType | null>(null);
   const [loading, setLoading] = useState(true);
-
+  const [otpModalOpen, setOtpModalOpen] = useState<boolean>(false);
   const params = useParams();
   const orderid = params.orderid as string;
   const router = useRouter();
@@ -95,7 +96,7 @@ export default function RequestPartPage() {
 
     };
     loadInitialData();
-  }, [orderid, router]);
+  }, [orderid, router,otpModalOpen]);
 
 
 
@@ -129,11 +130,12 @@ export default function RequestPartPage() {
                     onClick={() => window.history.back()}
                     className="bg-autoblue text-white md:text-base text-sm leading-[14px] rounded-sm text-white md:py-[13px] md:px-[20px] py-[11px] px-[18px] font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
                   >
-                    Back To Order
+                    Back To Order 
                   </button>
                 </div>
                 <div className="bg-brandBlack md:py-[20px] md:px-[28px] p-[20px] rounded-sm mt-[20px]">
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 justify-between items-center">
+                    <div className="flex gap-2" >
                     <p className="text-sm leading-[22px] font-bold text-white">Order ID:
                       <span className=" ms-[5px] font-medium text-[#B9B9B9]">{OrderDetails?.orderID}</span>
                     </p>
@@ -143,6 +145,12 @@ export default function RequestPartPage() {
                     >
                       {statusCode[OrderDetails?.status as keyof typeof statusCode]?.name || "Unknown Status"}
                     </span>
+                    </div>
+   {(OrderDetails?.shipping_details?.tracking_url && OrderDetails?.status === "in_transit") && (
+                    <button onClick={()=>setOtpModalOpen(true)} className="text-autoblue md:w-[auto] w-full cursor-pointer md:text-base text-sm leading-[14px] border border-autoblue py-[13px] px-[20px] duration-400 hover:text-white rounded-sm hover:bg-hoverblue hover:border-hoverblue">
+                Mark as Completed
+              </button>
+   )}
                   </div>
                   <div className="flex items-center gap-[30px] bg-[#011827] p-[10px] rounded-sm mt-[25px] border-[#153C51] border">
                     <div className="flex-1">
@@ -220,6 +228,9 @@ export default function RequestPartPage() {
           )}
 
         </div>
+        { OrderDetails &&(
+                <OTPModal quoteId={OrderDetails.quoteID} open={otpModalOpen} onClose={() => setOtpModalOpen(false)} />
+        )}
       </Suspense>
       <Footer />
     </main>

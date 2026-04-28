@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { FaRegBell } from "react-icons/fa";
-import { getNotification, updateNotification } from "../utils/api";
+import { getNotification, MarkAllASRead, updateNotification } from "../utils/api";
 import { FaEye } from "react-icons/fa";
 interface Notification {
   id: string;
@@ -31,6 +31,8 @@ interface NotificationsResponse {
   counts: NotificationCounts;
 }
 function MainNav() {
+
+  
   return (
     <>
       <div className="flex flex-row space-x-8">
@@ -44,7 +46,6 @@ function MainNav() {
             priority
           />
         </Link>
-  
 
         <nav className="hidden lg:flex items-center space-x-[25px] text-white text-sm font-medium">
           <div className="relative group">
@@ -115,30 +116,63 @@ function BuyerSupplierMenu({ autoPartsUserData }: { autoPartsUserData: any }) {
       router.push("/logout");
     }
   }
-
-
+const [readmore, setReadMore] = useState(1);
   const [isPopupOpenNoti, setIsPopupOpenNoti] = useState<boolean>(false);
   const popupRef = useRef<HTMLDivElement | null>(null);
   const [getNotifi, setNotifi] = useState<NotificationsResponse | null>(null);
 
-  useEffect(() => {
-    getNotification(autoPartsUserData.id).then((data: any) => {
-      setNotifi(data)
+async function markallasRead() {
+   if(autoPartsUserData?.id){
+  const res = await MarkAllASRead(autoPartsUserData?.id);
+  if (res?.status) {
+    getNotification(autoPartsUserData.id, readmore).then((data: any) => {
+      setNotifi(data);
     });
-  }, [autoPartsUserData])
+    toast.success("All notifications marked as read!");
+  } else {
+    toast.error(res?.details);
+  }
+}
+  
+}
+
+function getNotifications(){
+  if(!autoPartsUserData?.id) return;
+      getNotification(autoPartsUserData.id,readmore).then((data: any) => {
+      setNotifi(data);
+    });
+
+}
+
+const readmoreRef = useRef(readmore);
+
+useEffect(() => {
+  readmoreRef.current = readmore;
+  getNotifications();
+}, [readmore]);
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    if (!autoPartsUserData?.id) return;
+    getNotification(autoPartsUserData.id, readmoreRef.current)
+      .then((data: any) => {
+        setNotifi(data);
+      });
+  }, 3000);
+
+  return () => clearInterval(interval);
+}, [autoPartsUserData]);
 
   async function MdMarkAsUnread(id: string) {
     const res = await updateNotification(id);
     if (res?.status) {
-      getNotification(autoPartsUserData.id).then((data: any) => {
-        setNotifi(data)
+      getNotification(autoPartsUserData.id, readmore).then((data: any) => {
+        setNotifi(data);
       });
     } else {
       toast.error(res?.details);
     }
   }
-
-
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -147,12 +181,14 @@ function BuyerSupplierMenu({ autoPartsUserData }: { autoPartsUserData: any }) {
         !popupRef.current.contains(event.target as Node)
       ) {
         setIsPopupOpenNoti(false);
+        setReadMore(1);
       }
     };
 
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setIsPopupOpenNoti(false);
+        setReadMore(1);
       }
     };
 
@@ -190,14 +226,17 @@ function BuyerSupplierMenu({ autoPartsUserData }: { autoPartsUserData: any }) {
         <div className="relative">
           <div
             className="relative cursor-pointer"
-            onClick={() => setIsPopupOpenNoti((prev) => !prev)}
+            onClick={() => { setIsPopupOpenNoti((prev) => !prev); setReadMore(1)} }
           >
             <FaRegBell className="text-autoblue text-[22px]" />
-            {getNotifi?.counts?.unread_count && getNotifi?.counts?.unread_count > 0 ? (
+            {getNotifi?.counts?.unread_count &&
+            getNotifi?.counts?.unread_count > 0 ? (
               <span className="bg-[#03CD21] text-[8px] h-3.75 w-3.75 rounded-full flex items-center justify-center absolute top-0 -right-[6px]">
                 {getNotifi?.counts.unread_count}
               </span>
-            ) : ""}
+            ) : (
+              ""
+            )}
           </div>
 
           <div
@@ -207,46 +246,75 @@ function BuyerSupplierMenu({ autoPartsUserData }: { autoPartsUserData: any }) {
   [&::-webkit-scrollbar-track]:bg-gray-900
   [&::-webkit-scrollbar-thumb]:bg-gray-500
   [&::-webkit-scrollbar-thumb]:rounded-full
-  overflow-x-auto h-61 absolute md:top-9.5 top-11.75 md:-right-4 -right-8.25 w-68.5 transition-all duration-300 ${isPopupOpenNoti
-                ? "opacity-100 scale-100 visible"
-                : "opacity-0 scale-95 invisible"
-              }`}
+  overflow-x-auto h-61 absolute md:top-9.5 top-11.75 md:-right-4 -right-8.25 w-68.5 transition-all duration-300 ${
+    isPopupOpenNoti
+      ? "opacity-100 scale-100 visible"
+      : "opacity-0 scale-95 invisible"
+  }`}
           >
             <div className="relative bg-brandBlack rounded-[10px] shadow-2xl py-5 px-3.75">
               <div className="absolute -top-1.75 right-5  w-5 h-5 bg-brandBlack rotate-45 "></div>
               <div className="space-y-2.5">
-                {getNotifi?.notifications?.length === 0 ? (
-                  <p className="text-gray-400 text-sm text-center">No notifications</p>
+                {(!getNotifi?.notifications || getNotifi?.notifications?.length === 0 ) ?  (
+                  <p className="text-gray-400 text-sm text-center">
+                    No notifications
+                  </p>
                 ) : (
-                  getNotifi?.notifications.map((item) => (
-                    <div key={item.id} className="flex items-center justify-between gap-2">
-                      <div>
-                        <h3
-                          className={`text-[13px] font-semibold ${item.status == "unread" ? "text-autoblue" : "text-gray-500"
-                            }`}
-                        >
-                          {item.subject}
-                        </h3>
-
-                        <p
-                          className={`text-[10px] mt-1 ${item.status == "unread" ? "text-white" : "text-gray-500"
-                            }`}
-                        >
-                          {item.body}
-                        </p>
-                      </div>
-
-                      {item.status == "unread" && (
+                  <>
+                    {getNotifi?.notifications.map((item) => (
+                      <div
+                        key={item.id}
+                        className="flex items-center justify-between gap-2"
+                      >
                         <div>
-                          <FaEye
-                            title="Mark as read"
-                            onClick={() => MdMarkAsUnread(item.id)}
-                            className="cursor-pointer text-autoblue text-[13px]"
-                          />
+                          <h3
+                            className={`text-[13px] font-semibold ${
+                              item.status == "unread"
+                                ? "text-autoblue"
+                                : "text-gray-500"
+                            }`}
+                          >
+                            {item.subject}
+                          </h3>
+
+                          <p
+                            className={`text-[10px] mt-1 ${
+                              item.status == "unread"
+                                ? "text-white"
+                                : "text-gray-500"
+                            }`}
+                          >
+                            {item.body}
+                          </p>
                         </div>
-                      )}
+
+                        {item.status == "unread" && (
+                          <div>
+                            <FaEye
+                              title="Mark as read"
+                              onClick={() => MdMarkAsUnread(item.id)}
+                              className="cursor-pointer text-autoblue text-[13px]"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                    <div className="flex justify-between border-t border-gray-700 pt-2">
+                      <button
+                        onClick={() => setReadMore((prev) => prev + 1)}
+                        className="text-center cursor-pointer bg-autoblue text-white py-1 px-2 rounded text-xs font-medium hover:bg-hoverblue duration-400"
+                      >
+                        Load More
+                      </button>
+
+                       <button
+                        onClick={() => markallasRead()}
+                        className="text-center cursor-pointer bg-gray-600 text-white py-1 px-2 rounded text-xs font-medium hover:bg-gray-500 duration-400"
+                      >
+                        Mark All as Read
+                      </button>
                     </div>
-                  ))
+                  </>
                 )}
               </div>
             </div>
@@ -301,15 +369,27 @@ function BuyerSupplierMenu({ autoPartsUserData }: { autoPartsUserData: any }) {
                 </Link>
               </li>
 
-                   {autoPartsUserData.role === "supplier" && (  <li>
-                <Link
-                  href="/bank-details"
-                  className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue duration-400 border-Dark border-b rounded"
-                >
-                  Bank Details
-                </Link>
-              </li>
-                   )}
+              {autoPartsUserData.role === "supplier" && (
+                <>
+                  {" "}
+                  <li>
+                    <Link
+                      href="/payout-history"
+                      className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue duration-400 border-Dark border-b rounded"
+                    >
+                      Payout History
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/bank-details"
+                      className="block px-4 py-2 hover:bg-gray-800 hover:text-hoverblue duration-400 border-Dark border-b rounded"
+                    >
+                      Bank Details
+                    </Link>
+                  </li>
+                </>
+              )}
 
               {autoPartsUserData.role === "buyer" && (
                 <li>
@@ -391,8 +471,9 @@ export default function Header() {
 
       {/* MOBILE SLIDE-IN MENU */}
       <div
-        className={`fixed top-0 right-0 h-full w-72 bg-black/90 text-white z-50 transform transition-transform duration-300 ${mobileOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+        className={`fixed top-0 right-0 h-full w-72 bg-black/90 text-white z-50 transform transition-transform duration-300 ${
+          mobileOpen ? "translate-x-0" : "translate-x-full"
+        }`}
       >
         <button
           onClick={() => setMobileOpen(false)}
@@ -476,12 +557,16 @@ export default function Header() {
                 </Link>
               )}
               {autoPartsUserData.role === "supplier" && (
-                <Link href="/bank-details" className="hover:text-hoverblue">
-                  Bank Details
-                </Link>
-              )}
+                <>
+                  <Link href="/bank-details" className="hover:text-hoverblue">
+                    Bank Details
+                  </Link>
 
-    
+                  <Link href="/payout-history" className="hover:text-hoverblue">
+                    Payout History
+                  </Link>
+                </>
+              )}
 
               <button
                 onClick={handleLogout}
@@ -501,8 +586,6 @@ export default function Header() {
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
         ></div>
       )}
-
-   
     </>
   );
 }

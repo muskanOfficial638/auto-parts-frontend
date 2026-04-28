@@ -265,6 +265,15 @@ export default function MyBids() {
                               {data?.created_at}
                             </small>
                           </span>
+                          { (data?.status !== "pending"  && data?.order_id)&& (
+                          <span className="font-bold text-xs leading-[22px]">
+                            Order ID:{" "}
+                            <small className="font-medium ms-[6px] text-xs leading-[22px]">
+                              {data?.order_id}
+                            </small>
+                          </span>
+                          )}
+                          
                         </div>
                       </div>
                       <div className="flex md:items-center md:gap-[10px] gap-[8px]">
@@ -302,7 +311,7 @@ export default function MyBids() {
                     </div>
                   ))
                 ) : (
-                  <div className="font-bold flex items-center text-white">
+                  <div className="font-bold text-center text-white">
                     No quotes found
                   </div>
                 )}

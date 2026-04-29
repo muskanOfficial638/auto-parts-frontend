@@ -70,7 +70,7 @@ const formatted =
 
   if (session.payment_status === "paid" && token) {
     const responseStatus = await updateOrderStatus(
-      session.metadata?.orderId || "",
+      session.metadata?.id || "",
       payload,
       token,
     );

@@ -173,7 +173,7 @@ export default function MyAccountForm() {
     if (!profileData.account_holder_name.trim()) {
       toast.error("Account holder name is required");
       return false;
-    } else if (!/^[A-Za-z]+$/.test(profileData.account_holder_name)) {
+    } else if (!/^[A-Za-z\s]+$/.test(profileData.account_holder_name)) {
       toast.error("Account holder name can only contain letters");
       return false;
     }

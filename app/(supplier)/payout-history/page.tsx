@@ -17,8 +17,8 @@ import Footer from "@/app/components/Footer";
 
 
 const statusCode = {
-  "pending": { name: "Pending", color: "text-white-500" },
-  "in_process": { name: "In Process", color: "text-yellow-500" },
+  "pending": { name: "Pending", color: "text-yellow-500" },
+  "in_process": { name: "In Process", color: "text-blue-500" },
   "completed": { name: "Completed", color: "text-green-500" },
 };
 

@@ -27,9 +27,11 @@ const session = await stripe.checkout.sessions.create({
   ],
   customer_email: data.buyerEmail,
   metadata: {
-    orderId: body.orderId,
+    id: body.orderId,
+    orderId: data.order_id,
     userName: data.buyerName,
     productName: data.productName,
+
   },
   customer_creation: "always",
   

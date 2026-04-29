@@ -68,7 +68,7 @@ const filteredData = useMemo(() => {
 
   return OrdersData.filter((item) =>
     item.productTitle.toLowerCase().includes(lowerSearch) ||
-    item.orderID.toLowerCase().includes(lowerSearch) ||
+    item.orderID?.toString().toLowerCase().includes(lowerSearch) ||
     item.status.toLowerCase().includes(lowerSearch) ||
     item.quotedPrice.toString().includes(lowerSearch) ||
     item.created_at.toLowerCase().includes(lowerSearch)

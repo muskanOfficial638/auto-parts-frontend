@@ -7,7 +7,7 @@ import { use } from "react";
 
 import { toast } from "react-toastify";
 import Header from "@/app/components/Header";
-import { authApiPath } from "@/app/utils/api";
+
 
 type PageProps = {
   params: Promise<{

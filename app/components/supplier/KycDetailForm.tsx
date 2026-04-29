@@ -132,8 +132,8 @@ export default function KycDetailForm() {
 
           {/* ================= FORM ================= */}
           <div className="w-full mb-12">
-            <h2 className="text-white text-xl font-semibold mb-6">
-              Submit KYC Detail
+            <h2 className="text-white text-center text-xl font-semibold mb-6">
+              Submit KYC Documents
             </h2>
 
             <form onSubmit={handleSave}>

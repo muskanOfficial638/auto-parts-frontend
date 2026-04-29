@@ -158,7 +158,7 @@ useEffect(() => {
       .then((data: any) => {
         setNotifi(data);
       });
-  }, 3000);
+  }, 30000);
 
   return () => clearInterval(interval);
 }, [autoPartsUserData]);

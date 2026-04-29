@@ -62,7 +62,7 @@ export default function OrderCreate({
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            orderId: response.data.order_uid,
+            orderId: response.data.order_uid, 
           }),
         });
         const data = await res.json();

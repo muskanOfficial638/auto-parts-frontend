@@ -7,6 +7,7 @@ import { use } from "react";
 
 import { toast } from "react-toastify";
 import Header from "@/app/components/Header";
+import { authApiPath } from "@/app/utils/api";
 
 type PageProps = {
   params: Promise<{
@@ -26,13 +27,13 @@ export default function VerifyTokenPage({ params }: PageProps) {
     const verifyEmail = async () => {
 
       const res = await fetch(
-        `http://54.80.119.79/:8001/v1/auth/verify-email?token=${token}`
+        `/api/auth/verify-email?token=${token}`
       );
 
       const data = await res.json();
 
-      if (res.ok) {
-        toast.success("✅ Email verified successfully!");
+      if (data.success) {
+        toast.success("Email verified successfully!");
         router.push("/login");
       } else {
         setStatus(false);

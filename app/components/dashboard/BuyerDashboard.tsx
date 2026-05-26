@@ -21,7 +21,7 @@ const urgencyOrder: Record<Urgency, number> = {
   normal: 2,
   high: 3,
 };
- 
+
 const statusCode = {
   0: { name: "Active", color: "text-white-500" },
   1: { name: "In Process", color: "text-yellow-500" },
@@ -131,8 +131,8 @@ export default function BuyerDashboard() {
     const loggedInUser = JSON.parse(autoPartsUserData || "{}");
     if (!loggedInUser.id) router.replace("/logout");
     const data = await fetchAllBuyerPartRequests(loggedInUser?.id);
-     setPartRequestData(data.data);
-     setTotalPages(data.total_pages);
+    setPartRequestData(data.data);
+    setTotalPages(data.total_pages);
     setIsLoading(false);
   };
 
@@ -148,7 +148,7 @@ export default function BuyerDashboard() {
       setIsLoading(false);
     };
     loadInitialData();
-  }, [router,page]);
+  }, [router, page]);
 
   useEffect(() => {}, [partRequestData]);
 
@@ -404,27 +404,28 @@ export default function BuyerDashboard() {
                   )}
                 </tbody>
               </table>
-              <div className="flex justify-center items-center gap-3 mt-6">
-  <button
-    disabled={page === 1}
-    onClick={() => setPage((prev) => prev - 1)}
-    className={`px-3 py-1 bg-autoblue text-white rounded disabled:opacity-50 ${page === 1 ? "cursor-not-allowed" : "cursor-pointer"}`}
-  >
-    Prev
-  </button>
+            {!searchTerm &&  <div className="flex justify-center items-center gap-3 mt-6">
+                <button
+                  disabled={page === 1}
+                  onClick={() => setPage((prev) => prev - 1)}
+                  className={`px-3 py-1 bg-autoblue text-white rounded disabled:opacity-50 ${page === 1 ? "cursor-not-allowed" : "cursor-pointer"}`}
+                >
+                  Prev
+                </button>
 
-  <span className="text-white text-sm">
-    Page {page} of {totalPages}
-  </span>
+                <span className="text-white text-sm">
+                  Page {page} of {totalPages}
+                </span>
 
-  <button
-    disabled={page === totalPages}
-    onClick={() => setPage((prev) => prev + 1)}
-    className={`px-3 py-1 bg-autoblue text-white rounded disabled:opacity-50 ${page === totalPages ? "cursor-not-allowed" : "cursor-pointer"}`}
-  >
-    Next
-  </button>
-</div>
+                <button
+                  disabled={page === totalPages}
+                  onClick={() => setPage((prev) => prev + 1)}
+                  className={`px-3 py-1 bg-autoblue text-white rounded disabled:opacity-50 ${page === totalPages ? "cursor-not-allowed" : "cursor-pointer"}`}
+                >
+                  Next
+                </button>
+              </div>
+}
             </div>
           </div>
         </div>

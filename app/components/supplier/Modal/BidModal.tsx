@@ -210,6 +210,7 @@ const validFiles = selectedFiles.filter((file) => {
                 type="number"
                 placeholder="Price(in numeric format)"
                 name="price_cents"
+                min="10"
                 inputMode="numeric"
                 step="0.1"
             

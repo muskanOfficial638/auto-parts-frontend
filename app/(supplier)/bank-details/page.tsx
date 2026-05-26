@@ -100,6 +100,9 @@ export default function MyAccountForm() {
     } else if (!/^[A-Za-z]+$/.test(profileData.first_name)) {
       toast.error("First name can only contain letters");
       return false;
+    }else if(profileData.first_name.trim().length < 3){
+      toast.error("First name should be at least 3 characters long");
+      return false;
     }
 
     if (!profileData.last_name.trim()) {
@@ -142,6 +145,9 @@ export default function MyAccountForm() {
     if (!profileData.address.trim()) {
       toast.error("Address is required");
       return false;
+    }else if(profileData.address.trim().length < 10){
+      toast.error("Address should be at least 10 characters long");
+      return false;
     }
 
     // City
@@ -175,6 +181,9 @@ export default function MyAccountForm() {
       return false;
     } else if (!/^[A-Za-z\s]+$/.test(profileData.account_holder_name)) {
       toast.error("Account holder name can only contain letters");
+      return false;
+    }else if(profileData.account_holder_name.trim().length < 3){
+      toast.error("Account holder name should be at least 3 characters long");
       return false;
     }
 
@@ -270,7 +279,7 @@ export default function MyAccountForm() {
         setSubmitProcess(false);
         setAlreadySubmitted(true);
       } else {
-        toast.error(res?.details);
+        toast.error(res?.message || "Failed to add bank details."); 
         setSubmitProcess(false);
       }
     } catch (error) {
@@ -316,6 +325,7 @@ export default function MyAccountForm() {
                       <input
                         type="text"
                         name="first_name"
+                        readOnly={alreadySubmitted}
                         value={profileData?.first_name || ""}
                         onChange={handleProfileChange}
                         className="w-full py-[8px] px-[15px]  bg-white text-sm  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
@@ -328,6 +338,7 @@ export default function MyAccountForm() {
                       <input
                         type="text"
                         name="last_name"
+                        readOnly={alreadySubmitted}
                         value={profileData?.last_name || ""}
                         onChange={handleProfileChange}
                         className="w-full py-[8px] px-[15px]  bg-white text-sm  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
@@ -344,6 +355,7 @@ export default function MyAccountForm() {
                       <input
                         type="text"
                         name="phone"
+                        readOnly={alreadySubmitted}
                         value={profileData?.phone || ""}
                         onChange={handleProfileChange}
                         className="w-full py-[8px] px-[15px]  bg-white text-sm  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
@@ -373,6 +385,7 @@ export default function MyAccountForm() {
                       </label>
                       <input
                         type="date"
+                        readOnly={alreadySubmitted}
                         name="dob"
                         max={
                           new Date(
@@ -395,6 +408,7 @@ export default function MyAccountForm() {
                       <input
                         type="text"
                         name="id_number"
+                        readOnly={alreadySubmitted}
                         value={profileData?.id_number || ""}
                         onChange={handleProfileChange}
                         className="w-full py-[8px] px-[15px]  bg-white text-sm  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
@@ -410,6 +424,7 @@ export default function MyAccountForm() {
                       </label>
                       <input
                         type="text"
+                        readOnly={alreadySubmitted}
                         name="address"
                         value={profileData?.address || ""}
                         onChange={handleProfileChange}
@@ -425,6 +440,7 @@ export default function MyAccountForm() {
                       <input
                         type="text"
                         name="city"
+                        readOnly={alreadySubmitted}
                         value={profileData?.city || ""}
                         onChange={handleProfileChange}
                         className="w-full py-[8px] px-[15px]  bg-white text-sm  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
@@ -440,6 +456,7 @@ export default function MyAccountForm() {
                       <input
                         type="text"
                         name="state"
+                        readOnly={alreadySubmitted}
                         value={profileData?.state || ""}
                         onChange={handleProfileChange}
                         className="w-full py-[8px] px-[15px]  bg-white text-sm  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
@@ -454,6 +471,7 @@ export default function MyAccountForm() {
                       <input
                         type="text"
                         name="postal_code"
+                        readOnly={alreadySubmitted}
                         value={profileData?.postal_code || ""}
                         onChange={handleProfileChange}
                         className="w-full py-[8px] px-[15px]  bg-white text-sm  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
@@ -473,6 +491,7 @@ export default function MyAccountForm() {
                         name="account_holder_name"
                         value={profileData?.account_holder_name || ""}
                         onChange={handleProfileChange}
+                        readOnly={alreadySubmitted}
                         className="w-full py-[8px] px-[15px]  bg-white text-sm  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
                       />
                     </div>
@@ -487,6 +506,7 @@ export default function MyAccountForm() {
                         name="routing_number"
                         value={profileData?.routing_number || ""}
                         onChange={handleProfileChange}
+                        readOnly={alreadySubmitted}
                         className="w-full py-[8px] px-[15px]  bg-white text-sm  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
                       />
                     </div>
@@ -499,6 +519,7 @@ export default function MyAccountForm() {
                         name="account_number"
                         value={profileData?.account_number || ""}
                         onChange={handleProfileChange}
+                        readOnly={alreadySubmitted}
                         className="w-full py-[8px] px-[15px]  bg-white text-sm  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
                       />
                     </div>

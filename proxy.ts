@@ -38,12 +38,12 @@ export async function proxy(request: NextRequest) {
         });
         return response;
       } else {
-        url.pathname = "/signin";
+        url.pathname = "/logout";
         return NextResponse.redirect(url);
       }
     } catch (err) {
       console.error(err);
-      url.pathname = "/signin";
+      url.pathname = "/logout";
       return NextResponse.redirect(url);
     }
   }

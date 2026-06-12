@@ -9,6 +9,12 @@ const nextConfig = {
       },
     ],
   },
+    outputFileTracingIncludes: {
+    "/*": [
+      "./node_modules/@sparticuz/chromium/**/*",
+      "./node_modules/puppeteer-core/**/*",
+    ],
+  },
 };
 
 module.exports = nextConfig;

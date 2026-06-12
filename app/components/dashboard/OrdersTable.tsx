@@ -12,6 +12,8 @@ import { OrdersType } from "../common/interface";
 
 import { FaSort } from "react-icons/fa6";
 import Image from "next/image";
+import { PiInvoice } from "react-icons/pi";
+import { TbFileInvoice } from "react-icons/tb";
 const statusCode ={
   "pending": { name: "Active", color: "text-white-500" },
   "in_process": { name: "In Process", color: "text-yellow-500" },
@@ -146,6 +148,11 @@ return sortConfig.direction === "asc"
   function handleClick(item: OrdersType) {
     router.push(`orders/${item.id}`);
   }
+    function InvoiceClick(item: OrdersType) {
+      window.open(`/api/invoice/${item.id}`, "_self");
+
+  }
+
 
 
 
@@ -312,7 +319,14 @@ return sortConfig.direction === "asc"
                             >
                               <EyeIcon className="h-[20px] w-[20px]" />
                             </button>
-                   
+                      { ["completed"].includes(item?.status) && (
+                                <button
+                              onClick={() => InvoiceClick(item)}
+                              className="px-[5px] flex justify-center items-center h-[30px] w-[30px] bg-[#011827] rounded-sm border border-[#153C51] text-autoblue cursor-pointer"
+                            >
+                              <TbFileInvoice  className="h-[20px] w-[20px]" />
+                            </button>
+ )}
                           </div>
                         </td>
                       </tr>

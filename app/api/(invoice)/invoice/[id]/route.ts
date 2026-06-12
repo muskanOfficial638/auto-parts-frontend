@@ -23,7 +23,7 @@ export async function GET(
   });
   const resData = await res.json();
 
-  console.log("Invoice Data:", resData);
+
   //  if(!resData.success){
   //     return new Response("Failed to fetch invoice data", { status: 500 });
   //   }
@@ -455,8 +455,18 @@ export async function GET(
 </html>
 `;
 
+console.log("NODE_ENV:", process.env.NODE_ENV);
+
+try {
+  const path = await chromium.executablePath();
+  console.log("Chromium Path:", path);
+} catch (err) {
+  console.error("Chromium Error:", err);
+}
   const executablePath = await chromium.executablePath();
   const isVercel = !!process.env.VERCEL;
+
+  
 
   const browser = await puppeteer.launch({
     executablePath: isVercel

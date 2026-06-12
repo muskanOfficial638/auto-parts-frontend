@@ -1,4 +1,4 @@
-import { BOOKING_END } from "@/services/api";
+import {  orderAPI } from "@/app/utils/api";
 import puppeteer from "puppeteer-core";
 import chromium from "@sparticuz/chromium";
 import { NextRequest } from "next/server";
@@ -15,7 +15,7 @@ const token = request.cookies.get("MMMAT")?.value;
     return new Response("Missing appointment ID", { status: 400 });
   }
 
-  const res = await fetch(`${BOOKING_END}/view-invoices/${paramsData.id}` ,{
+  const res = await fetch(`${orderAPI}/view-invoices/${paramsData.id}` ,{
     method: "GET",
     headers: {
       "Content-Type": "application/json",

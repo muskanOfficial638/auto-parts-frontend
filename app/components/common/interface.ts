@@ -35,14 +35,7 @@ export interface PartRequest {
   address?: Address;
 }
 
-export interface PayoutHistory {
-  order_id: string; 
-  transfer_id: string;
-  acct_id: string;
-  amount_cents: number;
-  payout_status: string;
-  payout_updated_at: string;
-}
+
 export interface PartRequestview {
   id?: string;
   title: string;

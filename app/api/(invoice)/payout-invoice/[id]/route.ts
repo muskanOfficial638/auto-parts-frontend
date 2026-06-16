@@ -225,7 +225,7 @@ table{
 
             <h2>PAYOUT INVOICE</h2>
 
-            <p><b>Payout ID:</b> #${data.payoutId}</p>
+            <p><b>Payout ID:</b> #${data.uniqueId}</p>
             <p><b>Date:</b> ${data.payoutDate}</p>
 
         </div>

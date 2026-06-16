@@ -70,16 +70,16 @@ export default function DeleteModal({
 
           <div className="flex justify-center gap-8">
             <button
-              onClick={() => handleDeletePartRequest(requestId)}
+             onClick={onClose}
               className="bg-autoblue text-md w-full rounded-sm text-white py-4 font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
             >
-              Yes
+             No
             </button>
             <button
-              onClick={onClose}
+              onClick={() => handleDeletePartRequest(requestId)}             
               className="bg-red-600 text-md w-full rounded-sm text-white py-4 font-semibold hover:bg-red-700 duration-400 cursor-pointer"
             >
-              No
+               Yes
             </button>
           </div>
         </div>

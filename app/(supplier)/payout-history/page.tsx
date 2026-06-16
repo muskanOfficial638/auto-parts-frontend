@@ -7,7 +7,7 @@ import Loader from "@/app/components/common/Loader";
 import { useRouter } from "next/navigation";
 
 interface PayoutHistory {
-  order_id: string;
+  unique_id: string;
   id: string;
   transfer_id: string;
   total_amount: number;
@@ -25,7 +25,7 @@ const statusCode = {
   completed: { name: "Completed", color: "text-green-500" },
 };
 
-export default function BuyerDashboard() {
+export default function PayoutHistory() {
   const [partRequestData, setPartRequestData] = useState<PayoutHistory[]>([]);
   const [loading, setIsLoading] = useState(true);
 
@@ -41,7 +41,7 @@ export default function BuyerDashboard() {
 
       result = result.filter(
         (item) =>
-          item.order_id.toLowerCase().includes(lowerSearch) ||
+          item.unique_id.toString().includes(lowerSearch) ||
           item.transfer_id.toLowerCase().includes(lowerSearch) ||
           item.total_amount.toString().includes(lowerSearch) ||
           item.payout_status.toLowerCase().includes(lowerSearch) ||
@@ -145,10 +145,10 @@ export default function BuyerDashboard() {
                           className=" text-white border-b border-[#2C364A] "
                         >
                           {/* Product */}
-                          <td className="flex p-[10px] items-center gap-[15px] cursor-pointer">
-                            <span className="md:text-xs text-[10px] font-semibold md:leading-[22px] leading-[13px]">
-                              {item.order_id}
-                            </span>
+                          <td className=" p-[10px] md:text-xs text-[10px] md:leading-[22px] leading-[13px] font-semibold text-center">
+                           
+                             #{item.unique_id}
+                
                           </td>
 
                           <td className=" p-[10px] md:text-xs text-[10px] md:leading-[22px] leading-[13px] font-semibold text-center">

@@ -79,7 +79,7 @@ export default function BidModal({
         toast.error("Estimated Days must be greater than zero")
          return;
       }
-      if(formData.terms.length<2 || formData.terms.length > 200){
+      if(formData.terms.trim().length<2 || formData.terms.trim().length > 200){
         toast.error("Description must be between 2 and 200 characters")
          return;
       }

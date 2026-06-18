@@ -597,7 +597,7 @@ const validFiles = selectedFiles.filter((file) => {
                           name="description"
                           onChange={handleChange}
                           value={formData?.description || ""}
-                          className="h-32 w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[13px]  border border-LightNeutral rounded-sm text-Gray outline-none"
+                          className="h-32 w-full py-[8px] px-[18px] bg-white md:text-base text-sm leading-[20px]  border border-LightNeutral rounded-sm text-Gray outline-none"
                         />
                         {/* <CalendarDays
                       className="absolute right-5 top-4 text-gray-400"

@@ -98,7 +98,7 @@ const formatted =
      
                   </div>
 
-                  <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                  <h1 className="text-2xl font-bold text-red-500 mb-2">
                     Payment Cancelled!
                   </h1>
 
@@ -112,8 +112,8 @@ const formatted =
                   {/* Amount */}
                   <div className="flex justify-between items-center">
                     <span className="text-gray-100 text-sm">Amount</span>
-                    <span className="text-2xl font-bold text-gray-900">
-                      {session?.amount_total ? (session.amount_total / 100).toFixed(2) : "0.00"}
+                    <span className="text-2xl font-bold text-white">
+                      R {session?.amount_total ? (session.amount_total / 100).toFixed(2) : "0.00"}
                     </span>
                   </div>
 

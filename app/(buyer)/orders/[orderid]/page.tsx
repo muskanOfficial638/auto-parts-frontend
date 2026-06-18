@@ -56,7 +56,7 @@ interface OrderDetailsType {
 
 const statusCode = {
   pending: { name: "Active", color: "text-white bg-autoblue" },
-  in_process: { name: "In Process", color: "text-yellow-500 bg-yellow-500" },
+  in_process: { name: "In Process", color: "text-white bg-yellow-600" },
   in_transit: { name: "In Transit", color: "text-white bg-blue-500" },
   completed: { name: "Completed", color: "text-white bg-green-500" },
   cancelled: { name: "Cancelled", color: "text-white bg-red-500" },

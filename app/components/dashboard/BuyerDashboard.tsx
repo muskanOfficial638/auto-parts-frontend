@@ -164,9 +164,18 @@ export default function BuyerDashboard() {
 
   if (loading) {
     return (
+       <div className="min-h-screen w-full relative">
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/dashboardBg.jpg')" }}
+        />
+               <div className="absolute inset-0 bg-gradient-to-b bg-gradient-to-b from-[#003253]/95 to-black/95" />
       <div className="h-screen">
         <Loader />
       </div>
+      </div>
+
     );
   }
 

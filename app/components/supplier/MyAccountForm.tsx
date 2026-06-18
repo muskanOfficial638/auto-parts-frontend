@@ -217,7 +217,7 @@ const router = useRouter();
               {/* Trim */}
               <div>
                 <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-                  Old Password
+                  Current Password
                 </label>
                 <input
                   type="password"
@@ -292,7 +292,7 @@ const router = useRouter();
               )}
               <div>
                 <label className="text-Gray  md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
-                  Confirm Password
+                  Confirm New Password
                 </label>
                 <input
                   type="password"

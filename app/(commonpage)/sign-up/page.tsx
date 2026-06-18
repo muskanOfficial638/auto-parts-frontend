@@ -70,7 +70,8 @@ export default function SignUpPage() {
     const errors: string[] = [];
 
     if (/\s/.test(value)) errors.push("Spaces are not allowed");
-    if (value.length < 6) errors.push("Minimum length 6 characters");
+    if (value.length < 8) errors.push("Minimum length 8 characters");
+    if (value.length > 20) errors.push("Maximum length 20 characters");
     if (!/[A-Z]/.test(value))
       errors.push("Must contain at least one uppercase letter");
     if (!/[a-z]/.test(value))
@@ -110,15 +111,17 @@ export default function SignUpPage() {
 
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
+
     if(submitProcess){
       return
     }
-
       setSubmitProcess(true);
     try {
        setLoading(true)
       if (!name || !role || !email || !password) {
         setError("Please fill in all required fields.");
+        setSubmitProcess(false);
+         setLoading(false)
         return;
       }
       // 🔒 Validate fields before submit
@@ -130,28 +133,48 @@ export default function SignUpPage() {
       if (name && !nameRegex.test(name)) {
          setLoading(false)
         setNameError("Invalid Name Characters");
+          setSubmitProcess(false);  
         return;
       }
 
       if (name?.length > 25) {
          setLoading(false)
+          setSubmitProcess(false);
         setNameError("Name cannot be more than 25 character long");
         return;
       }
       if (name?.length < 2) {
          setLoading(false)
+          setSubmitProcess(false);
         setNameError("Name cannot be less than 2 character short");
         return;
       }
 
+
+      if (  vat_number.length > 20 || vat_number.length < 8) {
+         setLoading(false)
+          setSubmitProcess(false);
+        setVatError("VAT number must be between 8 and 20 characters long");
+        return;
+      }
+        if(email?.length > 50){
+          setLoading(false)
+            setSubmitProcess(false);
+          setEmailError("Email cannot be more than 50 characters long");
+          return;
+        }
+
       if (!email || emailError || passwordErrors.length > 0) {
          setLoading(false)
+            setSubmitProcess(false);
         setError("Please fix the errors before submitting");
         return;
       }
 
+
       if (!isTermsChecked) {
-         setLoading(false)
+         setLoading(false)  
+            setSubmitProcess(false);
         toast.error("You must accept the Terms of Service.");
         return;
       }
@@ -257,7 +280,7 @@ export default function SignUpPage() {
                 name="role"
                 required
                 onChange={(e) => handleSelectChange(e.target.value)}
-                className="md:col-span-1 col-span-2 cursor-pointer px-[15px] py-[10px] bg-white text-sm rounded-sm text-grayMedium outline-none
+                className="h-[40px] md:col-span-1 col-span-2 cursor-pointer px-[15px] py-[10px] bg-white text-sm rounded-sm text-grayMedium outline-none
                 "
               >
                 <option value="">Select role*</option>
@@ -328,11 +351,18 @@ export default function SignUpPage() {
                   </li>
                   <li
                     className={
-                      password.length >= 6 ? "text-green-600" : "text-red-500"
+                      password.length >= 8 ? "text-green-600" : "text-red-500"
                     }
                   >
-                    Minimum length 6 characters
+                    Minimum length 8 characters
                   </li>
+                     {password.length > 20 && <li
+                    className={
+                       "text-red-500"
+                    }
+                  >
+                    Maximum length 20 characters
+                  </li> }
                   <li
                     className={
                       /[A-Z]/.test(password) ? "text-green-600" : "text-red-500"

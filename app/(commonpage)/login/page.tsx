@@ -128,6 +128,7 @@ export default function LoginPage() {
           );
         }
       }else{
+             setLoading(false)
         toast.error("Invalid credentials or unauthorized access");
       }
     } catch (err: any) {
@@ -172,6 +173,7 @@ export default function LoginPage() {
                 <input
                   type="email"
                   name="email"
+                  required
                   onChange={handleEmailChange}
                   placeholder="Enter email"
                   className="w-full px-[15px] py-[10px] bg-white text-sm rounded-sm placeholder-grayMedium text-grayMedium outline-none"
@@ -182,6 +184,7 @@ export default function LoginPage() {
                   <input
                     type={showPassword ? "text" : "password"}
                     name="password"
+                    required
                     onChange={handlePasswordChange}
                     placeholder="Enter password"
                     className="w-full px-[15px] py-[10px] bg-white text-sm rounded-sm placeholder-grayMedium text-grayMedium outline-none"

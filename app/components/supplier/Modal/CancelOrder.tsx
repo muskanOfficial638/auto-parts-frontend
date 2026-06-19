@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-//import { cancelOrder } from "@/app/utils/api"; // Update API import
+import { cancelOrder } from "@/app/utils/api"; // Update API import
 
 export default function CancelOrder({
   quoteId,
@@ -40,20 +40,18 @@ export default function CancelOrder({
     try {
       setLoading(true);
 
-      // const response = await cancelOrder({
-      //   user_id: loggedInUser?.id,
-      //   quote_id: quoteId,
-      // });
+      const response = await cancelOrder(quoteId);
 
-      // if (response?.data?.status) {
-      //   toast.success("Order cancelled successfully!");
-      //   onClose();
-      //   router.refresh();
-      // } else {
-      //   toast.error(
-      //     response?.data?.message || "Unable to cancel order."
-      //   );
-      // }
+      if (response?.success) {
+        toast.success("Order cancelled successfully!");
+        onClose();
+      
+      } else {
+        
+        toast.error(
+          response?.message || "Unable to cancel order."
+        );
+      }
     } catch (error) {
       console.error(error);
       toast.error("Something went wrong.");

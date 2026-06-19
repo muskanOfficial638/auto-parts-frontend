@@ -36,6 +36,7 @@ export interface PaymentDetails {
   transactionId: string;
   gateway: string;
   notes?: string;
+  refundId?: string;
 }
 interface ShippingDetails {
   tracking: string;
@@ -56,6 +57,7 @@ interface OrderDetailsType {
 }
 
 const statusCode = {
+  refunded: { name: "Refunded", color: "text-white bg-purple-500" },
   pending: { name: "Active", color: "text-white bg-autoblue" },
   in_process: { name: "In Process", color: "text-white bg-yellow-600" },
   in_transit: { name: "In Transit", color: "text-white bg-blue-500" },
@@ -78,6 +80,7 @@ export default function RequestPartPage() {
   // Load on mount
   useEffect(() => {
     const loadInitialData = async () => {
+      if(cancelModalOpen || otpModalOpen) return; // Prevent refetching when modals are open
       const autoPartsUserData = localStorage.getItem("autoPartsUserData");
       const loggedInUser = JSON.parse(autoPartsUserData || "{}");
       if (!loggedInUser.id) router.replace("/logout");
@@ -93,7 +96,7 @@ export default function RequestPartPage() {
       }
     };
     loadInitialData();
-  }, [orderid, router, otpModalOpen]);
+  }, [orderid, router, otpModalOpen,cancelModalOpen]);
 
   return (
     <main className="min-h-screen bg-black text-white">
@@ -201,6 +204,13 @@ export default function RequestPartPage() {
                       <p className="text-xs text-[#B9B9B9] mt-[5px]">
                         <b className="text-white">Transaction ID:</b>{" "}
                         {OrderDetails?.payment_meta?.transactionId}{" "}
+                      </p>
+                     )}
+                    
+                     {OrderDetails?.payment_meta?.refundId && (
+                      <p className="text-xs text-[#B9B9B9] mt-[5px]">
+                        <b className="text-white">Refund ID:</b>{" "}
+                        {OrderDetails?.payment_meta?.refundId}{" "}
                       </p>
                      )}
                       {OrderDetails?.payment_meta?.paymentDate && (

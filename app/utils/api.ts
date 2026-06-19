@@ -28,6 +28,25 @@ export const supplierAPI = `${BASE_API_URL}/8005/v1/supplier`;
 
 
 
+
+
+// Order cancel
+export async function cancelOrder(
+ OrderId: string,
+) {
+  const res = await fetch(`${orderPath}cancel/${OrderId}`, {
+    method: "POST",
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) throw new Error("Failed to cancel order");
+  return res.json();
+}
+
+// update notification api
 export async function MarkAllASRead(
   id: string,
 ) {

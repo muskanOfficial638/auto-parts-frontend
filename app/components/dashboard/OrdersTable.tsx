@@ -15,6 +15,7 @@ import Image from "next/image";
 
 import { TbFileInvoice } from "react-icons/tb";
 const statusCode ={
+  "refunded": { name: "Refunded", color: "text-purple-500" },
   "pending": { name: "Unpaid", color: "text-white-500" },
   "in_process": { name: "In Process", color: "text-yellow-500" },
   "in_transit": { name: "In Transit", color: "text-blue-500" },

@@ -69,7 +69,7 @@ export default function BidModal({
       formDataPayload.append("currency", formData.currency || "ZAR");
       formDataPayload.append("eta_days", formData.eta_days);
       formDataPayload.append("terms", formData.terms);
-
+  
       
       if(formData.price_cents=="0"){
         toast.error("Price must be greater than zero")
@@ -109,10 +109,19 @@ export default function BidModal({
         );
 
         if (response?.status === 200) {
+          if(response.data?.success){
+
           toast.success("Quote Submitted Successfully!");
           setFiles([]);
           onClose();
+          }
+          else{
+            toast.error(response.data?.message || "Unable to create quote");
+          }
+
         }
+
+
       } catch (err: any) {
         // Handle errors more gracefully
         if (err.response) {
@@ -169,11 +178,15 @@ const validFiles = selectedFiles.filter((file) => {
  
 
   const removeFile = (index: number) => {
+
     setFiles((prev) => prev.filter((_, i) => i !== index));
+
     setFormData((prev) => ({
       ...prev,
       attachment: [...prev.attachment.filter((_, i) => i !== index)],
     }));
+
+
   };
 
   if (!open) return null;

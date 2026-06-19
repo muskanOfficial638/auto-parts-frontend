@@ -13,6 +13,8 @@ interface PayoutHistory {
   total_amount: number;
   payout_status: string;
   payout_updated_at: string;
+  payout_amount: string;
+  platform_fee: string;
 }
 
 import Header from "@/app/components/Header";
@@ -126,6 +128,12 @@ export default function PayoutHistory() {
                       <th className=" bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">
                         Amount
                       </th>
+                             <th className=" bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">
+                        Platform Fee
+                      </th>
+                             <th className=" bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">
+                        Payout Amount
+                      </th>
                       <th className="bg-autoblue p-[9px] text-center leading-[22px] font-bold md:text-[13px] text-[11px]">
                         Date
                       </th>
@@ -156,7 +164,13 @@ export default function PayoutHistory() {
                           </td>
 
                           <td className=" p-[10px] md:text-xs text-[10px] md:leading-[22px] leading-[13px] font-semibold text-center">
-                            {item.total_amount}
+                            R {item.total_amount}
+                          </td>
+                           <td className=" p-[10px] md:text-xs text-[10px] md:leading-[22px] leading-[13px] font-semibold text-center">
+                           R {item.platform_fee}
+                          </td>
+                           <td className=" p-[10px] md:text-xs text-[10px] md:leading-[22px] leading-[13px] font-semibold text-center">
+                            R {item.payout_amount}
                           </td>
 
                           <td className="md:text-xs text-[10px] p-[10px] md:leading-[22px] leading-[13px] font-semibold text-center">

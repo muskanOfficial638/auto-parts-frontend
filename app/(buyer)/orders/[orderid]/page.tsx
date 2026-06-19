@@ -10,6 +10,7 @@ import { FaShippingFast } from "react-icons/fa";
 import { fetchOrdersByID, imagePath } from "@/app/utils/api";
 import Link from "next/link";
 import OTPModal from "@/app/components/supplier/Modal/OtpModal";
+import CancelOrder from "@/app/components/supplier/Modal/CancelOrder";
 
 interface SupplierData {
   name: string;
@@ -68,6 +69,7 @@ export default function RequestPartPage() {
     null,
   );
   const [loading, setLoading] = useState(true);
+  const [cancelModalOpen, setCancelModalOpen] = useState<boolean>(false);
   const [otpModalOpen, setOtpModalOpen] = useState<boolean>(false);
   const params = useParams();
   const orderid = params.orderid as string;
@@ -215,6 +217,14 @@ export default function RequestPartPage() {
                       Get Invoice
                     </button>
                     )}
+                    {["in_process"].includes(OrderDetails?.status) && (
+                      <button
+                      onClick={() => setCancelModalOpen(true)}
+                      className="bg-red-600 text-white md:text-base text-sm leading-[14px] rounded-sm text-white md:py-[13px] md:px-[20px] py-[11px] px-[18px] font-semibold hover:bg-red-700 duration-400 cursor-pointer"
+                    > 
+                      Cancel Order
+                    </button>
+                    )}
                   </div>
                   <div className="mt-[25px]">
                     <h3 className="text-sm font-bold leading-[22px] text-white">
@@ -308,6 +318,14 @@ export default function RequestPartPage() {
             onClose={() => setOtpModalOpen(false)}
           />
         )}
+
+          <CancelOrder
+            quoteId={orderid}
+            open={cancelModalOpen}
+            onClose={() => setCancelModalOpen(false)}
+          />
+   
+        
       </Suspense>
       <Footer />
     </main>

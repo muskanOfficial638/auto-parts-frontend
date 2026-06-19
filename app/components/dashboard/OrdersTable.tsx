@@ -12,10 +12,10 @@ import { OrdersType } from "../common/interface";
 
 import { FaSort } from "react-icons/fa6";
 import Image from "next/image";
-import { PiInvoice } from "react-icons/pi";
+
 import { TbFileInvoice } from "react-icons/tb";
 const statusCode ={
-  "pending": { name: "Active", color: "text-white-500" },
+  "pending": { name: "Unpaid", color: "text-white-500" },
   "in_process": { name: "In Process", color: "text-yellow-500" },
   "in_transit": { name: "In Transit", color: "text-blue-500" },
   "completed": { name: "Completed", color: "text-green-500" },

@@ -70,16 +70,17 @@ export default function DeleteAddressModal({
 
           <div className="flex justify-center gap-8">
             <button
-              onClick={() => handleDeletePartRequest(addressId)}
+           onClick={()=>onClose(false)}
               className="bg-autoblue text-md w-full rounded-sm text-white py-4 font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
             >
-              Yes
+             No 
             </button>
             <button
-              onClick={()=>onClose(false)}
+              
+             onClick={() => handleDeletePartRequest(addressId)}
               className="bg-red-600 text-md w-full rounded-sm text-white py-4 font-semibold hover:bg-red-700 duration-400 cursor-pointer"
             >
-              No
+              Yes
             </button>
           </div>
         </div>

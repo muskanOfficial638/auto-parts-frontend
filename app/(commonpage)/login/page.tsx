@@ -80,8 +80,7 @@ export default function LoginPage() {
   };
 
   async function handleLogin(e: React.FormEvent) {
-
-
+    
     e.preventDefault();
     // 🔒 Validate fields before submit
     validateEmail(email);
@@ -101,7 +100,7 @@ export default function LoginPage() {
       return;
     }
     if(loading){return;}
- setLoading(true)
+    setLoading(true)
     try {
       const response = await axios.post(`/api/auth/login`, {
         email,

@@ -111,7 +111,7 @@ export default function SignUpPage() {
 
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
-
+    
     if(submitProcess){
       return
     }
@@ -124,6 +124,7 @@ export default function SignUpPage() {
          setLoading(false)
         return;
       }
+      
       // 🔒 Validate fields before submit
       validateEmail(email);
       validatePassword(password);
@@ -151,12 +152,13 @@ export default function SignUpPage() {
       }
 
 
-      if (  vat_number.length > 20 || vat_number.length < 8) {
+      if (vat_number && (vat_number.length > 20 || vat_number.length < 8)) {
          setLoading(false)
           setSubmitProcess(false);
         setVatError("VAT number must be between 8 and 20 characters long");
         return;
       }
+      
         if(email?.length > 50){
           setLoading(false)
             setSubmitProcess(false);

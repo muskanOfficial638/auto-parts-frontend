@@ -320,14 +320,14 @@ return sortConfig.direction === "asc"
                             >
                               <EyeIcon className="h-[20px] w-[20px]" />
                             </button>
-                      { ["completed"].includes(item?.status) && (
+                   
                                 <button
-                              onClick={() => InvoiceClick(item)}
-                              className="px-[5px] flex justify-center items-center h-[30px] w-[30px] bg-[#011827] rounded-sm border border-[#153C51] text-autoblue cursor-pointer"
+                              onClick={() => ["completed"].includes(item?.status) && InvoiceClick(item)}
+                              className={` px-[5px] flex justify-center items-center h-[30px] w-[30px]  rounded-sm border ${!["completed"].includes(item?.status) ? "opacity-50 cursor-not-allowed text-gray-500 border-gray-500" : "bg-[#011827] border-[#153C51] text-autoblue cursor-pointer"}`}
                             >
                               <TbFileInvoice  className="h-[20px] w-[20px]" />
                             </button>
- )}
+
                           </div>
                         </td>
                       </tr>

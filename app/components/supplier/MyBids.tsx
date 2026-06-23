@@ -301,9 +301,12 @@ export default function MyBids() {
 
                         {activeTab === "pending" && (
                           <button
-                            className={`cursor-pointer hover:text-red-300 text-red-500 bg-white text-[25px] px-[10px] py-[8px] rounded-[5px]`}
+                          title={data?.order_id ? "Your quote is already in progress" : "Delete Quote"}
+                            className={` ${!data.order_id ? 'cursor-pointer hover:text-red-300 text-red-500' : 'cursor-not-allowed  text-red-300'}  bg-white text-[25px] px-[10px] py-[8px] rounded-[5px]`}
                             onClick={() => ModalOpendelete(data?.id)}
-                          >
+                            disabled={!!data.order_id}
+                          > 
+                          
                             <MdDelete />
                           </button>
                         )}

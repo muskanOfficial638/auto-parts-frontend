@@ -165,11 +165,11 @@ const formatted =
                 {/* Return to Store Button */}
                 <div className="p-6">
                   <Link
-                    href="/orders"
+                    href="/buyer-dashboard"
                     className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-autoblue rounded-lg text-white font-medium hover:bg-hoverblue transition-colors"
                   >
                     <ArrowLeft className="w-4 h-4" />
-                    My Orders
+                      Back to Dashboard
                   </Link>
                 </div>
               </div>

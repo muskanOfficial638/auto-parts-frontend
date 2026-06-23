@@ -2,7 +2,12 @@
 import Footer from "@/app/components/Footer";
 import Header from "@/app/components/Header";
 
-import { addBankDetails, deleteBankDetails, GetBankDetails, viewProfile } from "@/app/utils/api";
+import {
+  addBankDetails,
+  deleteBankDetails,
+  GetBankDetails,
+  viewProfile,
+} from "@/app/utils/api";
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -52,46 +57,43 @@ export default function MyAccountForm() {
     routing_number: "",
     account_number: "",
   });
-   async function handleDeletePartRequest() {
-  
-   if(!profileData?.acct_id){
+  async function handleDeletePartRequest() {
+    if (!profileData?.acct_id) {
       setOpenDelete(false);
-      return;  
-   }
-
-   try {
- const res = await  deleteBankDetails(profileData?.acct_id);
- console.log(res?.data)
-  if (res?.data?.success) {
-    setProfileData((prev) => ({
-      ...prev,
-    first_name: "",
-    last_name: "",
-    phone: "",
-    id_number: "",
-    dob: "",
-    address: "",
-    city: "",
-    state: "",
-    postal_code: "",
-    account_holder_name: "",
-    routing_number: "",
-    account_number: "",
-    acct_id: "",
-    }));
-    setOpenDelete(false);
-    setAlreadySubmitted(false);  
-  toast.success(res?.data?.message || "Bank details deleted successfully");
- }
- else{
-  toast.error(res?.data?.message || "Failed to delete bank details");
- }
-
-} catch (error) {
-      console.log("Update Error:", error);
-  
+      return;
     }
 
+    try {
+      const res = await deleteBankDetails(profileData?.acct_id);
+      console.log(res?.data);
+      if (res?.data?.success) {
+        setProfileData((prev) => ({
+          ...prev,
+          first_name: "",
+          last_name: "",
+          phone: "",
+          id_number: "",
+          dob: "",
+          address: "",
+          city: "",
+          state: "",
+          postal_code: "",
+          account_holder_name: "",
+          routing_number: "",
+          account_number: "",
+          acct_id: "",
+        }));
+        setOpenDelete(false);
+        setAlreadySubmitted(false);
+        toast.success(
+          res?.data?.message || "Bank details deleted successfully",
+        );
+      } else {
+        toast.error(res?.data?.message || "Failed to delete bank details");
+      }
+    } catch (error) {
+      console.log("Update Error:", error);
+    }
   }
   const validateForm = () => {
     if (!profileData.first_name.trim()) {
@@ -100,7 +102,7 @@ export default function MyAccountForm() {
     } else if (!/^[A-Za-z]+$/.test(profileData.first_name)) {
       toast.error("First name can only contain letters");
       return false;
-    }else if(profileData.first_name.trim().length < 3){
+    } else if (profileData.first_name.trim().length < 3) {
       toast.error("First name should be at least 3 characters long");
       return false;
     }
@@ -145,7 +147,7 @@ export default function MyAccountForm() {
     if (!profileData.address.trim()) {
       toast.error("Address is required");
       return false;
-    }else if(profileData.address.trim().length < 10){
+    } else if (profileData.address.trim().length < 10) {
       toast.error("Address should be at least 10 characters long");
       return false;
     }
@@ -182,7 +184,7 @@ export default function MyAccountForm() {
     } else if (!/^[A-Za-z\s]+$/.test(profileData.account_holder_name)) {
       toast.error("Account holder name can only contain letters");
       return false;
-    }else if(profileData.account_holder_name.trim().length < 3){
+    } else if (profileData.account_holder_name.trim().length < 3) {
       toast.error("Account holder name should be at least 3 characters long");
       return false;
     }
@@ -219,35 +221,34 @@ export default function MyAccountForm() {
   // Load user data from localStorage
 
   useEffect(() => {
-  if (typeof window === "undefined") return;
+    if (typeof window === "undefined") return;
 
-  const loggedInUser = JSON.parse(
-    localStorage.getItem("autoPartsUserData") || "{}"
-  );
+    const loggedInUser = JSON.parse(
+      localStorage.getItem("autoPartsUserData") || "{}",
+    );
 
-  if (!loggedInUser?.id) {
-    router.replace("/logout");
-    return;
-  }
+    if (!loggedInUser?.id) {
+      router.replace("/logout");
+      return;
+    }
 
-  Promise.all([
-    viewProfile(loggedInUser.id),
-    GetBankDetails(loggedInUser.id),
-  ]).then(([profile, bank]) => {
-    setLoading(false);
+    Promise.all([
+      viewProfile(loggedInUser.id),
+      GetBankDetails(loggedInUser.id),
+    ]).then(([profile, bank]) => {
+      setLoading(false);
 
       setProfileData((prev) => ({
-            ...prev,
-            email: profile?.email || "",
-          }));
+        ...prev,
+        email: profile?.email || "",
+      }));
 
-    if (bank?.success) {
-      setAlreadySubmitted(true);
-       setProfileData(bank.bank_details[0]);
-    }
-  });
-}, [router]);
-
+      if (bank?.success) {
+        setAlreadySubmitted(true);
+        setProfileData(bank.bank_details[0]);
+      }
+    });
+  }, [router]);
 
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     SetEdit(true);
@@ -279,7 +280,7 @@ export default function MyAccountForm() {
         setSubmitProcess(false);
         setAlreadySubmitted(true);
       } else {
-        toast.error(res?.message || "Failed to add bank details."); 
+        toast.error(res?.message || "Failed to add bank details.");
         setSubmitProcess(false);
       }
     } catch (error) {
@@ -352,14 +353,41 @@ export default function MyAccountForm() {
                       <label className="text-Gray md:text-[13px] text-xs font-bold leading-[13px] uppercase block mb-[14px]">
                         Phone
                       </label>
-                      <input
-                        type="text"
-                        name="phone"
-                        readOnly={alreadySubmitted}
-                        value={profileData?.phone || ""}
-                        onChange={handleProfileChange}
-                        className="w-full py-[8px] px-[15px]  bg-white text-sm  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
-                      />
+                      <div className="flex items-center gap-2">
+                        {!profileData?.phone.startsWith("+27") && (
+                          <span className="bg-LightNeutral text-Gray text-sm py-[8px] px-[15px] border border-LightNeutral rounded-sm">
+                            +27
+                          </span>
+                        )}
+
+                        <input
+                          type="text"
+                          name="phone"
+                          onKeyDown={(e) => {
+                            const allowedKeys = [
+                              "Backspace",
+                              "Delete",
+                              "ArrowLeft",
+                              "ArrowRight",
+                              "ArrowUp",
+                              "ArrowDown",
+                              "Tab",
+                            ];
+
+                            if (
+                              !/^[0-9]$/.test(e.key) &&
+                              !allowedKeys.includes(e.key) &&
+                              !(e.ctrlKey || e.metaKey)
+                            ) {
+                              e.preventDefault();
+                            }
+                          }}
+                          readOnly={alreadySubmitted}
+                          value={profileData?.phone || ""}
+                          onChange={handleProfileChange}
+                          className="w-full py-[8px] px-[15px]  bg-white text-sm  border border-LightNeutral rounded-sm text-Gray placeholder-Gray  outline-none"
+                        />
+                      </div>
                     </div>
 
                     {/* Model */}
@@ -528,7 +556,7 @@ export default function MyAccountForm() {
                   {/* Save Button */}
                   {alreadySubmitted ? (
                     <div
-                        onClick={() => setOpenDelete(true)}
+                      onClick={() => setOpenDelete(true)}
                       className={`flex justify-center md:text-base text-[15px] w-full rounded-sm text-white md:py-[16px] p-[13px] font-semibold  duration-400 cursor-pointer bg-red-600 hover:bg-red-400 `}
                     >
                       Delete Bank Details
@@ -552,45 +580,45 @@ export default function MyAccountForm() {
       </div>
       <Footer />
       {OpenDelete && (
-      <div className="fixed inset-0 flex items-center justify-center z-50">
-      {/* Dark Overlay */}
-      <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-       onClick={()=> setOpenDelete(false)}
-      />
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          {/* Dark Overlay */}
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setOpenDelete(false)}
+          />
 
-      {/* Delete Box */}
-      <div className="relative bg-modalblue text-white w-xl max-w-full p-12 rounded-md shadow-xl border-2 border-borderblue">
-        {/* Close Button */}
-        <button
-      onClick={()=> setOpenDelete(false)}
-          className="absolute top-0 right-0 bg-white cursor-pointer h-8 w-8 rounded-full m-2"
-        >
-          <span className="text-black">✕</span>
-        </button>
-        <div className="w-xl max-w-full">
-          {/* Title */}
-          <h2 className="text-center text-2xl leading-8 font-bold mb-12">
-            Are you sure You want to delete?
-          </h2>
+          {/* Delete Box */}
+          <div className="relative bg-modalblue text-white w-xl max-w-full p-12 rounded-md shadow-xl border-2 border-borderblue">
+            {/* Close Button */}
+            <button
+              onClick={() => setOpenDelete(false)}
+              className="absolute top-0 right-0 bg-white cursor-pointer h-8 w-8 rounded-full m-2"
+            >
+              <span className="text-black">✕</span>
+            </button>
+            <div className="w-xl max-w-full">
+              {/* Title */}
+              <h2 className="text-center text-2xl leading-8 font-bold mb-12">
+                Are you sure You want to delete?
+              </h2>
 
-          <div className="flex justify-center gap-8">
-            <button
-              onClick={() => handleDeletePartRequest()}
-              className="bg-autoblue text-md w-full rounded-sm text-white py-4 font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
-            >
-              Yes
-            </button>
-            <button
-              onClick={()=> setOpenDelete(false)}
-              className="bg-red-600 text-md w-full rounded-sm text-white py-4 font-semibold hover:bg-red-700 duration-400 cursor-pointer"
-            >
-              No
-            </button>
+              <div className="flex justify-center gap-8">
+                <button
+                  onClick={() => handleDeletePartRequest()}
+                  className="bg-autoblue text-md w-full rounded-sm text-white py-4 font-semibold hover:bg-hoverblue duration-400 cursor-pointer"
+                >
+                  Yes
+                </button>
+                <button
+                  onClick={() => setOpenDelete(false)}
+                  className="bg-red-600 text-md w-full rounded-sm text-white py-4 font-semibold hover:bg-red-700 duration-400 cursor-pointer"
+                >
+                  No
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
       )}
     </main>
   );

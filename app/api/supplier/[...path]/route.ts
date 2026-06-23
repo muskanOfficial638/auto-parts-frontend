@@ -90,6 +90,28 @@ async function handle(
       duplex: "half",
     } as NodeRequestInit);
 
+    const data = await apiRes.json();
+ 
+    if(apiRes.status === 403) {
+      
+      if(data.detail=="User account is inactive"){
+  const response = NextResponse.json(
+    { error: "User account is inactive" },
+    { status: 403 }
+  );
+  response.cookies.delete("ATXAT");
+  response.cookies.delete("ATXRT");
+  response.cookies.delete("ATXDT");
+
+  return response;
+
+      }
+      return NextResponse.json(
+        { error: "Forbidden" },
+        { status: 403 }
+      );
+    }
+
 
     if (apiRes.status === 401) {
       console.error("Unauthorized - invalid or expired token token - created");
@@ -101,8 +123,7 @@ async function handle(
     }
 
 
-    const data = await apiRes.json();
- 
+
     return NextResponse.json(data, {
       status: apiRes.status,
     });

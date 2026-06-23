@@ -155,7 +155,7 @@ export default function KycDetailForm() {
                 <input
                   type="file"
                   accept="image/jpeg,image/png,application/pdf"
-                  onChange={(e) => handleFiles(e.target.files)}
+                  onChange={(e) =>{ handleFiles(e.target.files); e.currentTarget.value = ""}} // ✅ reset input after selection
                   className="hidden"
                   id="fileUpload"
                 />

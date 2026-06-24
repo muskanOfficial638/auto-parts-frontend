@@ -13,7 +13,6 @@ export async function POST(req: NextRequest) {
         headers:{ 
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
-
          }
       });
       const data = await res.json();

@@ -64,6 +64,7 @@ export default function ViewPartRequest() {
   useEffect(() => {
     if(otpModalOpen) return;
     if ( request) {
+      try {
       fetchPartRequestsById(request).then((data) => {
         setPartRequest(data);
         setIsLoading(false);
@@ -72,14 +73,19 @@ export default function ViewPartRequest() {
         }
       
       });
-      getQuoteByRequest(request).then((data) => {
-        data.some((item : Quoteview) => item.status === "in_transit" && setAcceptedId(item.id));
-        setQuoteData(data);
 
-        setHasAccepted(data.some((item : Quoteview) => item.status === "in_transit"));
-        setinProcess(data.some((item : Quoteview) => item.status === "in_process"));
+      getQuoteByRequest(request).then((data) => {
+        data?.some((item : Quoteview) => item.status === "in_transit" && setAcceptedId(item.id));
+        setQuoteData(data);
+        setHasAccepted(data?.some((item : Quoteview) => item.status === "in_transit"));
+        setinProcess(data?.some((item : Quoteview) => item.status === "in_process"));
 
       });
+    } catch (error) {
+      console.error("Error fetching part request or quotes:", error);
+      toast.error("Failed to fetch data. Please try again later.");
+     
+    }
     }
   }, [request,otpModalOpen,dataChanged]);
 
@@ -172,16 +178,18 @@ export default function ViewPartRequest() {
       <div className="relative z-10 flex justify-center pt-36 pb-20 px-4">
         <div className="w-full max-w-[1037px] bg-brandBlack rounded-sm shadow-lg p-[20px]">
           {/* Header (Image + Title + Button) */}
-          <div className="flex justify-between flex-wrap gap-y-[20px] items-center">
+          <div className="flex justify-between gap-y-[20px] items-center">
             <div className="flex items-start gap-[15px]">
               <div className="relative bg-white  py-[7px] px-[7px] rounded-sm flex items-center justify-center overflow-hidden">
-                <Image
-                  src={imagePath + partRequest?.attachment[0]}
-                  alt="Filter"
-                  width={150}
-                  height={150}
-                  className="object-cover md:w-[140px] md:h-[140px] w-[36px] h-[50px]"
-                />
+               {partRequest?.attachment && partRequest?.attachment[0] && (
+                  <Image
+                    src={imagePath + partRequest?.attachment[0]}
+                    alt="Filter"
+                    width={150}
+                    height={150}
+                    className="object-cover md:w-[140px] md:h-[140px] w-[36px] h-[50px]"
+                  />
+                )}
                 <IoIosImages onClick={() => openGallery(partRequest?.attachment || [])} className="absolute bottom-1 right-1 shadow-[0_1px_5px_#817f7f] cursor-pointer hover:bg-[#000] duration-600 bg-[#040404c7] text-white text-[33px] p-[4px] rounded-[5px]" /  >
               </div>
 
@@ -224,7 +232,7 @@ export default function ViewPartRequest() {
               <button onClick={() => history.back()} className="bg-white cursor-pointer h-8 w-8 rounded-full flex justify-center items-center text-black "><FaArrowLeft /></button>
               
               {partRequest?.status == 2 && hasAccepted && (
-              <button onClick={()=>setOtpModalOpen(true)} className="text-autoblue md:w-[auto] w-full cursor-pointer md:text-base text-sm leading-[14px] border border-autoblue py-[13px] px-[20px] duration-400 hover:text-white rounded-sm hover:bg-hoverblue hover:border-hoverblue">
+              <button onClick={()=>setOtpModalOpen(true)} className="whitespace-nowrap text-autoblue md:w-[auto] w-full cursor-pointer md:text-base text-sm leading-[14px] border border-autoblue py-[13px] px-[20px] duration-400 hover:text-white rounded-sm hover:bg-hoverblue hover:border-hoverblue">
                 Mark as Completed
               </button>
      )}

@@ -246,7 +246,7 @@ export default function ViewPartRequest() {
                   key={data.id}
                   className="bg-[#011827] border border-[#153C51] rounded-sm pt-[5px] pb-[15px] ps-[12px] pe-[22px]"
                 >
-                  <div className="flex justify-between flex-wrap gap-y-[20px] items-center">
+                  <div className="flex justify-between gap-y-[20px] items-center">
                     <div>
                       <p className="text-white md:text-sm text-xs font-bold leading-[22px]">
                         @{data?.user?.user_name}
